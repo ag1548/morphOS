@@ -5,7 +5,7 @@
 
 set -e
 
-mkdir objs
+mkdir -p objs
 
 ./cross/bin/i686-elf-as \
     src/boot.s          \
