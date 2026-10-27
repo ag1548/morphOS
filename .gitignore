@@ -2,4 +2,7 @@ binutils
 cross
 gcc
 gdb
+isodir
+kernel
 other
+objs
