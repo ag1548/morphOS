@@ -1,6 +1,9 @@
 #!/bin/bash
 
-# NOTE: Assumes cross-compiler has already been built!
+# See https://wiki.osdev.org/Bare_Bones
+# See https://wiki.osdev.org/GCC_Cross-Compiler
+
+set -e
 
 mkdir objs
 

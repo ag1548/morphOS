@@ -1,30 +1,7 @@
 #!/bin/bash
 
+# See https://wiki.osdev.org/Bare_Bones
 # See https://wiki.osdev.org/GCC_Cross-Compiler
-
-# Get binutils-2.47, gcc-16.2.0, and gdb-18.1 before running! Verify signatures with GPG...
-#  - binutils : https://ftp.gnu.org/gnu/binutils/
-#  - gdb      : https://ftp.gnu.org/gnu/gdb/
-#  - gcc      : https://ftp.gnu.org/gnu/gcc/
-# FIXME: Add to this script later...
-
-# Tree should look like:
-# .
-# ├── binutils
-# │   ├── binutils-2.47
-# │   ├── binutils-2.47.tar.bz2
-# │   └── binutils-2.47.tar.bz2.sig
-# ├── build_cross_compiler.sh
-# ├── gcc
-# │   ├── gcc-16.2.0
-# │   ├── gcc-16.2.0.tar.gz
-# │   └── gcc-16.2.0.tar.gz.sig
-# ├── gdb
-# │   ├── gdb-18.1
-# │   ├── gdb-18.1.tar.xz
-# │   └── gdb-18.1.tar.xz.sig
-# └── other
-#     └── gnu-keyring.gpg
 
 set -e
 
