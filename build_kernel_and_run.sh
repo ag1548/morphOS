@@ -1,36 +1,19 @@
 #!/bin/bash
 
-# See https://wiki.osdev.org/Bare_Bones
-# See https://wiki.osdev.org/GCC_Cross-Compiler
-
 set -e
 
-mkdir -p objs
-
 ./cross/bin/i686-elf-gcc \
-    -c                   \
     src/boot.S           \
-    -o objs/boot.o       \
-
-./cross/bin/i686-elf-gcc \
-    -c                   \
     src/kernel.c         \
-    -o objs/kernel.o     \
+    -T src/linker.ld     \
+    -o kernel            \
     -std=gnu99           \
     -ffreestanding       \
     -O2                  \
+    -nostdlib            \
+    -lgcc                \
     -Wall                \
     -Wextra              \
-
-./cross/bin/i686-elf-gcc \
-    -T src/linker.ld     \
-    -o kernel            \
-    -ffreestanding       \
-    -O2                  \
-    -nostdlib            \
-    objs/boot.o          \
-    objs/kernel.o        \
-    -lgcc                \
 
 if grub-file --is-x86-multiboot kernel; then
   echo multiboot confirmed
@@ -48,9 +31,12 @@ make_grub_kernel_iso() {
 
     grub-mkrescue -o kernel.iso isodir
 
+    rm -rf isodir
+
 }
 
 make_grub_kernel_iso
 qemu-system-i386 -cdrom kernel.iso -nic none
 
+# FIXME: Would be good to have this for text mode only...
 # qemu-system-i386 -kernel kernel
