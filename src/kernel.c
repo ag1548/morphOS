@@ -46,12 +46,27 @@ static void itoa (char *buf, int base, int d);
 static void putchar (int c);
 void printf (const char *format, ...);
 
+void debug_out_c(const char* c)
+{
+    // Refer to GCC manual's 6.11.2 - Extended ASM and 6.11.3.4 for x86
+    asm volatile("outb %0, $0xe9" :: "a"(*c));
+}
+
+void debug_out(const char* const str)
+{
+    const char* ptr = str;
+    while (*ptr)
+        debug_out_c(ptr++);
+}
+
 /* Check if MAGIC is valid and print the Multiboot information structure
    pointed by ADDR. */
 void
 cmain (unsigned long magic, unsigned long addr)
 {
   multiboot_info_t *mbi;
+
+  debug_out("Welcome to morphOS!\n\0");
 
   /* Clear the screen. */
   cls ();
@@ -91,7 +106,7 @@ cmain (unsigned long magic, unsigned long addr)
       printf ("mods_count = %d, mods_addr = 0x%x\n",
               (int) mbi->mods_count, (int) mbi->mods_addr);
       for (i = 0, mod = (multiboot_module_t *) mbi->mods_addr;
-           i < mbi->mods_count;
+           i < (int)mbi->mods_count;
            i++, mod++)
         printf (" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n",
                 (unsigned) mod->mod_start,
