@@ -1,6 +1,6 @@
 # morphOS
 
-![docs/images/qemu.png](docs/images/qemu.png)
+![docs/images/blue_line.png](docs/images/blue_line.png)
 
 After running `build_cross_compiler.sh`, ...
 

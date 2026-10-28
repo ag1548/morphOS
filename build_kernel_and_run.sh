@@ -7,9 +7,10 @@ set -e
 
 mkdir -p objs
 
-./cross/bin/i686-elf-as \
-    src/boot.s          \
-    -o objs/boot.o      \
+./cross/bin/i686-elf-gcc \
+    -c                   \
+    src/boot.S           \
+    -o objs/boot.o       \
 
 ./cross/bin/i686-elf-gcc \
     -c                   \
@@ -49,6 +50,7 @@ make_grub_kernel_iso() {
 
 }
 
-# qemu-system-i386 -cdrom kernel.iso
+make_grub_kernel_iso
+qemu-system-i386 -cdrom kernel.iso -nic none
 
-qemu-system-i386 -kernel kernel
+# qemu-system-i386 -kernel kernel
