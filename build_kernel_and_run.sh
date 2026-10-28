@@ -35,8 +35,7 @@ make_grub_kernel_iso() {
 
 }
 
-make_grub_kernel_iso
-qemu-system-i386 -cdrom kernel.iso -nic none
+# make_grub_kernel_iso
+# qemu-system-i386 -cdrom kernel.iso -nic none
 
-# FIXME: Would be good to have this for text mode only...
-# qemu-system-i386 -kernel kernel
+qemu-system-i386 -kernel kernel
