@@ -106,18 +106,6 @@ cmain (unsigned long magic, unsigned long addr)
       return;
     }
 
-  /* Is the symbol table of a.out valid? */
-//   if (CHECK_FLAG (mbi->flags, 4))
-//     {
-//       multiboot_aout_symbol_table_t *multiboot_aout_sym = &(mbi->u.aout_sym);
-//
-//       printf ("multiboot_aout_symbol_table: tabsize = 0x%0x, "
-//               "strsize = 0x%x, addr = 0x%x\n",
-//               (unsigned) multiboot_aout_sym->tabsize,
-//               (unsigned) multiboot_aout_sym->strsize,
-//               (unsigned) multiboot_aout_sym->addr);
-//     }
-
   /* Is the section header table of ELF valid? */
   if (CHECK_FLAG (mbi->flags, 5))
     {

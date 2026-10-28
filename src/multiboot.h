@@ -120,16 +120,6 @@ struct multiboot_header
   multiboot_uint32_t depth;
 };
 
-/* The symbol table for a.out. */
-// struct multiboot_aout_symbol_table
-// {
-//   multiboot_uint32_t tabsize;
-//   multiboot_uint32_t strsize;
-//   multiboot_uint32_t addr;
-//   multiboot_uint32_t reserved;
-// };
-// typedef struct multiboot_aout_symbol_table multiboot_aout_symbol_table_t;
-
 /* The section header table for ELF. */
 struct multiboot_elf_section_header_table
 {
@@ -161,7 +151,6 @@ struct multiboot_info
 
   union
   {
-    // multiboot_aout_symbol_table_t aout_sym;
     multiboot_elf_section_header_table_t elf_sec;
   } u;
 
