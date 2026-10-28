@@ -41,6 +41,7 @@ make_grub_kernel_iso() {
 QEMU_OPTS=(
     -kernel kernel
     -enable-kvm    # Use KVM support for direct hardware execution
+    -s             # Shorthand for -gdb tcp::1234
 )
 
 qemu-system-i386 "${QEMU_OPTS[@]}"
