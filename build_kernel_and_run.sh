@@ -40,8 +40,9 @@ make_grub_kernel_iso() {
 
 QEMU_OPTS=(
     -kernel kernel
-    -enable-kvm    # Use KVM support for direct hardware execution
-    -s             # Shorthand for -gdb tcp::1234
+    -enable-kvm               # Use KVM support for direct hardware execution
+    -s                        # Shorthand for -gdb tcp::1234
+    -d cpu_reset,guest_errors # show CPU state before CPU resets, log when the guest OS does something invalid (eg accessing a non-existent register)
 )
 
 qemu-system-i386 "${QEMU_OPTS[@]}"
