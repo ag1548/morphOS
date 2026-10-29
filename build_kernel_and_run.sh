@@ -22,29 +22,30 @@ else
   exit 1
 fi
 
-# Optional kernel iso
 make_grub_kernel_iso() {
-
     mkdir -p isodir/boot/grub
     cp src/grub.cfg isodir/boot/grub/grub.cfg
     cp kernel isodir/boot/kernel
-
     grub-mkrescue -o kernel.iso isodir
-
     rm -rf isodir
-
 }
 
-# make_grub_kernel_iso
-# qemu-system-i386 -cdrom kernel.iso -nic none
+run_cdrom() {
+    make_grub_kernel_iso
+    qemu-system-i386 -cdrom kernel.iso -nic none
+}
 
-QEMU_OPTS=(
-    -kernel kernel
-    -enable-kvm               # Use KVM support for direct hardware execution
-    -s                        # Shorthand for -gdb tcp::1234
-    -d cpu_reset,guest_errors # show CPU state before CPU resets, log when the guest OS does something invalid (eg accessing a non-existent register)
-    -debugcon stdio           # Redirect the debug console to host device dev
-    -device VGA,vgamem_mb=64
-)
+run_kernel() {
+    QEMU_OPTS=(
+        -kernel kernel
+        -enable-kvm               # Use KVM support for direct hardware execution
+        -s                        # Shorthand for -gdb tcp::1234
+        -d cpu_reset,guest_errors # show CPU state before CPU resets, log when the guest OS does something invalid (eg accessing a non-existent register)
+        -debugcon stdio           # Redirect the debug console to host device dev
+        -device VGA,vgamem_mb=64
+    )
+    qemu-system-i386 "${QEMU_OPTS[@]}"
+}
 
-qemu-system-i386 "${QEMU_OPTS[@]}"
+# run_cdrom
+run_kernel
