@@ -2,15 +2,17 @@
 
 set -e
 
-./cross/bin/i686-elf-gcc \
+./cross/bin/i686-elf-g++ \
     src/boot.S           \
-    src/kernel.c         \
+    src/kernel.cpp       \
     -T src/linker.ld     \
     -o kernel            \
-    -std=gnu99           \
+    -std=c++17           \
     -ffreestanding       \
     -O2                  \
     -nostdlib            \
+    -nodefaultlibs       \
+    -fno-exceptions      \
     -lgcc                \
     -Wall                \
     -Wextra              \

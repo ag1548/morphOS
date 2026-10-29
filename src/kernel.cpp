@@ -12,12 +12,6 @@ static int                     xpos;
 static int                     ypos;
 static volatile unsigned char *video;
 
-void        cmain(unsigned long magic, unsigned long addr);
-static void cls(void);
-static void itoa(char *buf, int base, int d);
-static void putchar(int c);
-void        printf(const char *format, ...);
-
 /*
  * Refer to GCC manual's 6.11.2 - Extended ASM and 6.11.3.4 for x86
  */
@@ -50,82 +44,6 @@ static void putchar(int c) {
     if (xpos >= COLUMNS) {
         goto newline;
     }
-}
-
-void printf(const char *format, ...) {
-
-    char **arg = (char **)&format;
-    int    c;
-    char   buf[20];
-
-    arg++;
-
-    while ((c = *format++) != 0) {
-
-        if (c != '%') {
-            putchar(c);
-            continue;
-        }
-
-        char *p;
-        char *p2;
-        int   pad0 = 0;
-        int   pad  = 0;
-
-        c = *format++;
-        if (c == '0') {
-            pad0 = 1;
-            c    = *format++;
-        }
-
-        if (c >= '0' && c <= '9') {
-            pad = c - '0';
-            c   = *format++;
-        }
-
-        switch (c) {
-            case 'd':
-            case 'u':
-            case 'x':
-                itoa(buf, c, *((int *)arg++));
-                p = buf;
-                goto string;
-                break;
-
-            case 's':
-                p = *arg++;
-                if (!p) {
-                    p = "(null)";
-                }
-
-            string:
-                for (p2 = p; *p2; p2++)
-                    ;
-                for (; p2 < p + pad; p2++) {
-                    putchar(pad0 ? '0' : ' ');
-                }
-                while (*p) {
-                    putchar(*p++);
-                }
-                break;
-
-            default:
-                putchar(*((int *)arg++));
-                break;
-        }
-    }
-}
-
-static void cls(void) {
-
-    video = (unsigned char *)VIDEO;
-
-    for (int i = 0; i < COLUMNS * LINES * 2; i++) {
-        *(video + i) = 0;
-    }
-
-    xpos = 0;
-    ypos = 0;
 }
 
 /* Convert the integer D to a string and save the string in BUF. If
@@ -168,7 +86,83 @@ static void itoa(char *buf, int base, int d) {
     }
 }
 
-void cmain(unsigned long magic, unsigned long addr) {
+extern "C" void printf(const char *format, ...) {
+
+    char **arg = (char **)&format;
+    int    c;
+    char   buf[20];
+
+    arg++;
+
+    while ((c = *format++) != 0) {
+
+        if (c != '%') {
+            putchar(c);
+            continue;
+        }
+
+        char *p;
+        char *p2;
+        int   pad0 = 0;
+        int   pad  = 0;
+
+        c = *format++;
+        if (c == '0') {
+            pad0 = 1;
+            c    = *format++;
+        }
+
+        if (c >= '0' && c <= '9') {
+            pad = c - '0';
+            c   = *format++;
+        }
+
+        switch (c) {
+            case 'd':
+            case 'u':
+            case 'x':
+                itoa(buf, c, *((int *)arg++));
+                p = buf;
+                goto string;
+                break;
+
+            case 's':
+                p = *arg++;
+                // if (!p) {
+                //     p = "(null)";
+                // }
+
+            string:
+                for (p2 = p; *p2; p2++)
+                    ;
+                for (; p2 < p + pad; p2++) {
+                    putchar(pad0 ? '0' : ' ');
+                }
+                while (*p) {
+                    putchar(*p++);
+                }
+                break;
+
+            default:
+                putchar(*((int *)arg++));
+                break;
+        }
+    }
+}
+
+static void cls(void) {
+
+    video = (unsigned char *)VIDEO;
+
+    for (int i = 0; i < COLUMNS * LINES * 2; i++) {
+        *(video + i) = 0;
+    }
+
+    xpos = 0;
+    ypos = 0;
+}
+
+extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     multiboot_info_t *mbi;
 
@@ -243,71 +237,6 @@ void cmain(unsigned long magic, unsigned long addr) {
                    (unsigned)(mmap->len >> 32),
                    (unsigned)(mmap->len & 0xffffffff),
                    (unsigned)mmap->type);
-        }
-    }
-
-    /* Draw diagonal blue line. */
-    if (CHECK_FLAG(mbi->flags, 12)) {
-        multiboot_uint32_t color;
-        unsigned           i;
-        void              *fb = (void *)(unsigned long)mbi->framebuffer_addr;
-
-        switch (mbi->framebuffer_type) {
-            case MULTIBOOT_FRAMEBUFFER_TYPE_INDEXED: {
-                unsigned                best_distance, distance;
-                struct multiboot_color *palette;
-
-                palette = (struct multiboot_color *)mbi->framebuffer_palette_addr;
-
-                color         = 0;
-                best_distance = 4 * 256 * 256;
-
-                for (i = 0; i < mbi->framebuffer_palette_num_colors; i++) {
-                    distance = (0xff - palette[i].blue) * (0xff - palette[i].blue) + palette[i].red * palette[i].red + palette[i].green * palette[i].green;
-                    if (distance < best_distance) {
-                        color         = i;
-                        best_distance = distance;
-                    }
-                }
-            } break;
-
-            case MULTIBOOT_FRAMEBUFFER_TYPE_RGB:
-                color = ((1 << mbi->framebuffer_blue_mask_size) - 1) << mbi->framebuffer_blue_field_position;
-                break;
-
-            case MULTIBOOT_FRAMEBUFFER_TYPE_EGA_TEXT:
-                color = '\\' | 0x0100;
-                break;
-
-            default:
-                color = 0xffffffff;
-                break;
-        }
-
-        for (i = 0; i < mbi->framebuffer_width && i < mbi->framebuffer_height; i++) {
-            switch (mbi->framebuffer_bpp) {
-                case 8: {
-                    multiboot_uint8_t *pixel = fb + mbi->framebuffer_pitch * i + i;
-                    *pixel                   = color;
-                    break;
-                }
-                case 15:
-                case 16: {
-                    multiboot_uint16_t *pixel = fb + mbi->framebuffer_pitch * i + 2 * i;
-                    *pixel                    = color;
-                    break;
-                }
-                case 24: {
-                    multiboot_uint32_t *pixel = fb + mbi->framebuffer_pitch * i + 3 * i;
-                    *pixel                    = (color & 0xffffff) | (*pixel & 0xff000000);
-                    break;
-                }
-                case 32: {
-                    multiboot_uint32_t *pixel = fb + mbi->framebuffer_pitch * i + 4 * i;
-                    *pixel                    = color;
-                    break;
-                }
-            }
         }
     }
 }
