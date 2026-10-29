@@ -21,7 +21,7 @@
 #define STACK_SIZE                      0x4000
 
 /* The flags for the Multiboot header. */
-#define MULTIBOOT_HEADER_FLAGS          MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO | MULTIBOOT_VIDEO_MODE
+#define MULTIBOOT_HEADER_FLAGS          MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO
 
         .text
 
