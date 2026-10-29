@@ -32,7 +32,11 @@ make_grub_kernel_iso() {
 
 run_cdrom() {
     make_grub_kernel_iso
-    qemu-system-i386 -cdrom kernel.iso -nic none
+    QEMU_OPTS=(
+        -cdrom kernel.iso
+        -nic none
+    )
+    qemu-system-i386 "${QEMU_OPTS[@]}"
 }
 
 run_kernel() {
