@@ -1,3 +1,3 @@
 #!/bin/bash
 
-clang-format src/*.cpp -i -Werror
+clang-format src/*.cpp src/*.h -i -Werror
