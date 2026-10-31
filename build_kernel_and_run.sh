@@ -5,6 +5,7 @@ set -e
 ./cross/bin/i686-elf-g++    \
     src/kernel/boot.S       \
     src/kernel/kernel.cpp   \
+    src/kernel/CPU.cpp      \
     src/string.cpp          \
     -T src/kernel/linker.ld \
     -I src/include          \

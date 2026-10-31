@@ -1,6 +1,7 @@
-#include "string.h"
-
 #include "multiboot.h"
+
+#include "CPU.h"
+#include "string.h"
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
 
@@ -15,8 +16,16 @@ static int                     ypos;
 static volatile unsigned char *video;
 
 /*
- * Refer to GCC manual's 6.11.2 - Extended ASM and 6.11.3.4 for x86
- */
+
+Refer to GCC manual's 6.11.2 - Extended ASM and 6.11.3.4 for x86
+
+asm asm-qualifiers (AssemblerTemplate
+                        : OutputOperands
+                        : InputOperands
+                        : Clobbers
+                        : GotoLabels)
+
+*/
 void debug_out_c(const char *c) {
     asm volatile("outb %0, $0xe9" ::"a"(*c));
 }
@@ -241,4 +250,6 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
                    (unsigned)mmap->type);
         }
     }
+
+    gdt_init();
 }
