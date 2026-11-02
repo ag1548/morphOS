@@ -66,6 +66,8 @@ multiboot_entry:
         /* Push the magic value. */
         pushl   %eax
 
+        cli
+
         /* Now enter the C main function... */
         call    cmain
 
