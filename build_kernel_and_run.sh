@@ -13,7 +13,8 @@ set -e
     -o kernel               \
     -std=c++17              \
     -ffreestanding          \
-    -O2                     \
+    -g                      \
+    -O0                     \
     -nostdlib               \
     -nodefaultlibs          \
     -fno-exceptions         \
