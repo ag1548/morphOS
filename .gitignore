@@ -10,3 +10,4 @@ kernel.iso
 other
 objs
 tmp
+qemu.log

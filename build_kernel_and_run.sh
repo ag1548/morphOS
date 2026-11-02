@@ -52,6 +52,7 @@ run_kernel() {
         -s                        # Shorthand for -gdb tcp::1234
         # -S                            # Do not start CPU at startup (you must type 'c' in the monitor).
         -d int,cpu_reset,guest_errors # show CPU state before CPU resets, log when the guest OS does something invalid (eg accessing a non-existent register)
+        -D qemu.log                   # Output log in logfile instead of to stderr
         -debugcon stdio           # Redirect the debug console to host device dev
         -device VGA,vgamem_mb=64
         -nic none
