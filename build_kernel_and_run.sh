@@ -50,6 +50,7 @@ run_kernel() {
         -kernel kernel
         # -enable-kvm               # Use KVM support for direct hardware execution
         -s                        # Shorthand for -gdb tcp::1234
+        # -S                            # Do not start CPU at startup (you must type 'c' in the monitor).
         -d cpu_reset,guest_errors # show CPU state before CPU resets, log when the guest OS does something invalid (eg accessing a non-existent register)
         -debugcon stdio           # Redirect the debug console to host device dev
         -device VGA,vgamem_mb=64
