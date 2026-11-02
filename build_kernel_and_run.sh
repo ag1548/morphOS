@@ -60,6 +60,7 @@ run_kernel() {
         -device VGA,vgamem_mb=64
         -nic none
         -no-reboot                    # Exit instead of rebooting.
+        -m 4G
     )
     qemu-system-i386 "${QEMU_OPTS[@]}"
 }

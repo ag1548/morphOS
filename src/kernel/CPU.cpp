@@ -4,6 +4,8 @@
 
 /*
 
+CPU
+===
 EAX=00000000 EBX=00000000 ECX=00000000 EDX=00000663
 ESI=00000000 EDI=00000000 EBP=00000000 ESP=00000000
 EIP=0000fff0 EFL=00000002 [-------] CPL=0 II=0 A20=1 SMM=0 HLT=0
@@ -31,18 +33,6 @@ XMM00=0000000000000000 0000000000000000 XMM01=0000000000000000 0000000000000000
 XMM02=0000000000000000 0000000000000000 XMM03=0000000000000000 0000000000000000
 XMM04=0000000000000000 0000000000000000 XMM05=0000000000000000 0000000000000000
 XMM06=0000000000000000 0000000000000000 XMM07=0000000000000000 0000000000000000
-
-*/
-
-void cli() {
-    asm volatile("cli" ::: "memory");
-}
-
-void sti() {
-    asm volatile("sti" ::: "memory");
-}
-
-/*
 
 Rings
 =====
@@ -114,11 +104,43 @@ CODE - 0x00CF9A00_0000FFFF
 00000000 1100___1111 10011010 00000000 | 00000000_00000000 11111111_11111111
 Base     Flags Limit Access   Base     | Base              Limit
 
+Base  0x0
+Limit 0x0FFFFF
+Flags 0xC
+  - 1 - 4 KiB blocks (page granularity)
+  - 1 - 32-bit protected mode segment
+  - 0 - Set when descriptor defines 64-bit code segment (if set, implies D/B _should_ be clear)
+  - 0 - Reserved
+Access
+  - 1 - Present
+  - 00 - Ring 0
+  - 1 - data/code segment
+  - 1 - executable
+  - 0 - "only executable by Ring 0"
+  - 1 - Read access allowed
+  - 0 - "Accessed" bit; used by CPU
+
 DATA - 0x00CF9200_0000FFFF
 0x00     CF          92       00       | 00       00       FF       FF
 ============================================================================
 00000000 1100___1111 10010010 00000000 | 00000000_00000000 11111111_11111111
 Base     Flags Limit Access   Base     | Base              Limit
+
+Base  0x0
+Limit 0x0FFFFF
+Flags 0xC
+  - 1 - 4 KiB blocks (page granularity)
+  - 1 - 32-bit protected mode segment
+  - 0 - Set when descriptor defines 64-bit code segment (if set, implies D/B _should_ be clear)
+  - 0 - Reserved
+Access
+  - 1 - Present
+  - 00 - Ring 0
+  - 1 - data/code segment
+  - 0 - non-executable; defines data segment
+  - 0 - segment grows upwards
+  - 1 - Write access allowed
+  - 0 - "Accessed" bit; used by CPU
 
 static void load_and_flush_gdt() {
     asm volatile(

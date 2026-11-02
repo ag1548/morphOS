@@ -1,15 +1,17 @@
 #pragma once
 
-void cli();
-void sti();
-
 struct Descriptor {
     unsigned int low;
     unsigned int high;
 };
 typedef struct Descriptor Descriptor;
 
-struct DescriptorPointer {
+/*
+
+Needs `[[gnu::packed]]` because the compiler inserts a 2-byte padding because of the `unsigned short`.
+
+*/
+struct [[gnu::packed]] DescriptorPointer {
     unsigned short limit;
     void *address;
 };
