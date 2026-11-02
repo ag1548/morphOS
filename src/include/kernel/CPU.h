@@ -12,11 +12,13 @@ Needs `[[gnu::packed]]` because the compiler inserts a 2-byte padding because of
 
 */
 struct [[gnu::packed]] DescriptorPointer {
-    unsigned short limit;
+    unsigned short size;
     void *address;
 };
 typedef struct DescriptorPointer DescriptorPointer;
 
 static_assert(sizeof(DescriptorPointer) == 6);
 
+[[noreturn]] void hang();
 void gdt_init();
+void idt_init();

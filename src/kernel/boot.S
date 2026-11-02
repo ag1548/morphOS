@@ -79,6 +79,6 @@ loop:   hlt
         jmp     loop
 
 halt_message:
-        .asciz  "Halted."
+        .asciz  "Halted.\n"
 
         .comm   stack, STACK_SIZE

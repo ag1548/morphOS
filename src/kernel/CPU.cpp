@@ -34,6 +34,10 @@ XMM02=0000000000000000 0000000000000000 XMM03=0000000000000000 0000000000000000
 XMM04=0000000000000000 0000000000000000 XMM05=0000000000000000 0000000000000000
 XMM06=0000000000000000 0000000000000000 XMM07=0000000000000000 0000000000000000
 
+===
+GDT
+===
+
 Rings
 =====
 Ring 0 - Kernel
@@ -159,28 +163,73 @@ static void load_and_flush_gdt() {
     );
 }
 
+===
+IDT
+===
+
+"Gate" (Interrupt) Descriptor
+=============================
+Offset - the address of the entry point of the Interrupt Service Routine
+P - Present bit (must be set to 1)
+DPL - Descriptor Privilege Level (see Rings above)
+Type - A 4-bit value which defines the type of gate this Interrupt Descriptor represents.
+    0b0101 or 0x5: Task Gate, note that in this case, the Offset value is unused and should be set to zero.
+    0b0110 or 0x6: 16-bit Interrupt Gate
+    0b0111 or 0x7: 16-bit Trap Gate
+    0b1110 or 0xE: 32-bit Interrupt Gate
+    0b1111 or 0xF: 32-bit Trap Gate
+Selector - A Segment Selector with multiple fields which must point to a valid code segment in your GDT.
+
+ 2                           .5           1             2                    2
+┌────────────┬──┬────────┬──┬────────────┬─────────────┬────────────────────┬────────────────────┐
+│63        48│47│46    45│44│43        40│39         32│31                16│15                 0│
+│    Offset  │P │   DPL  │  │   Type     │ Reserved    │       Selector     │      Offset        │
+│31        16│  │1      0│  │3          0│             │15                 0│15                 0│
+└────────────┴──┴────────┴──┴────────────┴─────────────┴────────────────────┴────────────────────┘
+ 16           1  2        1  4            8             16                   16
+
+                     DPL
+  Offset 16-31 ---┐ P|| Type Reserved Selector--------┐ Offset 0-16 ----┐
+  |               | ||| |  | |      | |               | |               |
+  v               v vvv V  v V      v v               v v               v
+0b00000000_00000000_000x0000_xxxxxxxx_00000000_00000000_00000000_00000000
+
+  High
+  |           Low
+  v           v
+0x00_00_00_00_00_00_00_00
+
 */
 
+extern "C" void printf(const char *format, ...);
+
+static_assert(sizeof(unsigned long long) == 8);
+
+// GDT
 // NULL, Code, and Segment in Ring 0 for now...
 static DescriptorPointer s_gdtr;
 static Descriptor        s_gdt_descriptors[3];
 
-static void create_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
+// IDT
+static DescriptorPointer s_idtr;
+static Descriptor        s_idt_descriptors[256];
+
+static void create_global_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
     s_gdt_descriptors[index].low  = low;
     s_gdt_descriptors[index].high = high;
 }
 static void create_null_descriptor() {
-    create_descriptor(0, 0, 0);
+    create_global_descriptor(0, 0, 0);
 }
 static void create_code_descriptor() {
-    create_descriptor(1, 0x0000ffff, 0x00CF9A00);
+    create_global_descriptor(1, 0x0000ffff, 0x00CF9A00);
 }
 static void create_data_descriptor() {
-    create_descriptor(2, 0x0000ffff, 0x00CF9200);
+    create_global_descriptor(2, 0x0000ffff, 0x00CF9200);
 }
 
 static void set_global_descriptor_table_register_values() {
-    s_gdtr.limit   = sizeof(s_gdt_descriptors) - 1;
+    s_gdtr.size    = sizeof(s_gdt_descriptors) - 1;
     s_gdtr.address = static_cast<void *>(s_gdt_descriptors);
 }
 
@@ -221,11 +270,111 @@ static void load_and_flush_gdt() {
 }
 
 void gdt_init() {
+    set_global_descriptor_table_register_values();
+
     create_null_descriptor();
     create_code_descriptor();
     create_data_descriptor();
 
-    set_global_descriptor_table_register_values();
-
     load_and_flush_gdt();
+}
+
+static void set_interrupt_descriptor_table_register_values() {
+    s_idtr.size    = sizeof(s_idt_descriptors) - 1;
+    s_idtr.address = static_cast<void *>(s_idt_descriptors);
+}
+
+[[noreturn]] void hang() {
+    for (;;) {
+        asm volatile("cli" ::: "memory");
+        asm volatile("hlt" ::: "memory");
+    }
+}
+
+static void unimplemented_interrupt_handler() {
+    printf("Unhandled IRQ.\n");
+
+    void debug_out(const char *const str);
+    debug_out("Unhandled IRQ.\n");
+
+    hang();
+}
+
+void assert_gate_type(const unsigned int type_) {
+    const bool is_32bit_interrupt_gate = type_ == 0xE;
+    const bool is_32bit_trap_gate      = type_ == 0xF;
+    if (!is_32bit_interrupt_gate && !is_32bit_trap_gate) {
+        printf("Unknown gate type!\n");
+
+        void debug_out(const char *const str);
+        debug_out("Unknown gate type!\n");
+
+        hang();
+    }
+}
+
+void construct_idt_descriptor(unsigned int &low, unsigned int &high, const unsigned int type_, const unsigned int f) {
+
+    assert_gate_type(type_);
+
+    unsigned long long result = 0ULL;
+
+    unsigned long long present_bit  = 1ULL << 47;
+    result                         |= present_bit;
+
+    // DPL will remain 00 for now...
+
+    unsigned long long type  = static_cast<unsigned long long>(type_ & 0xF) << 40;
+    result                  |= type;
+
+    // GDT offset of 8 for the code segment
+    unsigned long long selector  = 0x00080000ULL;
+    result                      |= selector;
+
+    unsigned long long offset   = f & 0xFFFF0000; // Top 2 bytes
+    offset                    <<= 32;             // Top 2 bytes
+    offset                     |= f & 0xFFFF;     // Bottom 2 bytes
+    result                     |= offset;
+
+    low  = result & 0xFFFFFFFF;
+    high = (result >> 32) & 0xFFFFFFFF;
+}
+
+static void create_interrupt_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
+    s_idt_descriptors[index].low  = low;
+    s_idt_descriptors[index].high = high;
+}
+
+static void initialize_all_interrupts_to_null() {
+
+    unsigned int       low                       = 0;
+    unsigned int       high                      = 0;
+    const unsigned int type_32bit_interrupt_gate = 0xE;
+    const unsigned int f                         = reinterpret_cast<unsigned int>(&unimplemented_interrupt_handler);
+    construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
+    for (unsigned int i = 0; i < 256; i++) {
+        create_interrupt_descriptor(i, low, high);
+    }
+}
+
+static void create_all_interrupts() {
+    // TODO
+}
+
+static void load_idt() {
+    asm volatile(
+        "lidt (%0)\n" // Give the CPU the address of the IDT pointer
+        :
+        : "r"(&s_idtr)
+        : "memory");
+}
+
+void idt_init() {
+
+    set_interrupt_descriptor_table_register_values();
+
+    initialize_all_interrupts_to_null();
+    create_all_interrupts();
+
+    load_idt();
 }
