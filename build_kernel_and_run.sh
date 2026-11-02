@@ -56,6 +56,7 @@ run_kernel() {
         -debugcon stdio           # Redirect the debug console to host device dev
         -device VGA,vgamem_mb=64
         -nic none
+        -no-reboot                # Exit instead of rebooting.
     )
     qemu-system-i386 "${QEMU_OPTS[@]}"
 }
