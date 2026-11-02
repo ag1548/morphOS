@@ -17,6 +17,7 @@ set -e
     -O0                     \
     -nostdlib               \
     -nodefaultlibs          \
+    -nostartfiles           \
     -fno-exceptions         \
     -fno-rtti               \
     -lgcc                   \
