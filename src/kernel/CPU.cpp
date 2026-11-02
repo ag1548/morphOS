@@ -179,7 +179,7 @@ static void create_data_descriptor() {
     create_descriptor(2, 0x0000ffff, 0x00CF9200);
 }
 
-static void set_global_descriptor_table_registor_values() {
+static void set_global_descriptor_table_register_values() {
     s_gdtr.limit   = sizeof(s_gdt_descriptors) - 1;
     s_gdtr.address = static_cast<void *>(s_gdt_descriptors);
 }
@@ -225,7 +225,7 @@ void gdt_init() {
     create_code_descriptor();
     create_data_descriptor();
 
-    set_global_descriptor_table_registor_values();
+    set_global_descriptor_table_register_values();
 
     load_and_flush_gdt();
 }
