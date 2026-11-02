@@ -18,6 +18,7 @@ set -e
     -nostdlib               \
     -nodefaultlibs          \
     -fno-exceptions         \
+    -fno-rtti               \
     -lgcc                   \
     -Wall                   \
     -Wextra                 \
