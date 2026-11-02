@@ -17,4 +17,6 @@ struct [[gnu::packed]] DescriptorPointer {
 };
 typedef struct DescriptorPointer DescriptorPointer;
 
+static_assert(sizeof(DescriptorPointer) == 6);
+
 void gdt_init();
