@@ -292,6 +292,7 @@ static void set_interrupt_descriptor_table_register_values() {
 }
 
 static void unimplemented_interrupt_handler() {
+    // FIXME: Use a preprocessor step to give each IRQ its own ID so that it can be determined which IRQ # it was...
     printf("Unhandled IRQ.\n");
 
     void debug_out(const char *const str);
