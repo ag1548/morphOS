@@ -67,6 +67,7 @@ multiboot_entry:
         pushl   %eax
 
         cli
+        cld
 
         /* Now enter the C main function... */
         call    cmain
