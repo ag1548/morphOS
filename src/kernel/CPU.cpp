@@ -202,6 +202,7 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 */
 
 extern "C" void printf(const char *format, ...);
+void            debug_out(const char *const str);
 
 static_assert(sizeof(unsigned long long) == 8);
 
@@ -292,12 +293,8 @@ static void set_interrupt_descriptor_table_register_values() {
 }
 
 static void unimplemented_interrupt_handler() {
-    // FIXME: Use a preprocessor step to give each IRQ its own ID so that it can be determined which IRQ # it was...
     printf("Unhandled IRQ.\n");
-
-    void debug_out(const char *const str);
     debug_out("Unhandled IRQ.\n");
-
     hang();
 }
 
@@ -306,10 +303,7 @@ void assert_gate_type(const unsigned int type_) {
     const bool is_32bit_trap_gate      = type_ == 0xF;
     if (!is_32bit_interrupt_gate && !is_32bit_trap_gate) {
         printf("Unknown gate type!\n");
-
-        void debug_out(const char *const str);
         debug_out("Unknown gate type!\n");
-
         hang();
     }
 }
@@ -341,7 +335,7 @@ void construct_idt_descriptor(unsigned int &low, unsigned int &high, const unsig
     high = (result >> 32) & 0xFFFFFFFF;
 }
 
-static void create_interrupt_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
+static void install_interrupt_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
     s_idt_descriptors[index].low  = low;
     s_idt_descriptors[index].high = high;
 }
@@ -354,12 +348,189 @@ static void initialize_all_interrupts_to_null() {
     const unsigned int f                         = reinterpret_cast<unsigned int>(&unimplemented_interrupt_handler);
     construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
     for (unsigned int i = 0; i < 256; i++) {
-        create_interrupt_descriptor(i, low, high);
+        install_interrupt_descriptor(i, low, high);
     }
 }
 
-static void create_all_interrupts() {
-    // TODO
+[[noreturn]] static void print_control_registers_and_hang() {
+    unsigned int cr0;
+    unsigned int cr2;
+    unsigned int cr3;
+    unsigned int cr4;
+
+    asm volatile("movl %%cr0, %%eax" : "=a"(cr0));
+    asm volatile("movl %%cr2, %%eax" : "=a"(cr2));
+    asm volatile("movl %%cr3, %%eax" : "=a"(cr3));
+    asm volatile("movl %%cr4, %%eax" : "=a"(cr4));
+
+    printf("CR0=%x CR2=%x CR3=%x CR4=%x\n");
+
+    hang();
+}
+
+static void _exception0_divide_error() {
+    printf("Divide Error\n");
+    debug_out("Divide Error\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception1_debug_exception() {
+    printf("Debug Exception\n");
+    debug_out("Debug Exception\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception2_nmi_interrupt() {
+    printf("NMI Interrupt\n");
+    debug_out("NMI Interrupt\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception3_breakpoint() {
+    printf("Breakpoint\n");
+    debug_out("Breakpoint\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception4_overflow() {
+    printf("Overflow\n");
+    debug_out("Overflow\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception5_bound_range_exceeded() {
+    printf("Bound range exceeded\n");
+    debug_out("Bound range exceeded\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception6_invalid_opcode() {
+    printf("Invalid opcode\n");
+    debug_out("Invalid opcode\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception7_device_not_available() {
+    printf("Device not available\n");
+    debug_out("Device not available\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception8_double_fault() {
+    printf("Double fault\n");
+    debug_out("Double fault\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception9_coprocessor_segment_overrun() {
+    printf("Coprocessor segment overrun\n");
+    debug_out("Coprocessor segment overrun\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionA_invalid_tss() {
+    printf("Invalid TSS\n");
+    debug_out("Invalid TSS\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionB_segment_not_present() {
+    printf("Segment not present\n");
+    debug_out("Segment not present\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionC_stack_segment_fault() {
+    printf("Stack segment fault\n");
+    debug_out("Stack segment fault\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionD_general_protection() {
+    printf("General protection (exception)\n");
+    debug_out("General protection (exception)\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionE_page_fault() {
+    printf("Page fault\n");
+    debug_out("Page fault\n");
+    print_control_registers_and_hang();
+}
+
+static void _exceptionF_intel_reserved() {
+    printf("Intel reserved exception\n");
+    debug_out("Intel reserved exception\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception10_x87_fpu_floating_point_error() {
+    printf("FPU Floating Point Error\n");
+    debug_out("FPU Floating Point Error\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception11_alignment_check() {
+    printf("Align check (exception)\n");
+    debug_out("Align check (exception)\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception12_machine_check() {
+    printf("Machine check (exception)\n");
+    debug_out("Machine check (exception)\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception13_simd_floating_point_exception() {
+    printf("SIMD floating-point exception\n");
+    debug_out("SIMD floating-point exception\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception14_virtualization_exception() {
+    printf("Virtualization exception\n");
+    debug_out("Virtualization exception\n");
+    print_control_registers_and_hang();
+}
+
+static void _exception15_control_protection_exception() {
+    printf("Control protection exception\n");
+    debug_out("Control protection exception\n");
+    print_control_registers_and_hang();
+}
+
+static void install_descriptor(const unsigned int f, const unsigned int index) {
+    unsigned int       low                       = 0;
+    unsigned int       high                      = 0;
+    const unsigned int type_32bit_interrupt_gate = 0xE;
+    construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
+    install_interrupt_descriptor(index, low, high);
+}
+
+static void install_interrupts() {
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception0_divide_error), 0x00);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception1_debug_exception), 0x01);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception2_nmi_interrupt), 0x02);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception3_breakpoint), 0x03);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception4_overflow), 0x04);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception5_bound_range_exceeded), 0x05);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception6_invalid_opcode), 0x06);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception7_device_not_available), 0x07);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception8_double_fault), 0x08);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception9_coprocessor_segment_overrun), 0x09);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionA_invalid_tss), 0x0A);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionB_segment_not_present), 0x0B);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionC_stack_segment_fault), 0x0C);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionD_general_protection), 0x0D);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionE_page_fault), 0x0E);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionF_intel_reserved), 0x0F);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception10_x87_fpu_floating_point_error), 0x10);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception11_alignment_check), 0x11);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception12_machine_check), 0x12);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception13_simd_floating_point_exception), 0x13);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception14_virtualization_exception), 0x14);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception), 0x15);
 }
 
 static void load_idt() {
@@ -375,7 +546,7 @@ void idt_init() {
     set_interrupt_descriptor_table_register_values();
 
     initialize_all_interrupts_to_null();
-    create_all_interrupts();
+    install_interrupts();
 
     load_idt();
 }

@@ -19,6 +19,17 @@ static volatile unsigned char *video;
 
 Refer to GCC manual's 6.11.2 - Extended ASM and 6.11.3.4 for x86
 
+Basic ASM
+=========
+asm asm-qualifiers (AssemblerInstructions)
+
+Extended ASM
+============
+asm asm-qualifiers (AssemblerTemplate
+                        : OutputOperands
+                        [ : InputOperands
+                        [ : Clobbers ] ])
+
 asm asm-qualifiers (AssemblerTemplate
                         : OutputOperands
                         : InputOperands
@@ -31,6 +42,10 @@ asm asm-qualifiers (AssemblerTemplate
 
 6.11.3.1 Simple Constraints
 ===========================
+OutputOperands:
+    Output constraints must begin with either ‘=’ or ‘+’
+    - ‘=’ - a variable overwriting an existing value
+    - ‘+’ - when reading and writing
 InputOperands:
     "r": "A register operand is allowed provided that it is in a general register."
     "m": "A memory operand is allowed, with any kind of address that the machine supports in general. Note that the letter used for the general memory constraint can be re-defined by a back end using the TARGET_MEM_CONSTRAINT macro."
@@ -38,10 +53,9 @@ InputOperands:
 6.11.3.4 Constraints for Particular Machines
 ============================================
 x86:
-    InputOperands:
-        "a": "The 'a' register"
-        "d": "The 'd' register"
-        "N": "Unsigned 8-bit integer constant"
+    "a": "The 'a' register"
+    "d": "The 'd' register"
+    "N": "Unsigned 8-bit integer constant"
 
 */
 void debug_out_c(const char *c) {
