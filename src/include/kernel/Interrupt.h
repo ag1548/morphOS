@@ -21,7 +21,6 @@ class InterruptDisabler {
     }
 
 public:
-
     InterruptDisabler() {
         printf("Disabling interrupts...\n");
         disable_interrupts();
@@ -33,5 +32,4 @@ public:
         enable_interrupts();
         printf("Reenabled Interrupts!\n");
     }
-
 };

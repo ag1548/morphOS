@@ -1,5 +1,6 @@
 #include "CPU.h"
 
+#include "ControlRegisters.h"
 #include "types.h"
 
 /*
@@ -353,6 +354,7 @@ static void initialize_all_interrupts_to_null() {
 }
 
 [[noreturn]] static void print_control_registers_and_hang() {
+
     unsigned int cr0;
     unsigned int cr2;
     unsigned int cr3;
@@ -363,7 +365,12 @@ static void initialize_all_interrupts_to_null() {
     asm volatile("mov %%cr3, %%eax" : "=a"(cr3));
     asm volatile("mov %%cr4, %%eax" : "=a"(cr4));
 
-    printf("CR0=%x CR2=%x CR3=%x CR4=%x\n");
+    printf("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
+    printf("\n");
+    print_CR0_dump(ControlRegister0Dump(ControlRegister0(cr0)));
+    print_CR2_dump(ControlRegister2(cr2));
+    print_CR3_dump(ControlRegister3Dump(ControlRegister3(cr3)));
+    print_CR4_dump(ControlRegister4Dump(ControlRegister4(cr4)));
 
     hang();
 }

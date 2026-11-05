@@ -289,4 +289,5 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     // NOTE: Shows the unhandled interrupt! Implement handlers and then remove before continuing...
     asm volatile("sti" ::: "memory");
+    hang();
 }
