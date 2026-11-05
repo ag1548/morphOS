@@ -286,8 +286,8 @@ static void set_interrupt_descriptor_table_register_values() {
 }
 
 [[noreturn]] void hang() {
+    asm volatile("cli" ::: "memory");
     for (;;) {
-        asm volatile("cli" ::: "memory");
         asm volatile("hlt" ::: "memory");
     }
 }
