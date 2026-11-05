@@ -376,134 +376,134 @@ static void initialize_all_interrupts_to_null() {
 }
 
 static void _exception0_divide_error() {
-    printf("Divide Error\n");
-    debug_out("Divide Error\n");
+    printf("INT_0x0: Divide Error\n");
+    debug_out("INT_0x0: Divide Error\n");
     print_control_registers_and_hang();
 }
 
 static void _exception1_debug_exception() {
-    printf("Debug Exception\n");
-    debug_out("Debug Exception\n");
+    printf("INT_0x1: Debug Exception\n");
+    debug_out("INT_0x1: Debug Exception\n");
     print_control_registers_and_hang();
 }
 
 static void _exception2_nmi_interrupt() {
-    printf("NMI Interrupt\n");
-    debug_out("NMI Interrupt\n");
+    printf("INT_0x2: NMI Interrupt\n");
+    debug_out("INT_0x2: NMI Interrupt\n");
     print_control_registers_and_hang();
 }
 
 static void _exception3_breakpoint() {
-    printf("Breakpoint\n");
-    debug_out("Breakpoint\n");
+    printf("INT_0x3: Breakpoint\n");
+    debug_out("INT_0x3: Breakpoint\n");
     print_control_registers_and_hang();
 }
 
 static void _exception4_overflow() {
-    printf("Overflow\n");
-    debug_out("Overflow\n");
+    printf("INT_0x4: Overflow\n");
+    debug_out("INT_0x4: Overflow\n");
     print_control_registers_and_hang();
 }
 
 static void _exception5_bound_range_exceeded() {
-    printf("Bound range exceeded\n");
-    debug_out("Bound range exceeded\n");
+    printf("INT_0x5: Bound range exceeded\n");
+    debug_out("INT_0x5: Bound range exceeded\n");
     print_control_registers_and_hang();
 }
 
 static void _exception6_invalid_opcode() {
-    printf("Invalid opcode\n");
-    debug_out("Invalid opcode\n");
+    printf("INT_0x6: Invalid opcode\n");
+    debug_out("INT_0x6: Invalid opcode\n");
     print_control_registers_and_hang();
 }
 
 static void _exception7_device_not_available() {
-    printf("Device not available\n");
-    debug_out("Device not available\n");
+    printf("INT_0x7: Device not available\n");
+    debug_out("INT_0x7: Device not available\n");
     print_control_registers_and_hang();
 }
 
 static void _exception8_double_fault() {
-    printf("Double fault\n");
-    debug_out("Double fault\n");
+    printf("INT_0x8: Double fault\n");
+    debug_out("INT_0x8: Double fault\n");
     print_control_registers_and_hang();
 }
 
 static void _exception9_coprocessor_segment_overrun() {
-    printf("Coprocessor segment overrun\n");
-    debug_out("Coprocessor segment overrun\n");
+    printf("INT_0x9: Coprocessor segment overrun\n");
+    debug_out("INT_0x9: Coprocessor segment overrun\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionA_invalid_tss() {
-    printf("Invalid TSS\n");
-    debug_out("Invalid TSS\n");
+    printf("INT_0xA: Invalid TSS\n");
+    debug_out("INT_0xA: Invalid TSS\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionB_segment_not_present() {
-    printf("Segment not present\n");
-    debug_out("Segment not present\n");
+    printf("INT_0xB: Segment not present\n");
+    debug_out("INT_0xB: Segment not present\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionC_stack_segment_fault() {
-    printf("Stack segment fault\n");
-    debug_out("Stack segment fault\n");
+    printf("INT_0xC: Stack segment fault\n");
+    debug_out("INT_0xC: Stack segment fault\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionD_general_protection() {
-    printf("General protection (exception)\n");
-    debug_out("General protection (exception)\n");
+    printf("INT_0xD: General protection (exception)\n");
+    debug_out("INT_0xD: General protection (exception)\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionE_page_fault() {
-    printf("Page fault\n");
-    debug_out("Page fault\n");
+    printf("INT_0xE: Page fault\n");
+    debug_out("INT_0xE: Page fault\n");
     print_control_registers_and_hang();
 }
 
 static void _exceptionF_intel_reserved() {
-    printf("Intel reserved exception\n");
-    debug_out("Intel reserved exception\n");
+    printf("INT_0xF: Intel reserved exception\n");
+    debug_out("INT_0xF: Intel reserved exception\n");
     print_control_registers_and_hang();
 }
 
 static void _exception10_x87_fpu_floating_point_error() {
-    printf("FPU Floating Point Error\n");
-    debug_out("FPU Floating Point Error\n");
+    printf("INT_0x10: FPU Floating Point Error\n");
+    debug_out("INT_0x10: FPU Floating Point Error\n");
     print_control_registers_and_hang();
 }
 
 static void _exception11_alignment_check() {
-    printf("Align check (exception)\n");
-    debug_out("Align check (exception)\n");
+    printf("INT_0x11: Align check (exception)\n");
+    debug_out("INT_0x11: Align check (exception)\n");
     print_control_registers_and_hang();
 }
 
 static void _exception12_machine_check() {
-    printf("Machine check (exception)\n");
-    debug_out("Machine check (exception)\n");
+    printf("INT_0x12: Machine check (exception)\n");
+    debug_out("INT_0x12: Machine check (exception)\n");
     print_control_registers_and_hang();
 }
 
 static void _exception13_simd_floating_point_exception() {
-    printf("SIMD floating-point exception\n");
-    debug_out("SIMD floating-point exception\n");
+    printf("INT_0x13: SIMD floating-point exception\n");
+    debug_out("INT_0x13: SIMD floating-point exception\n");
     print_control_registers_and_hang();
 }
 
 static void _exception14_virtualization_exception() {
-    printf("Virtualization exception\n");
-    debug_out("Virtualization exception\n");
+    printf("INT_0x14: Virtualization exception\n");
+    debug_out("INT_0x14: Virtualization exception\n");
     print_control_registers_and_hang();
 }
 
 static void _exception15_control_protection_exception() {
-    printf("Control protection exception\n");
-    debug_out("Control protection exception\n");
+    printf("INT_0x14: Control protection exception\n");
+    debug_out("INT_0x14: Control protection exception\n");
     print_control_registers_and_hang();
 }
 
