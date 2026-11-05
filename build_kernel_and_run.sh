@@ -2,27 +2,28 @@
 
 set -e
 
-./cross/bin/i686-elf-g++    \
-    src/kernel/boot.S       \
-    src/kernel/kernel.cpp   \
-    src/kernel/CPU.cpp      \
-    src/string.cpp          \
-    -T src/kernel/linker.ld \
-    -I src/include          \
-    -I src/include/kernel   \
-    -o kernel               \
-    -std=c++17              \
-    -ffreestanding          \
-    -g                      \
-    -O0                     \
-    -nostdlib               \
-    -nodefaultlibs          \
-    -nostartfiles           \
-    -fno-exceptions         \
-    -fno-rtti               \
-    -lgcc                   \
-    -Wall                   \
-    -Wextra                 \
+./cross/bin/i686-elf-g++            \
+    src/kernel/boot.S               \
+    src/kernel/kernel.cpp           \
+    src/kernel/CPU.cpp              \
+    src/kernel/ControlRegisters.cpp \
+    src/string.cpp                  \
+    -T src/kernel/linker.ld         \
+    -I src/include                  \
+    -I src/include/kernel           \
+    -o kernel                       \
+    -std=c++17                      \
+    -ffreestanding                  \
+    -g                              \
+    -O0                             \
+    -nostdlib                       \
+    -nodefaultlibs                  \
+    -nostartfiles                   \
+    -fno-exceptions                 \
+    -fno-rtti                       \
+    -lgcc                           \
+    -Wall                           \
+    -Wextra                         \
 
 if grub-file --is-x86-multiboot kernel; then
   echo multiboot confirmed
