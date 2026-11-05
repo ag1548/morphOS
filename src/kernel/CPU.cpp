@@ -358,10 +358,10 @@ static void initialize_all_interrupts_to_null() {
     unsigned int cr3;
     unsigned int cr4;
 
-    asm volatile("movl %%cr0, %%eax" : "=a"(cr0));
-    asm volatile("movl %%cr2, %%eax" : "=a"(cr2));
-    asm volatile("movl %%cr3, %%eax" : "=a"(cr3));
-    asm volatile("movl %%cr4, %%eax" : "=a"(cr4));
+    asm volatile("mov %%cr0, %%eax" : "=a"(cr0));
+    asm volatile("mov %%cr2, %%eax" : "=a"(cr2));
+    asm volatile("mov %%cr3, %%eax" : "=a"(cr3));
+    asm volatile("mov %%cr4, %%eax" : "=a"(cr4));
 
     printf("CR0=%x CR2=%x CR3=%x CR4=%x\n");
 
