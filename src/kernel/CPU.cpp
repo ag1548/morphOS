@@ -1,5 +1,6 @@
 #include "CPU.h"
 
+#include "irq_handlers.h"
 #include "types.h"
 
 /*
@@ -207,12 +208,12 @@ static_assert(sizeof(unsigned long long) == 8);
 
 // GDT
 // NULL, Code, and Segment in Ring 0 for now...
-static DescriptorPointer s_gdtr;
-static Descriptor        s_gdt_descriptors[3];
+DescriptorPointer s_gdtr;
+Descriptor        s_gdt_descriptors[3];
 
 // IDT
-static DescriptorPointer s_idtr;
-static Descriptor        s_idt_descriptors[256];
+DescriptorPointer s_idtr;
+Descriptor        s_idt_descriptors[256];
 
 static void create_global_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
     s_gdt_descriptors[index].low  = low;
@@ -291,77 +292,6 @@ static void set_interrupt_descriptor_table_register_values() {
     }
 }
 
-static void unimplemented_interrupt_handler() {
-    // FIXME: Use a preprocessor step to give each IRQ its own ID so that it can be determined which IRQ # it was...
-    printf("Unhandled IRQ.\n");
-
-    void debug_out(const char *const str);
-    debug_out("Unhandled IRQ.\n");
-
-    hang();
-}
-
-void assert_gate_type(const unsigned int type_) {
-    const bool is_32bit_interrupt_gate = type_ == 0xE;
-    const bool is_32bit_trap_gate      = type_ == 0xF;
-    if (!is_32bit_interrupt_gate && !is_32bit_trap_gate) {
-        printf("Unknown gate type!\n");
-
-        void debug_out(const char *const str);
-        debug_out("Unknown gate type!\n");
-
-        hang();
-    }
-}
-
-void construct_idt_descriptor(unsigned int &low, unsigned int &high, const unsigned int type_, const unsigned int f) {
-
-    assert_gate_type(type_);
-
-    unsigned long long result = 0ULL;
-
-    unsigned long long present_bit  = 1ULL << 47;
-    result                         |= present_bit;
-
-    // DPL will remain 00 for now...
-
-    unsigned long long type  = static_cast<unsigned long long>(type_ & 0xF) << 40;
-    result                  |= type;
-
-    // GDT offset of 8 for the code segment
-    unsigned long long selector  = 0x00080000ULL;
-    result                      |= selector;
-
-    unsigned long long offset   = f & 0xFFFF0000; // Top 2 bytes
-    offset                    <<= 32;             // Top 2 bytes
-    offset                     |= f & 0xFFFF;     // Bottom 2 bytes
-    result                     |= offset;
-
-    low  = result & 0xFFFFFFFF;
-    high = (result >> 32) & 0xFFFFFFFF;
-}
-
-static void create_interrupt_descriptor(const size_t index, const unsigned int low, const unsigned int high) {
-    s_idt_descriptors[index].low  = low;
-    s_idt_descriptors[index].high = high;
-}
-
-static void initialize_all_interrupts_to_null() {
-
-    unsigned int       low                       = 0;
-    unsigned int       high                      = 0;
-    const unsigned int type_32bit_interrupt_gate = 0xE;
-    const unsigned int f                         = reinterpret_cast<unsigned int>(&unimplemented_interrupt_handler);
-    construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
-    for (unsigned int i = 0; i < 256; i++) {
-        create_interrupt_descriptor(i, low, high);
-    }
-}
-
-static void create_all_interrupts() {
-    // TODO
-}
-
 static void load_idt() {
     asm volatile(
         "lidt (%0)\n" // Give the CPU the address of the IDT pointer
@@ -375,7 +305,6 @@ void idt_init() {
     set_interrupt_descriptor_table_register_values();
 
     initialize_all_interrupts_to_null();
-    create_all_interrupts();
 
     load_idt();
 }
