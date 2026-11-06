@@ -507,6 +507,20 @@ static void _exception15_control_protection_exception() {
     print_control_registers_and_hang();
 }
 
+/*
+
+0x16
+...    Reserved
+0x1f
+
+===
+
+0x20
+...    External Interrupts
+0xff
+
+*/
+
 static void install_descriptor(const unsigned int f, const unsigned int index) {
     unsigned int       low                       = 0;
     unsigned int       high                      = 0;
