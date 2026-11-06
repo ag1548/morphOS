@@ -1,6 +1,7 @@
 #include "multiboot.h"
 
 #include "CPU.h"
+#include "PIC.h"
 #include "string.h"
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
@@ -279,6 +280,8 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
             printf(" size = 0x%x, base_addr = 0x%x%08x, length = 0x%x%08x, type = 0x%x\n", (unsigned)mmap->size, (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff), (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff), (unsigned)mmap->type);
         }
     }
+
+    PIC_remap(PIC1, PIC2);
 
     debug_out("GDT loading...!\n");
     gdt_init();

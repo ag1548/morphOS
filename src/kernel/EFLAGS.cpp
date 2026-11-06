@@ -3,7 +3,6 @@
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *const str);
 
-
 void print_EFLAGSRegister_dump(EFLAGSRegisterDump dump) {
 
     // printf("======\n");

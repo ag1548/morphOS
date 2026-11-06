@@ -71,8 +71,7 @@ struct EFLAGSRegisterDump {
         , AC_alignment_check_access_control(reg.value & AC_BIT)
         , VIF_virtual_interrupt_flag(reg.value & VIF_BIT)
         , VIP_virtual_interrupt_pending(reg.value & VIP_BIT)
-        , ID_id_flag(reg.value & ID_BIT)
-        {}
+        , ID_id_flag(reg.value & ID_BIT) {}
 };
 
 void print_EFLAGSRegister_dump(EFLAGSRegisterDump);

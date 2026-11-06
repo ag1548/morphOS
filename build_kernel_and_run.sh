@@ -8,6 +8,7 @@ set -e
     src/kernel/CPU.cpp              \
     src/kernel/ControlRegisters.cpp \
     src/kernel/EFLAGS.cpp           \
+    src/kernel/PIC.cpp              \
     src/string.cpp                  \
     -T src/kernel/linker.ld         \
     -I src/include                  \

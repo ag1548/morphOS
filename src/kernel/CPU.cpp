@@ -299,6 +299,12 @@ static void unimplemented_interrupt_handler() {
     hang();
 }
 
+static void unimplemented_interrupt_handler_test() {
+    printf("Unhandled IRQ TEST\n");
+    debug_out("Unhandled IRQ TEST\n");
+    hang();
+}
+
 void assert_gate_type(const unsigned int type_) {
     const bool is_32bit_interrupt_gate = type_ == 0xE;
     const bool is_32bit_trap_gate      = type_ == 0xF;
@@ -342,7 +348,6 @@ static void install_interrupt_descriptor(const size_t index, const unsigned int 
 }
 
 static void initialize_all_interrupts_to_null() {
-
     unsigned int       low                       = 0;
     unsigned int       high                      = 0;
     const unsigned int type_32bit_interrupt_gate = 0xE;
@@ -351,6 +356,15 @@ static void initialize_all_interrupts_to_null() {
     for (unsigned int i = 0; i < 256; i++) {
         install_interrupt_descriptor(i, low, high);
     }
+}
+
+static void install_test_handler() {
+    unsigned int       low                       = 0;
+    unsigned int       high                      = 0;
+    const unsigned int type_32bit_interrupt_gate = 0xE;
+    const unsigned int f                         = reinterpret_cast<unsigned int>(&unimplemented_interrupt_handler_test);
+    construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
+    install_interrupt_descriptor(0x20, low, high);
 }
 
 [[noreturn]] static void print_control_registers_and_hang() {
@@ -567,6 +581,7 @@ void idt_init() {
     set_interrupt_descriptor_table_register_values();
 
     initialize_all_interrupts_to_null();
+    install_test_handler();
     install_interrupts();
 
     load_idt();
