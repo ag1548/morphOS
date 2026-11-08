@@ -23,6 +23,15 @@
 
 #define CASCADE_IRQ 2
 
+/*
+
+ISR - In-Service Register
+IRR - Interrupt Request Register
+
+*/
+#define PIC_READ_IRR                0x0a    /* OCW3 irq ready next CMD read */
+#define PIC_READ_ISR                0x0b    /* OCW3 irq service next CMD read */
+
 static inline void outb(unsigned short port, unsigned char val) {
     asm volatile("outb %b0, %w1"
                  :
@@ -44,3 +53,8 @@ static inline void io_wait(void) {
 }
 
 void PIC_remap(int offset1, int offset2);
+void PIC_sendEOI(unsigned char irq);
+void IRQ_set_mask(unsigned char IRQline);
+void IRQ_clear_mask(unsigned char IRQline);
+unsigned short pic_get_irr(void);
+unsigned short pic_get_isr(void);
