@@ -30,7 +30,10 @@ void PIC_remap(int offset1, int offset2) {
     // Mask both PICs, except for "2" which is the channel for slave PIC
     outb(PIC1_DATA, 0xff);
     outb(PIC2_DATA, 0xff);
-    IRQ_clear_mask(2);
+    IRQ_clear_mask(PIC_SLAVE_PIC_CASCADE);
+
+    // Enable Timer Tick (Enablement might need to be delayed for further setup)
+    IRQ_clear_mask(PIC_TIMER_TICK);
 }
 
 void PIC_sendEOI(unsigned char irq)

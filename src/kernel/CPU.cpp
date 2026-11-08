@@ -1,6 +1,7 @@
 #include "CPU.h"
 
 #include "ControlRegisters.h"
+#include "PIC.h"
 #include "types.h"
 
 /*
@@ -521,6 +522,12 @@ static void _exception15_control_protection_exception() {
     print_control_registers_and_hang();
 }
 
+static void _exception20_timer_tick() {
+    printf("INT_0x20: PIT - Timer tick\n");
+    debug_out("INT_0x20: PIT - Timer tick\n");
+    print_control_registers_and_hang();
+}
+
 static void _exception27_spurious() {
     // FIXME: Check ISR to determine if real.
     printf("INT_0x27: SPURIOUS?\n");
@@ -574,7 +581,8 @@ static void install_interrupts() {
     install_descriptor(reinterpret_cast<unsigned int>(&_exception14_virtualization_exception), 0x14);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception), 0x15);
 
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious), 0x27);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick), IRQ_TIMER_TICK);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious), IRQ_PRL1_OR_SPURIOUS);
 }
 
 static void load_idt() {
