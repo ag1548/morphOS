@@ -24,40 +24,40 @@
 #define CASCADE_IRQ 2
 
 // TODO: These need to be verified...
-#define PIC_TIMER_TICK           (0)
-#define PIC_KEYBOARD             (1)
-#define PIC_SLAVE_PIC_CASCADE    (2)
-#define PIC_SERIAL_PORT_COM2     (3)
-#define PIC_SERIAL_PORT_COM1     (4)
-#define PIC_PRL2_OR_SOUND_CARD   (5)
-#define PIC_FLOPPY               (6)
-#define PIC_PRL1_OR_SPURIOUS     (7)
-#define PIC_RTC                  (8)
-#define PIC_IRQ2_REDIRECT        (9)
-#define PIC_PERPH1               (10)
-#define PIC_PERPH2               (11)
-#define PIC_MOUSE                (12)
-#define PIC_COPRO_ERROR          (13)
-#define PIC_ATA_IDE_1            (14)
-#define PIC_ATA_IDE_2            (15)
+#define PIC_TIMER_TICK         (0)
+#define PIC_KEYBOARD           (1)
+#define PIC_SLAVE_PIC_CASCADE  (2)
+#define PIC_SERIAL_PORT_COM2   (3)
+#define PIC_SERIAL_PORT_COM1   (4)
+#define PIC_PRL2_OR_SOUND_CARD (5)
+#define PIC_FLOPPY             (6)
+#define PIC_PRL1_OR_SPURIOUS   (7)
+#define PIC_RTC                (8)
+#define PIC_IRQ2_REDIRECT      (9)
+#define PIC_PERPH1             (10)
+#define PIC_PERPH2             (11)
+#define PIC_MOUSE              (12)
+#define PIC_COPRO_ERROR        (13)
+#define PIC_ATA_IDE_1          (14)
+#define PIC_ATA_IDE_2          (15)
 
-#define IRQ_BASE PIC1
-#define IRQ_TIMER_TICK           (IRQ_BASE + 0)
-#define IRQ_KEYBOARD             (IRQ_BASE + 1)
-#define IRQ_SLAVE_PIC_CASCADE    (IRQ_BASE + 2)
-#define IRQ_SERIAL_PORT_COM2     (IRQ_BASE + 3)
-#define IRQ_SERIAL_PORT_COM1     (IRQ_BASE + 4)
-#define IRQ_PRL2_OR_SOUND_CARD   (IRQ_BASE + 5)
-#define IRQ_FLOPPY               (IRQ_BASE + 6)
-#define IRQ_PRL1_OR_SPURIOUS     (IRQ_BASE + 7)
-#define IRQ_RTC                  (IRQ_BASE + 8)
-#define IRQ_IRQ2_REDIRECT        (IRQ_BASE + 9)
-#define IRQ_PERPH1               (IRQ_BASE + 10)
-#define IRQ_PERPH2               (IRQ_BASE + 11)
-#define IRQ_MOUSE                (IRQ_BASE + 12)
-#define IRQ_COPRO_ERROR          (IRQ_BASE + 13)
-#define IRQ_ATA_IDE_1            (IRQ_BASE + 14)
-#define IRQ_ATA_IDE_2            (IRQ_BASE + 15)
+#define IRQ_BASE               PIC1
+#define IRQ_TIMER_TICK         (IRQ_BASE + 0)
+#define IRQ_KEYBOARD           (IRQ_BASE + 1)
+#define IRQ_SLAVE_PIC_CASCADE  (IRQ_BASE + 2)
+#define IRQ_SERIAL_PORT_COM2   (IRQ_BASE + 3)
+#define IRQ_SERIAL_PORT_COM1   (IRQ_BASE + 4)
+#define IRQ_PRL2_OR_SOUND_CARD (IRQ_BASE + 5)
+#define IRQ_FLOPPY             (IRQ_BASE + 6)
+#define IRQ_PRL1_OR_SPURIOUS   (IRQ_BASE + 7)
+#define IRQ_RTC                (IRQ_BASE + 8)
+#define IRQ_IRQ2_REDIRECT      (IRQ_BASE + 9)
+#define IRQ_PERPH1             (IRQ_BASE + 10)
+#define IRQ_PERPH2             (IRQ_BASE + 11)
+#define IRQ_MOUSE              (IRQ_BASE + 12)
+#define IRQ_COPRO_ERROR        (IRQ_BASE + 13)
+#define IRQ_ATA_IDE_1          (IRQ_BASE + 14)
+#define IRQ_ATA_IDE_2          (IRQ_BASE + 15)
 
 /*
 
@@ -65,8 +65,8 @@ ISR - In-Service Register
 IRR - Interrupt Request Register
 
 */
-#define PIC_READ_IRR                0x0a    /* OCW3 irq ready next CMD read */
-#define PIC_READ_ISR                0x0b    /* OCW3 irq service next CMD read */
+#define PIC_READ_IRR 0x0a /* OCW3 irq ready next CMD read */
+#define PIC_READ_ISR 0x0b /* OCW3 irq service next CMD read */
 
 static inline void outb(unsigned short port, unsigned char val) {
     asm volatile("outb %b0, %w1"
@@ -88,9 +88,9 @@ static inline void io_wait(void) {
     outb(0x80, 0);
 }
 
-void PIC_remap(int offset1, int offset2);
-void PIC_sendEOI(unsigned char irq);
-void IRQ_set_mask(unsigned char IRQline);
-void IRQ_clear_mask(unsigned char IRQline);
+void           PIC_remap(int offset1, int offset2);
+void           PIC_sendEOI(unsigned char irq);
+void           IRQ_set_mask(unsigned char IRQline);
+void           IRQ_clear_mask(unsigned char IRQline);
 unsigned short pic_get_irr(void);
 unsigned short pic_get_isr(void);
