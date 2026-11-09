@@ -1,7 +1,7 @@
 #include "ControlRegisters.h"
 
 // extern "C" void printf(const char *format, ...);
-void debug_out(const char *const str);
+void debug_out(const char *format, ...);
 
 void print_CR0_dump(ControlRegister0Dump dump) {
 

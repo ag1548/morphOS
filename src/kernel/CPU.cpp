@@ -204,7 +204,7 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 */
 
 extern "C" void printf(const char *format, ...);
-void            debug_out(const char *const str);
+void            debug_out(const char *format, ...);
 
 static_assert(sizeof(unsigned long long) == 8);
 
@@ -527,14 +527,13 @@ asm(
     ".global _handle_irq\n"
     "_handle_irq:\n\t"
     "call _exception20_timer_tick\n\t"
-    "iret\n\t"
-);
+    "iret\n\t");
 
 static unsigned int value = 0;
-extern "C" void _exception20_timer_tick() {
+extern "C" void     _exception20_timer_tick() {
     value += 1;
     printf("INT_0x20: PIT - Timer tick %x\n", value);
-    debug_out("INT_0x20: PIT - Timer tick\n");
+    debug_out("INT_0x20: PIT - Timer tick %x\n", value);
     // print_control_registers_and_hang();
     PIC_sendEOI(PIC_TIMER_TICK);
 }

@@ -1,7 +1,7 @@
 #include "EFLAGS.h"
 
 extern "C" void printf(const char *format, ...);
-void            debug_out(const char *const str);
+void            debug_out(const char *format, ...);
 
 void print_EFLAGSRegister_dump(EFLAGSRegisterDump dump) {
 

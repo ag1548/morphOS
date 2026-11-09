@@ -59,14 +59,77 @@ x86:
     "N": "Unsigned 8-bit integer constant"
 
 */
-void debug_out_c(const char *c) {
-    asm volatile("outb %0, $0xe9" ::"a"(*c));
+
+static void itoa(char *buf, int base, int d);
+
+void debug_out_putchar(int c) {
+    unsigned char c_ = static_cast<unsigned char>(c);
+    asm volatile("outb %0, $0xe9"
+                 :
+                 : "a"(c_));
 }
 
-void debug_out(const char *const str) {
-    const char *ptr = str;
-    while (*ptr) {
-        debug_out_c(ptr++);
+void debug_out(const char *format, ...) {
+
+    char **arg = (char **)&format;
+    int    c;
+    char   buf[20];
+
+    arg++;
+
+    while ((c = *format++) != 0) {
+
+        if (c != '%') {
+            debug_out_putchar(c);
+            continue;
+        }
+
+        char *p;
+        char *p2;
+        int   pad0 = 0;
+        int   pad  = 0;
+
+        c = *format++;
+        if (c == '0') {
+            pad0 = 1;
+            c    = *format++;
+        }
+
+        if (c >= '0' && c <= '9') {
+            pad = c - '0';
+            c   = *format++;
+        }
+
+        switch (c) {
+            case 'd':
+            case 'u':
+            case 'x':
+                itoa(buf, c, *((int *)arg++));
+                p = buf;
+                goto string;
+                break;
+
+            case 's':
+                p = *arg++;
+                // if (!p) {
+                //     p = "(null)";
+                // }
+
+            string:
+                for (p2 = p; *p2; p2++)
+                    ;
+                for (; p2 < p + pad; p2++) {
+                    debug_out_putchar(pad0 ? '0' : ' ');
+                }
+                while (*p) {
+                    debug_out_putchar(*p++);
+                }
+                break;
+
+            default:
+                debug_out_putchar(*((int *)arg++));
+                break;
+        }
     }
 }
 
