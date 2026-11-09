@@ -522,10 +522,19 @@ static void _exception15_control_protection_exception() {
     print_control_registers_and_hang();
 }
 
-static void _exception20_timer_tick() {
+extern "C" void _handle_irq();
+asm(
+    ".global _handle_irq\n"
+    "_handle_irq:\n\t"
+    "call _exception20_timer_tick\n\t"
+    "iret\n\t"
+);
+
+extern "C" void _exception20_timer_tick() {
     printf("INT_0x20: PIT - Timer tick\n");
     debug_out("INT_0x20: PIT - Timer tick\n");
-    print_control_registers_and_hang();
+    // print_control_registers_and_hang();
+    PIC_sendEOI(PIC_TIMER_TICK);
 }
 
 static void _exception27_spurious() {
@@ -584,7 +593,7 @@ static void install_interrupts() {
     install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception), 0x15);
 
     // PIC - PIC IRQs 0..0xF -> INT 0x20..0x2F
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick), IRQ_TIMER_TICK);
+    install_descriptor(reinterpret_cast<unsigned int>(&_handle_irq), IRQ_TIMER_TICK);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious), IRQ_PRL1_OR_SPURIOUS);
 }
 
