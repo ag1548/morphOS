@@ -530,8 +530,10 @@ asm(
     "iret\n\t"
 );
 
+static unsigned int value = 0;
 extern "C" void _exception20_timer_tick() {
-    printf("INT_0x20: PIT - Timer tick\n");
+    value += 1;
+    printf("INT_0x20: PIT - Timer tick %x\n", value);
     debug_out("INT_0x20: PIT - Timer tick\n");
     // print_control_registers_and_hang();
     PIC_sendEOI(PIC_TIMER_TICK);
