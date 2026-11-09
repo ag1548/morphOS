@@ -558,6 +558,8 @@ static void install_descriptor(const unsigned int f, const unsigned int index) {
 }
 
 static void install_interrupts() {
+
+    // CPU
     install_descriptor(reinterpret_cast<unsigned int>(&_exception0_divide_error), 0x00);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception1_debug_exception), 0x01);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception2_nmi_interrupt), 0x02);
@@ -581,6 +583,7 @@ static void install_interrupts() {
     install_descriptor(reinterpret_cast<unsigned int>(&_exception14_virtualization_exception), 0x14);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception), 0x15);
 
+    // PIC - PIC IRQs 0..0xF -> INT 0x20..0x2F
     install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick), IRQ_TIMER_TICK);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious), IRQ_PRL1_OR_SPURIOUS);
 }
