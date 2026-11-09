@@ -359,7 +359,7 @@ static void initialize_all_interrupts_to_null() {
     }
 }
 
-static void install_test_handler() {
+[[maybe_unused]]static void install_test_handler() {
     unsigned int       low                       = 0;
     unsigned int       high                      = 0;
     const unsigned int type_32bit_interrupt_gate = 0xE;
@@ -598,7 +598,7 @@ void idt_init() {
     set_interrupt_descriptor_table_register_values();
 
     initialize_all_interrupts_to_null();
-    install_test_handler();
+    // install_test_handler();
     install_interrupts();
 
     load_idt();
