@@ -282,6 +282,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     }
 
     PIC_remap(PIC1, PIC2);
+    initialize();
 
     debug_out("GDT loading...!\n");
     gdt_init();
@@ -292,5 +293,4 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     // NOTE: Shows the unhandled interrupt! Implement handlers and then remove before continuing...
     asm volatile("sti" ::: "memory");
-    // hang();
 }

@@ -39,9 +39,6 @@ void PIC_remap(int offset1, int offset2) {
     outb(PIC1_DATA, 0xff);
     outb(PIC2_DATA, 0xff);
     IRQ_clear_mask(PIC_SLAVE_PIC_CASCADE);
-
-    // Enable Timer Tick (Enablement might need to be delayed for further setup)
-    IRQ_clear_mask(PIC_TIMER_TICK);
 }
 
 void PIC_sendEOI(unsigned char irq) {
@@ -98,4 +95,14 @@ unsigned short pic_get_irr(void) {
 /* Returns the combined value of the cascaded PICs in-service register (ISR) */
 unsigned short pic_get_isr(void) {
     return __pic_get_irq_reg(PIC_READ_ISR);
+}
+
+void initialize() {
+    unsigned short timer_reload = (BASE_FREQUENCY / TICKS_PER_SECOND);
+
+    outb(PIT_CTL, TIMER0_SELECT | WRITE_WORD | MODE_RATE);
+    outb(TIMER0_CTL, timer_reload & 0xFF);
+    outb(TIMER0_CTL, (timer_reload >> 8) & 0xFF);
+
+    IRQ_clear_mask(PIC_TIMER_TICK);
 }
