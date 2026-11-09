@@ -61,6 +61,9 @@ void print_CR0_dump(ControlRegister0Dump dump) {
 }
 
 void print_CR2_dump(ControlRegister2 reg) {
+
+    (void) reg;
+
     // printf("===============================\n");
     // printf("CR2 - Page Fault Linear Address\n");
     // printf("===============================\n");
