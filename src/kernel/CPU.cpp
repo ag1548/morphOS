@@ -390,147 +390,278 @@ static void initialize_all_interrupts_to_null() {
     hang();
 }
 
-static void _exception0_divide_error() {
+extern "C" void _exception0_divide_error_entry();
+asm(
+    ".global _exception0_divide_error_entry\n"
+    "_exception0_divide_error_entry:\n\t"
+    "call _exception0_divide_error\n\t"
+    "iret\n\t");
+extern "C" void _exception0_divide_error() {
     printf("INT_0x0: Divide Error\n");
     debug_out("INT_0x0: Divide Error\n");
     print_control_registers_and_hang();
 }
 
-static void _exception1_debug_exception() {
+extern "C" void _exception1_debug_exception_entry();
+asm(
+    ".global _exception1_debug_exception_entry\n"
+    "_exception1_debug_exception_entry:\n\t"
+    "call _exception1_debug_exception\n\t"
+    "iret\n\t");
+extern "C" void _exception1_debug_exception() {
     printf("INT_0x1: Debug Exception\n");
     debug_out("INT_0x1: Debug Exception\n");
     print_control_registers_and_hang();
 }
 
-static void _exception2_nmi_interrupt() {
+extern "C" void _exception2_nmi_interrupt_entry();
+asm(
+    ".global _exception2_nmi_interrupt_entry\n"
+    "_exception2_nmi_interrupt_entry:\n\t"
+    "call _exception2_nmi_interrupt\n\t"
+    "iret\n\t");
+extern "C" void _exception2_nmi_interrupt() {
     printf("INT_0x2: NMI Interrupt\n");
     debug_out("INT_0x2: NMI Interrupt\n");
     print_control_registers_and_hang();
 }
 
-static void _exception3_breakpoint() {
+extern "C" void _exception3_breakpoint_entry();
+asm(
+    ".global _exception3_breakpoint_entry\n"
+    "_exception3_breakpoint_entry:\n\t"
+    "call _exception3_breakpoint\n\t"
+    "iret\n\t");
+extern "C" void _exception3_breakpoint() {
     printf("INT_0x3: Breakpoint\n");
     debug_out("INT_0x3: Breakpoint\n");
     print_control_registers_and_hang();
 }
 
-static void _exception4_overflow() {
+extern "C" void _exception4_overflow_entry();
+asm(
+    ".global _exception4_overflow_entry\n"
+    "_exception4_overflow_entry:\n\t"
+    "call _exception4_overflow\n\t"
+    "iret\n\t");
+extern "C" void _exception4_overflow() {
     printf("INT_0x4: Overflow\n");
     debug_out("INT_0x4: Overflow\n");
     print_control_registers_and_hang();
 }
 
-static void _exception5_bound_range_exceeded() {
+extern "C" void _exception5_bound_range_exceeded_entry();
+asm(
+    ".global _exception5_bound_range_exceeded_entry\n"
+    "_exception5_bound_range_exceeded_entry:\n\t"
+    "call _exception5_bound_range_exceeded\n\t"
+    "iret\n\t");
+extern "C" void _exception5_bound_range_exceeded() {
     printf("INT_0x5: Bound range exceeded\n");
     debug_out("INT_0x5: Bound range exceeded\n");
     print_control_registers_and_hang();
 }
 
-static void _exception6_invalid_opcode() {
+extern "C" void _exception6_invalid_opcode_entry();
+asm(
+    ".global _exception6_invalid_opcode_entry\n"
+    "_exception6_invalid_opcode_entry:\n\t"
+    "call _exception6_invalid_opcode\n\t"
+    "iret\n\t");
+extern "C" void _exception6_invalid_opcode() {
     printf("INT_0x6: Invalid opcode\n");
     debug_out("INT_0x6: Invalid opcode\n");
     print_control_registers_and_hang();
 }
 
-static void _exception7_device_not_available() {
+extern "C" void _exception7_device_not_available_entry();
+asm(
+    ".global _exception7_device_not_available_entry\n"
+    "_exception7_device_not_available_entry:\n\t"
+    "call _exception7_device_not_available\n\t"
+    "iret\n\t");
+extern "C" void _exception7_device_not_available() {
     printf("INT_0x7: Device not available\n");
     debug_out("INT_0x7: Device not available\n");
     print_control_registers_and_hang();
 }
 
-static void _exception8_double_fault() {
+extern "C" void _exception8_double_fault_entry();
+asm(
+    ".global _exception8_double_fault_entry\n"
+    "_exception8_double_fault_entry:\n\t"
+    "call _exception8_double_fault\n\t"
+    "iret\n\t");
+extern "C" void _exception8_double_fault() {
     printf("INT_0x8: Double fault\n");
     debug_out("INT_0x8: Double fault\n");
     print_control_registers_and_hang();
 }
 
-static void _exception9_coprocessor_segment_overrun() {
+extern "C" void _exception9_coprocessor_segment_overrun_entry();
+asm(
+    ".global _exception9_coprocessor_segment_overrun_entry\n"
+    "_exception9_coprocessor_segment_overrun_entry:\n\t"
+    "call _exception9_coprocessor_segment_overrun\n\t"
+    "iret\n\t");
+extern "C" void _exception9_coprocessor_segment_overrun() {
     printf("INT_0x9: Coprocessor segment overrun\n");
     debug_out("INT_0x9: Coprocessor segment overrun\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionA_invalid_tss() {
+extern "C" void _exceptionA_invalid_tss_entry();
+asm(
+    ".global _exceptionA_invalid_tss_entry\n"
+    "_exceptionA_invalid_tss_entry:\n\t"
+    "call _exceptionA_invalid_tss\n\t"
+    "iret\n\t");
+extern "C" void _exceptionA_invalid_tss() {
     printf("INT_0xA: Invalid TSS\n");
     debug_out("INT_0xA: Invalid TSS\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionB_segment_not_present() {
+extern "C" void _exceptionB_segment_not_present_entry();
+asm(
+    ".global _exceptionB_segment_not_present_entry\n"
+    "_exceptionB_segment_not_present_entry:\n\t"
+    "call _exceptionB_segment_not_present\n\t"
+    "iret\n\t");
+extern "C" void _exceptionB_segment_not_present() {
     printf("INT_0xB: Segment not present\n");
     debug_out("INT_0xB: Segment not present\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionC_stack_segment_fault() {
+extern "C" void _exceptionC_stack_segment_fault_entry();
+asm(
+    ".global _exceptionC_stack_segment_fault_entry\n"
+    "_exceptionC_stack_segment_fault_entry:\n\t"
+    "call _exceptionC_stack_segment_fault\n\t"
+    "iret\n\t");
+extern "C" void _exceptionC_stack_segment_fault() {
     printf("INT_0xC: Stack segment fault\n");
     debug_out("INT_0xC: Stack segment fault\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionD_general_protection() {
+extern "C" void _exceptionD_general_protection_entry();
+asm(
+    ".global _exceptionD_general_protection_entry\n"
+    "_exceptionD_general_protection_entry:\n\t"
+    "call _exceptionD_general_protection\n\t"
+    "iret\n\t");
+extern "C" void _exceptionD_general_protection() {
     printf("INT_0xD: General protection (exception)\n");
     debug_out("INT_0xD: General protection (exception)\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionE_page_fault() {
+extern "C" void _exceptionE_page_fault_entry();
+asm(
+    ".global _exceptionE_page_fault_entry\n"
+    "_exceptionE_page_fault_entry:\n\t"
+    "call _exceptionE_page_fault\n\t"
+    "iret\n\t");
+extern "C" void _exceptionE_page_fault() {
     printf("INT_0xE: Page fault\n");
     debug_out("INT_0xE: Page fault\n");
     print_control_registers_and_hang();
 }
 
-static void _exceptionF_intel_reserved() {
+extern "C" void _exceptionF_intel_reserved_entry();
+asm(
+    ".global _exceptionF_intel_reserved_entry\n"
+    "_exceptionF_intel_reserved_entry:\n\t"
+    "call _exceptionF_intel_reserved\n\t"
+    "iret\n\t");
+extern "C" void _exceptionF_intel_reserved() {
     printf("INT_0xF: Intel reserved exception\n");
     debug_out("INT_0xF: Intel reserved exception\n");
     print_control_registers_and_hang();
 }
 
-static void _exception10_x87_fpu_floating_point_error() {
+extern "C" void _exception10_x87_fpu_floating_point_error_entry();
+asm(
+    ".global _exception10_x87_fpu_floating_point_error_entry\n"
+    "_exception10_x87_fpu_floating_point_error_entry:\n\t"
+    "call _exception10_x87_fpu_floating_point_error\n\t"
+    "iret\n\t");
+extern "C" void _exception10_x87_fpu_floating_point_error() {
     printf("INT_0x10: FPU Floating Point Error\n");
     debug_out("INT_0x10: FPU Floating Point Error\n");
     print_control_registers_and_hang();
 }
 
-static void _exception11_alignment_check() {
+extern "C" void _exception11_alignment_check_entry();
+asm(
+    ".global _exception11_alignment_check_entry\n"
+    "_exception11_alignment_check_entry:\n\t"
+    "call _exception11_alignment_check\n\t"
+    "iret\n\t");
+extern "C" void _exception11_alignment_check() {
     printf("INT_0x11: Align check (exception)\n");
     debug_out("INT_0x11: Align check (exception)\n");
     print_control_registers_and_hang();
 }
 
-static void _exception12_machine_check() {
+extern "C" void _exception12_machine_check_entry();
+asm(
+    ".global _exception12_machine_check_entry\n"
+    "_exception12_machine_check_entry:\n\t"
+    "call _exception12_machine_check\n\t"
+    "iret\n\t");
+extern "C" void _exception12_machine_check() {
     printf("INT_0x12: Machine check (exception)\n");
     debug_out("INT_0x12: Machine check (exception)\n");
     print_control_registers_and_hang();
 }
 
-static void _exception13_simd_floating_point_exception() {
+extern "C" void _exception13_simd_floating_point_exception_entry();
+asm(
+    ".global _exception13_simd_floating_point_exception_entry\n"
+    "_exception13_simd_floating_point_exception_entry:\n\t"
+    "call _exception13_simd_floating_point_exception\n\t"
+    "iret\n\t");
+extern "C" void _exception13_simd_floating_point_exception() {
     printf("INT_0x13: SIMD floating-point exception\n");
     debug_out("INT_0x13: SIMD floating-point exception\n");
     print_control_registers_and_hang();
 }
 
-static void _exception14_virtualization_exception() {
+extern "C" void _exception14_virtualization_exception_entry();
+asm(
+    ".global _exception14_virtualization_exception_entry\n"
+    "_exception14_virtualization_exception_entry:\n\t"
+    "call _exception14_virtualization_exception\n\t"
+    "iret\n\t");
+extern "C" void _exception14_virtualization_exception() {
     printf("INT_0x14: Virtualization exception\n");
     debug_out("INT_0x14: Virtualization exception\n");
     print_control_registers_and_hang();
 }
 
-static void _exception15_control_protection_exception() {
+extern "C" void _exception15_control_protection_exception_entry();
+asm(
+    ".global _exception15_control_protection_exception_entry\n"
+    "_exception15_control_protection_exception_entry:\n\t"
+    "call _exception15_control_protection_exception\n\t"
+    "iret\n\t");
+extern "C" void _exception15_control_protection_exception() {
     printf("INT_0x14: Control protection exception\n");
     debug_out("INT_0x14: Control protection exception\n");
     print_control_registers_and_hang();
 }
 
-extern "C" void _handle_irq();
+extern "C" void _exception20_timer_tick_entry();
 asm(
-    ".global _handle_irq\n"
-    "_handle_irq:\n\t"
+    ".global _exception20_timer_tick_entry\n"
+    "_exception20_timer_tick_entry:\n\t"
     "call _exception20_timer_tick\n\t"
     "iret\n\t");
-
 static unsigned int value = 0;
-extern "C" void     _exception20_timer_tick() {
+extern "C" void _exception20_timer_tick() {
     value += 1;
     printf("INT_0x20: PIT - Timer tick %x\n", value);
     debug_out("INT_0x20: PIT - Timer tick %x\n", value);
@@ -538,7 +669,13 @@ extern "C" void     _exception20_timer_tick() {
     PIC_sendEOI(PIC_TIMER_TICK);
 }
 
-static void _exception27_spurious() {
+extern "C" void _exception27_spurious_entry();
+asm(
+    ".global _exception27_spurious_entry\n"
+    "_exception27_spurious_entry:\n\t"
+    "call _exception27_spurious\n\t"
+    "iret\n\t");
+extern "C" void _exception27_spurious() {
     // FIXME: Check ISR to determine if real.
     printf("INT_0x27: SPURIOUS?\n");
     debug_out("INT_0x27: SPURIOUS?\n");
@@ -570,32 +707,32 @@ static void install_descriptor(const unsigned int f, const unsigned int index) {
 static void install_interrupts() {
 
     // CPU
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception0_divide_error), 0x00);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception1_debug_exception), 0x01);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception2_nmi_interrupt), 0x02);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception3_breakpoint), 0x03);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception4_overflow), 0x04);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception5_bound_range_exceeded), 0x05);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception6_invalid_opcode), 0x06);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception7_device_not_available), 0x07);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception8_double_fault), 0x08);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception9_coprocessor_segment_overrun), 0x09);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionA_invalid_tss), 0x0A);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionB_segment_not_present), 0x0B);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionC_stack_segment_fault), 0x0C);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionD_general_protection), 0x0D);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionE_page_fault), 0x0E);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionF_intel_reserved), 0x0F);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception10_x87_fpu_floating_point_error), 0x10);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception11_alignment_check), 0x11);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception12_machine_check), 0x12);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception13_simd_floating_point_exception), 0x13);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception14_virtualization_exception), 0x14);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception), 0x15);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception0_divide_error_entry), 0x00);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception1_debug_exception_entry), 0x01);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception2_nmi_interrupt_entry), 0x02);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception3_breakpoint_entry), 0x03);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception4_overflow_entry), 0x04);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception5_bound_range_exceeded_entry), 0x05);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception6_invalid_opcode_entry), 0x06);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception7_device_not_available_entry), 0x07);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception8_double_fault_entry), 0x08);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception9_coprocessor_segment_overrun_entry), 0x09);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionA_invalid_tss_entry), 0x0A);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionB_segment_not_present_entry), 0x0B);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionC_stack_segment_fault_entry), 0x0C);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionD_general_protection_entry), 0x0D);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionE_page_fault_entry), 0x0E);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exceptionF_intel_reserved_entry), 0x0F);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception10_x87_fpu_floating_point_error_entry), 0x10);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception11_alignment_check_entry), 0x11);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception12_machine_check_entry), 0x12);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception13_simd_floating_point_exception_entry), 0x13);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception14_virtualization_exception_entry), 0x14);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception15_control_protection_exception_entry), 0x15);
 
     // PIC - PIC IRQs 0..0xF -> INT 0x20..0x2F
-    install_descriptor(reinterpret_cast<unsigned int>(&_handle_irq), IRQ_TIMER_TICK);
-    install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious), IRQ_PRL1_OR_SPURIOUS);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick_entry), IRQ_TIMER_TICK);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious_entry), IRQ_PRL1_OR_SPURIOUS);
 }
 
 static void load_idt() {
