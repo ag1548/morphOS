@@ -368,7 +368,49 @@ static void initialize_all_interrupts_to_null() {
     install_interrupt_descriptor(0x20, low, high);
 }
 
+/*
+
+Pg 161 of Intel 64 IA-32 Arch Manual.pdf
+
+"PUSHA pushes the values in all the general-purpose registers on the stack in the following order:
+EAX, ECX, EDX, EBX, ESP (the value prior to executing the PUSHA instruction), EBP, ESI, and EDI."
+
+*/
+extern "C" __attribute__((regparm(1))) void do_print_cpu(RegisterDump &reg) {
+
+    printf("eax: %u\n", reg.eax);
+    printf("ebx: %u\n", reg.ebx);
+    printf("ecx: %u\n", reg.ecx);
+    printf("edx: %u\n", reg.edx);
+
+    printf("ebp: %u\n", reg.ebp);
+    printf("esp: %u\n", reg.esp);
+
+    printf("edi: %u\n", reg.edi);
+    printf("esi: %u\n", reg.esi);
+}
+static void print_cpu() {
+    // asm volatile(
+    //     "    movl $0xff, %%eax\n"
+    //     "    pusha\n"
+    //     "    mov %%esp, %%eax\n"
+    //     "    call do_print_cpu\n"
+    //     "    popa\n"
+    //     :
+    //     :
+    //     : "eax"
+    //     );
+
+    asm volatile(
+        "    pusha\n"
+        "    mov %esp, %eax\n"
+        "    call do_print_cpu\n"
+        "    popa\n");
+}
+
 [[noreturn]] static void print_control_registers_and_hang() {
+
+    print_cpu();
 
     unsigned int cr0;
     unsigned int cr2;
@@ -662,7 +704,7 @@ asm(
     "call _exception20_timer_tick\n\t"
     "iret\n\t");
 static unsigned int value = 0;
-extern "C" void _exception20_timer_tick() {
+extern "C" void     _exception20_timer_tick() {
     value += 1;
     printf("INT_0x20: PIT - Timer tick %x\n", value);
     debug_out("INT_0x20: PIT - Timer tick %x\n", value);

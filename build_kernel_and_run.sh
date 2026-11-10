@@ -2,6 +2,7 @@
 
 set -e
 
+# FIXME: makefile...
 ./cross/bin/i686-elf-g++            \
     src/kernel/boot.S               \
     src/kernel/kernel.cpp           \

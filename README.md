@@ -14,7 +14,10 @@ Right after getting your multiboot kernel to print a string, do not jump straigh
 
     - Using segments all around ring 0 for now.
 
-1. **Interrupt Descriptor Table (IDT) & Exceptions**: Map out your CPU exception handlers (divide-by-zero, page faults, general protection faults) and print out register states (EIP, EAX, CR2) when things crash.
+1. ✅ **Interrupt Descriptor Table (IDT) & Exceptions**: Map out your CPU exception handlers (divide-by-zero, page faults, general protection faults) and print out register states (EIP, EAX, CR2) when things crash.
+
+    - Printed CPU register states (can easily be expanded later...)
+
 1. ✅ **A Serial Port Driver (com1)**: Write a tiny driver using outb/inb ports to stream debug logs directly to your host terminal via QEMU's -serial stdio. This will become your primary lifeline for debugging long before you have a proper screen display.
 
    - Implemented simple `outb` call to `0xe9` using `-debugcon stdio` instead.

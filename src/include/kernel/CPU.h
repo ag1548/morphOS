@@ -22,3 +22,15 @@ static_assert(sizeof(DescriptorPointer) == 6);
 [[noreturn]] void hang();
 void              gdt_init();
 void              idt_init();
+
+struct RegisterDump {
+    unsigned int edi;
+    unsigned int esi;
+    unsigned int ebp;
+    unsigned int esp;
+    unsigned int ebx;
+    unsigned int edx;
+    unsigned int ecx;
+    unsigned int eax;
+};
+typedef struct RegisterDump RegisterDump;
