@@ -381,6 +381,7 @@ static void initialize_all_interrupts_to_null() {
     asm volatile("mov %%cr4, %%eax" : "=a"(cr4));
 
     printf("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
+    debug_out("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
     printf("\n");
     print_CR0_dump(ControlRegister0Dump(ControlRegister0(cr0)));
     print_CR2_dump(ControlRegister2(cr2));
