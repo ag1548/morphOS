@@ -62,6 +62,20 @@ struct ControlRegister0Dump {
         , NW_not_write_through(reg.value & NW_BIT)
         , CD_cache_disable(reg.value & CD_BIT)
         , PG_paging(reg.value & PG_BIT) {}
+
+    bool any() {
+        return PE_protection_enable ||
+               MP_monitor_coprocessor ||
+               EM_emulation ||
+               TS_task_switched ||
+               ET_extension_type ||
+               NE_numeric_error ||
+               WP_write_protect ||
+               AM_alignment_mask ||
+               NW_not_write_through ||
+               CD_cache_disable ||
+               PG_paging;
+    }
 };
 
 /*
@@ -105,6 +119,12 @@ struct ControlRegister3Dump {
         : PWT_page_level_write_through(reg.value & PWT_BIT)
         , PCD_page_level_cache_disable(reg.value & PCD_BIT)
         , PDB_page_directory_base((reg.value & PDB_BITS) >> 12) {}
+
+    bool any() {
+        return PWT_page_level_write_through ||
+               PCD_page_level_cache_disable ||
+               PDB_page_directory_base;
+    }
 };
 
 /*
@@ -199,6 +219,34 @@ struct ControlRegister4Dump {
         , PKS_protection_key_supervisor_mode_enable(reg.value & PKS_BIT)
         , UINTR_user_interrupts_enable(reg.value & UINTR_BIT)
         , LAM_SUP_supervisor_linear_address_masking_enable(reg.value & LAM_SUP_BIT) {}
+
+    bool any() {
+        return VME_virtual_8086_mode_ext ||
+               PVI_protected_mode_virtual_interrupts ||
+               TSD_time_stamp_disable ||
+               DE_debugging_ext ||
+               PSE_page_size_ext ||
+               PAE_physical_address_ext ||
+               MCE_machine_check_enable ||
+               PGE_page_global_enable ||
+               PCE_performance_monitoring_counter_enable ||
+               OSFXSR_os_support_for_fxsave_fxstor ||
+               OSXMMEXCPT_os_support_for_unmasked_simd_fp_exc ||
+               UMIP_user_mode_instruction_prevention ||
+               LA57_57_bit_linear_addresses ||
+               VMXE_vmx_enable ||
+               SMXE_smx_enable ||
+               FSGSBASE_fsgsbase_enable ||
+               OSXSAVE_xsave_and_proc_extended_states_enable ||
+               KL_key_locker_enable ||
+               SMEP_supervisor_mode_execution_enable ||
+               SMAP_supervisor_mode_access_prevention_enable ||
+               PKE_protection_key_enable ||
+               CET_control_flow_enforce_tech ||
+               PKS_protection_key_supervisor_mode_enable ||
+               UINTR_user_interrupts_enable ||
+               LAM_SUP_supervisor_linear_address_masking_enable;
+    }
 };
 
 void print_CR0_dump(ControlRegister0Dump);

@@ -5,6 +5,10 @@ void debug_out(const char *format, ...);
 
 void print_CR0_dump(ControlRegister0Dump dump) {
 
+    if (!dump.any()) {
+        return;
+    }
+
     // printf("===\n");
     // printf("CR0\n");
     // printf("===\n");
@@ -62,7 +66,9 @@ void print_CR0_dump(ControlRegister0Dump dump) {
 
 void print_CR2_dump(ControlRegister2 reg) {
 
-    (void)reg;
+    if (!reg.value) {
+        return;
+    }
 
     // printf("===============================\n");
     // printf("CR2 - Page Fault Linear Address\n");
@@ -76,6 +82,10 @@ void print_CR2_dump(ControlRegister2 reg) {
 }
 
 void print_CR3_dump(ControlRegister3Dump dump) {
+
+    if (!dump.any()) {
+        return;
+    }
 
     // printf("===\n");
     // printf("CR3\n");
@@ -98,6 +108,10 @@ void print_CR3_dump(ControlRegister3Dump dump) {
 }
 
 void print_CR4_dump(ControlRegister4Dump dump) {
+
+    if (!dump.any()) {
+        return;
+    }
 
     // printf("===\n");
     // printf("CR4\n");
