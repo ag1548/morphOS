@@ -48,6 +48,7 @@ multiboot_header:
         .long   0 /* bss_end_addr */
         .long   0 /* entry_addr */
 
+        /* These values arent' currently used, because no "| MULTIBOOT_VIDEO_MODE" in MULTIBOOT_HEADER_FLAGS above */
         .long 0    /* mode_type */
         .long 1024 /* width */
         .long 768  /* height */
