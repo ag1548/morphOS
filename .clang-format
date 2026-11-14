@@ -27,11 +27,11 @@ AlignConsecutiveDeclarations:
   PadOperators: false
 AlignConsecutiveMacros:
   Enabled: true
-  AcrossEmptyLines: false
-  AcrossComments: false
-  AlignCompound: false
+  AcrossEmptyLines: true
+  AcrossComments: true
+  AlignCompound: true
   AlignFunctionPointers: true
-  PadOperators: false
+  PadOperators: true
 AlignConsecutiveShortCaseStatements:
   Enabled: true
   AcrossEmptyLines: false

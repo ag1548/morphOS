@@ -6,11 +6,11 @@
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
 
-#define WHITE_FG 0b00001111
+#define WHITE_FG               0b00001111
 
-#define COLUMNS 80
-#define LINES   24
-#define VIDEO   0xB8000
+#define COLUMNS                80
+#define LINES                  24
+#define VIDEO                  0xB8000
 
 static int                     xpos;
 static int                     ypos;
