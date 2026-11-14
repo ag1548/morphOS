@@ -355,6 +355,8 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     idt_init();
     debug_out("IDT loaded!\n");
 
-    // NOTE: Shows the unhandled interrupt! Implement handlers and then remove before continuing...
     asm volatile("sti" ::: "memory");
+    for (;;) {
+        asm volatile("hlt");
+    }
 }
