@@ -116,4 +116,4 @@ void           IRQ_set_mask(unsigned char IRQline);
 void           IRQ_clear_mask(unsigned char IRQline);
 unsigned short pic_get_irr();
 unsigned short pic_get_isr();
-void           initialize();
+void           initialize_PIT();

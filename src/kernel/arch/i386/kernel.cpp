@@ -345,7 +345,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     }
 
     PIC_remap(PIC1, PIC2);
-    initialize();
+    initialize_PIT();
 
     debug_out("GDT loading...!\n");
     gdt_init();

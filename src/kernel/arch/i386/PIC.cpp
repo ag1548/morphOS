@@ -97,7 +97,7 @@ unsigned short pic_get_isr(void) {
     return __pic_get_irq_reg(PIC_READ_ISR);
 }
 
-void initialize() {
+void initialize_PIT() {
     unsigned short timer_reload = (BASE_FREQUENCY / TICKS_PER_SECOND);
 
     outb(PIT_CTL, TIMER0_SELECT | WRITE_WORD | MODE_RATE);
