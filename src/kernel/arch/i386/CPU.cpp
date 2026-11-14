@@ -271,7 +271,12 @@ static void load_and_flush_gdt() {
     load_code_segment_descriptors();
 }
 
-void gdt_init() {
+namespace GDT {
+
+void init() {
+
+    debug_out("GDT loading...!\n");
+
     set_global_descriptor_table_register_values();
 
     // FIXME: Create classes instead of dealing with raw hex values
@@ -280,7 +285,11 @@ void gdt_init() {
     create_data_descriptor();
 
     load_and_flush_gdt();
+
+    debug_out("GDT loaded!\n");
 }
+
+} // namespace GDT
 
 static void set_interrupt_descriptor_table_register_values() {
     s_idtr.size    = sizeof(s_idt_descriptors) - 1;
@@ -802,7 +811,11 @@ static void load_idt() {
         : "memory");
 }
 
-void idt_init() {
+namespace IDT {
+
+void init() {
+
+    debug_out("IDT loading...!\n");
 
     set_interrupt_descriptor_table_register_values();
 
@@ -811,4 +824,8 @@ void idt_init() {
     install_interrupts();
 
     load_idt();
+
+    debug_out("IDT loaded!\n");
 }
+
+} // namespace IDT

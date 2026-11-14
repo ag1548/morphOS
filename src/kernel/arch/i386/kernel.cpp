@@ -350,12 +350,8 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     // Move to Keyboard implementation
     PIC::clear_interrupt_mask(PIC_KEYBOARD);
 
-    debug_out("GDT loading...!\n");
-    gdt_init();
-    debug_out("GDT loaded!\n");
-    debug_out("IDT loading...!\n");
-    idt_init();
-    debug_out("IDT loaded!\n");
+    GDT::init();
+    IDT::init();
 
     asm volatile("sti" ::: "memory");
     for (;;) {

@@ -20,8 +20,14 @@ typedef struct DescriptorPointer DescriptorPointer;
 static_assert(sizeof(DescriptorPointer) == 6);
 
 [[noreturn]] void hang();
-void              gdt_init();
-void              idt_init();
+
+namespace GDT {
+void init();
+}
+
+namespace IDT {
+void init();
+}
 
 struct RegisterDump {
     unsigned int edi;
