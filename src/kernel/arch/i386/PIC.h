@@ -90,13 +90,10 @@ IRR - Interrupt Request Register
 
 #define BASE_FREQUENCY         1193182
 
-void           outb(unsigned short port, unsigned char val);
-unsigned char  inb(unsigned short port);
-void           io_wait();
+void           initialize_PIT();
 void           PIC_remap(int offset1, int offset2);
 void           PIC_sendEOI(unsigned char irq);
 void           IRQ_set_mask(unsigned char IRQline);
 void           IRQ_clear_mask(unsigned char IRQline);
 unsigned short pic_get_irr();
 unsigned short pic_get_isr();
-void           initialize_PIT();

@@ -9,6 +9,7 @@ shopt -s globstar
     src/**/*.S                      \
     src/**/*.cpp                    \
     -I src/include                  \
+    -I src/kernel                   \
     -I src/kernel/arch/i386         \
     -o kernel                       \
     -std=c++17                      \

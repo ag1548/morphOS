@@ -1,6 +1,7 @@
 #include "CPU.h"
 
 #include "ControlRegisters.h"
+#include "IO.h"
 #include "PIC.h"
 #include "types.h"
 
@@ -719,7 +720,7 @@ asm(
     "iret\n\t");
 extern "C" void _exception21_keyboard() {
     unsigned int code = 0;
-    code              = inb(0x60);
+    code              = IO::inb(0x60);
     printf("INT_0x21: Keyboard - %x\n", code);
     debug_out("INT_0x21: Keyboard - %x\n", code);
     // print_control_registers_and_hang();
