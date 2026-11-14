@@ -25,6 +25,8 @@
 
         .text
 
+        .comm   stack, STACK_SIZE
+
         .globl  start, _start
 start:
 _start:
@@ -83,5 +85,3 @@ loop:   hlt
 
 halt_message:
         .asciz  "Halted. boot.S\n"
-
-        .comm   stack, STACK_SIZE
