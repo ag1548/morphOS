@@ -1,3 +1,3 @@
 #pragma once
 
-typedef int size_t;
+typedef signed int size_t;
