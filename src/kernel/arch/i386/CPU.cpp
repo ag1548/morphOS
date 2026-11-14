@@ -275,6 +275,7 @@ static void load_and_flush_gdt() {
 void gdt_init() {
     set_global_descriptor_table_register_values();
 
+    // FIXME: Create classes instead of dealing with raw hex values
     create_null_descriptor();
     create_code_descriptor();
     create_data_descriptor();
