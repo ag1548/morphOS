@@ -206,8 +206,6 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
-static_assert(sizeof(unsigned long long) == 8);
-
 // GDT
 // NULL, Code, and Segment in Ring 0 for now...
 static DescriptorPointer s_gdtr;
