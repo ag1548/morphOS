@@ -77,6 +77,8 @@ multiboot_entry:
         pushl   $halt_message
         call    printf
 
+        cli
+
 loop:   hlt
         jmp     loop
 
