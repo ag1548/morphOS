@@ -55,6 +55,7 @@ multiboot_header:
         .long 32   /* depth */
 
 multiboot_entry:
+
         /* Initialize the stack pointer. */
         movl    $(stack + STACK_SIZE), %esp
 
@@ -62,13 +63,11 @@ multiboot_entry:
         pushl   $0
         popf
 
-        /* Push the pointer to the Multiboot information structure. */
-        pushl   %ebx
-        /* Push the magic value. */
-        pushl   %eax
+        pushl   %ebx /* Push the pointer to the Multiboot information structure. */
+        pushl   %eax /* Push the magic value. */
 
-        cli
-        cld
+        cli /* Clear interrupt flag */
+        cld /* Clear direction flag */
 
         /* Now enter the C main function... */
         call    cmain
