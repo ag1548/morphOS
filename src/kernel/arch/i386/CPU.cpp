@@ -709,7 +709,7 @@ extern "C" void     _exception20_timer_tick() {
     printf("INT_0x20: PIT - Timer tick %x\n", value);
     debug_out("INT_0x20: PIT - Timer tick %x\n", value);
     // print_control_registers_and_hang();
-    PIC_sendEOI(PIC_TIMER_TICK);
+    PIC::send_end_of_interrupt(PIC_TIMER_TICK);
 }
 
 extern "C" void _exception21_keyboard_entry();
@@ -724,7 +724,7 @@ extern "C" void _exception21_keyboard() {
     printf("INT_0x21: Keyboard - %x\n", code);
     debug_out("INT_0x21: Keyboard - %x\n", code);
     // print_control_registers_and_hang();
-    PIC_sendEOI(PIC_KEYBOARD);
+    PIC::send_end_of_interrupt(PIC_KEYBOARD);
 }
 
 extern "C" void _exception27_spurious_entry();

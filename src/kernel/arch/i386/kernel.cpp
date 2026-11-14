@@ -344,9 +344,11 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
         }
     }
 
-    PIC_remap(PIC1, PIC2);
-    initialize_PIT();
-    IRQ_clear_mask(PIC_KEYBOARD);
+    PIC::remap_interrupts(PIC1, PIC2);
+    PIC::initialize_PIT();
+
+    // Move to Keyboard implementation
+    PIC::clear_interrupt_mask(PIC_KEYBOARD);
 
     debug_out("GDT loading...!\n");
     gdt_init();
