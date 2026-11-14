@@ -346,6 +346,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     PIC_remap(PIC1, PIC2);
     initialize_PIT();
+    IRQ_clear_mask(PIC_KEYBOARD);
 
     debug_out("GDT loading...!\n");
     gdt_init();

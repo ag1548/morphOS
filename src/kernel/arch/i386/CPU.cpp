@@ -713,6 +713,21 @@ extern "C" void     _exception20_timer_tick() {
     PIC_sendEOI(PIC_TIMER_TICK);
 }
 
+extern "C" void _exception21_keyboard_entry();
+asm(
+    ".global _exception21_keyboard_entry\n"
+    "_exception21_keyboard_entry:\n\t"
+    "call _exception21_keyboard\n\t"
+    "iret\n\t");
+extern "C" void     _exception21_keyboard() {
+    unsigned int code = 0;
+    code = inb(0x60);
+    printf("INT_0x21: Keyboard - %x\n", code);
+    debug_out("INT_0x21: Keyboard - %x\n", code);
+    // print_control_registers_and_hang();
+    PIC_sendEOI(PIC_KEYBOARD);
+}
+
 extern "C" void _exception27_spurious_entry();
 asm(
     ".global _exception27_spurious_entry\n"
@@ -776,6 +791,7 @@ static void install_interrupts() {
 
     // PIC - PIC IRQs 0..0xF -> INT 0x20..0x2F
     install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick_entry), IRQ_TIMER_TICK);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception21_keyboard_entry), IRQ_KEYBOARD);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious_entry), IRQ_PRL1_OR_SPURIOUS);
 }
 
