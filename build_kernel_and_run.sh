@@ -2,17 +2,14 @@
 
 set -e
 
+shopt -s globstar
+
 # FIXME: makefile...
 ./cross/bin/i686-elf-g++            \
-    src/kernel/boot.S               \
-    src/kernel/kernel.cpp           \
-    src/kernel/CPU.cpp              \
-    src/kernel/ControlRegisters.cpp \
-    src/kernel/EFLAGS.cpp           \
-    src/kernel/PIC.cpp              \
-    src/string.cpp                  \
+    src/**/*.S                      \
+    src/**/*.cpp                    \
     -I src/include                  \
-    -I src/include/kernel           \
+    -I src/kernel/arch/i386         \
     -o kernel                       \
     -std=c++17                      \
     -ffreestanding                  \
@@ -36,7 +33,7 @@ fi
 
 make_grub_kernel_iso() {
     mkdir -p isodir/boot/grub
-    cp src/grub.cfg isodir/boot/grub/grub.cfg
+    cp src/config/grub.cfg isodir/boot/grub/grub.cfg
     cp kernel isodir/boot/kernel
     grub-mkrescue -o kernel.iso isodir
     rm -rf isodir
