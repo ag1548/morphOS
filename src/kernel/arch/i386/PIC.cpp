@@ -106,3 +106,23 @@ void initialize_PIT() {
 
     IRQ_clear_mask(PIC_TIMER_TICK);
 }
+
+void outb(unsigned short port, unsigned char val) {
+    asm volatile("outb %b0, %w1"
+                 :
+                 : "a"(val), "Nd"(port)
+                 : "memory");
+}
+
+unsigned char inb(unsigned short port) {
+    unsigned char ret;
+    asm volatile("inb %w1, %b0"
+                 : "=a"(ret)
+                 : "Nd"(port)
+                 : "memory");
+    return ret;
+}
+
+void io_wait(void) {
+    outb(0x80, 0);
+}

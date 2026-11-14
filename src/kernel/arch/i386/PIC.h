@@ -90,26 +90,9 @@ IRR - Interrupt Request Register
 
 #define BASE_FREQUENCY 1193182
 
-static inline void outb(unsigned short port, unsigned char val) {
-    asm volatile("outb %b0, %w1"
-                 :
-                 : "a"(val), "Nd"(port)
-                 : "memory");
-}
-
-static inline unsigned char inb(unsigned short port) {
-    unsigned char ret;
-    asm volatile("inb %w1, %b0"
-                 : "=a"(ret)
-                 : "Nd"(port)
-                 : "memory");
-    return ret;
-}
-
-static inline void io_wait(void) {
-    outb(0x80, 0);
-}
-
+void           outb(unsigned short port, unsigned char val);
+unsigned char  inb(unsigned short port);
+void           io_wait();
 void           PIC_remap(int offset1, int offset2);
 void           PIC_sendEOI(unsigned char irq);
 void           IRQ_set_mask(unsigned char IRQline);
