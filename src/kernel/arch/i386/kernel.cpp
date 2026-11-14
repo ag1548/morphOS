@@ -1,6 +1,8 @@
 #include "multiboot.h"
 
 #include "CPU.h"
+#include "GDT.h"
+#include "IDT.h"
 #include "PIC.h"
 #include "string.h"
 
