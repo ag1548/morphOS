@@ -5,7 +5,7 @@
 namespace PIC {
 
 void init() {
-    PIC::remap_interrupts(PIC1, PIC2);
+    PIC::remap_interrupts(IRQ_BASE, IRQ_BASE + 0x08);
 }
 
 /*
