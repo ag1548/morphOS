@@ -68,28 +68,6 @@ IRR - Interrupt Request Register
 #define PIC_READ_IRR           0x0a /* OCW3 irq ready next CMD read */
 #define PIC_READ_ISR           0x0b /* OCW3 irq service next CMD read */
 
-#define TICKS_PER_SECOND       1000
-
-/* Timer related ports */
-#define TIMER0_CTL             0x40
-#define TIMER1_CTL             0x41
-#define TIMER2_CTL             0x42
-#define PIT_CTL                0x43
-
-/* Building blocks for PIT_CTL */
-#define TIMER0_SELECT          0x00
-#define TIMER1_SELECT          0x40
-#define TIMER2_SELECT          0x80
-
-#define MODE_COUNTDOWN         0x00
-#define MODE_ONESHOT           0x02
-#define MODE_RATE              0x04
-#define MODE_SQUARE_WAVE       0x06
-
-#define WRITE_WORD             0x30
-
-#define BASE_FREQUENCY         1193182
-
 namespace PIC {
 void init();
 void           remap_interrupts(int offset1, int offset2);
@@ -98,7 +76,5 @@ void           set_interrupt_mask(unsigned char IRQline);
 void           clear_interrupt_mask(unsigned char IRQline);
 unsigned short get_irr();
 unsigned short get_isr();
-
-void init_PIT();
 
 } // namespace PIC

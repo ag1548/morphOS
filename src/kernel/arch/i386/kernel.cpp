@@ -5,6 +5,7 @@
 #include "GDT.h"
 #include "IDT.h"
 #include "PIC.h"
+#include "PIT.h"
 #include "string.h"
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
@@ -348,10 +349,10 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     }
 
     PIC::init();
-    PIC::init_PIT();
-
     GDT::init();
     IDT::init();
+
+    PIT::init();
 
     Keyboard::init();
 

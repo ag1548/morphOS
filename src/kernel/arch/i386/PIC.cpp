@@ -108,15 +108,4 @@ unsigned short get_isr(void) {
     return __get_irq_reg(PIC_READ_ISR);
 }
 
-void init_PIT() {
-
-    unsigned short timer_reload = (BASE_FREQUENCY / TICKS_PER_SECOND);
-
-    IO::outb(PIT_CTL, TIMER0_SELECT | WRITE_WORD | MODE_RATE);
-    IO::outb(TIMER0_CTL, timer_reload & 0xFF);
-    IO::outb(TIMER0_CTL, (timer_reload >> 8) & 0xFF);
-
-    clear_interrupt_mask(PIC_TIMER_TICK);
-}
-
 } // namespace PIC
