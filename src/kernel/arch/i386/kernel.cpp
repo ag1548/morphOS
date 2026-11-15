@@ -1,9 +1,9 @@
 #include "multiboot.h"
 
 #include "CPU.h"
-#include "Keyboard.h"
 #include "GDT.h"
 #include "IDT.h"
+#include "Keyboard.h"
 #include "PIC.h"
 #include "PIT.h"
 #include "string.h"

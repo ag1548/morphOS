@@ -16,4 +16,4 @@ void init() {
     PIC::clear_interrupt_mask(PIC_TIMER_TICK);
 }
 
-}
+} // namespace PIT
