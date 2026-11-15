@@ -1,6 +1,7 @@
 #include "multiboot.h"
 
 #include "CPU.h"
+#include "Keyboard.h"
 #include "GDT.h"
 #include "IDT.h"
 #include "PIC.h"
@@ -352,8 +353,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     GDT::init();
     IDT::init();
 
-    // Move to Keyboard implementation
-    PIC::clear_interrupt_mask(PIC_KEYBOARD);
+    Keyboard::init();
 
     asm volatile("sti" ::: "memory");
     for (;;) {
