@@ -25,7 +25,7 @@
 
         .text
 
-        .comm   stack, STACK_SIZE
+        .comm   stack, STACK_SIZE, 16
 
         .globl  start, _start
 start:
