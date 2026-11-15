@@ -38,6 +38,7 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 
 #include "CPU.h"
 #include "IO.h"
+#include "Mouse.h"
 #include "PIC.h"
 #include "types.h"
 
@@ -435,11 +436,40 @@ asm(
     "iret\n\t");
 extern "C" void _exception21_keyboard() {
     unsigned int code = 0;
-    code              = IO::inb(0x60);
+    code              = IO::inb(PS2_DATA_PORT);
     printf("INT_0x21: Keyboard - %x\n", code);
     debug_out("INT_0x21: Keyboard - %x\n", code);
     // CPU::print_control_registers_and_hang();
     PIC::send_end_of_interrupt(PIC_KEYBOARD);
+}
+
+extern "C" void _exception32_mouse_entry();
+asm(
+    ".global _exception32_mouse_entry\n"
+    "_exception32_mouse_entry:\n\t"
+    "call _exception32_mouse\n\t"
+    "iret\n\t");
+extern "C" void _exception32_mouse() {
+
+    // FIXME: Something's wrong with the order of initializing the mouse and capturing interrupts...
+    //        Interrupt requests are not going through without the mouse doing something in the window...
+    //        See "Waiting to read!" in Mouse.cpp
+
+    // unsigned char code1 = Mouse::read();
+    // unsigned char code2 = Mouse::read();
+    // unsigned char code3 = Mouse::read();
+    // printf("INT_0x2c: Mouse - (1)%x - (2)%x - (3)%x\n", code1, code2, code3);
+    // debug_out("INT_0x2c: Mouse - (1)%x - (2)%x - (3)%x\n", code1, code2, code3);
+
+    unsigned char code1 = Mouse::read();
+    printf("INT_0x2c: Mouse - (1)%x\n", code1);
+    debug_out("INT_0x2c: Mouse - (1)%x\n", code1);
+
+    // printf("INT_0x2c: Mouse\n");
+    // debug_out("INT_0x2c: Mouse\n");
+
+    // CPU::print_control_registers_and_hang();
+    PIC::send_end_of_interrupt(PIC_MOUSE);
 }
 
 extern "C" void _exception27_spurious_entry();
@@ -507,6 +537,7 @@ static void install_interrupts() {
     install_descriptor(reinterpret_cast<unsigned int>(&_exception20_timer_tick_entry), IRQ_TIMER_TICK);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception21_keyboard_entry), IRQ_KEYBOARD);
     install_descriptor(reinterpret_cast<unsigned int>(&_exception27_spurious_entry), IRQ_PRL1_OR_SPURIOUS);
+    install_descriptor(reinterpret_cast<unsigned int>(&_exception32_mouse_entry), IRQ_MOUSE);
 }
 
 static void load_idt() {

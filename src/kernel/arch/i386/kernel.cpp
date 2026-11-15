@@ -4,6 +4,7 @@
 #include "GDT.h"
 #include "IDT.h"
 #include "Keyboard.h"
+#include "Mouse.h"
 #include "PIC.h"
 #include "PIT.h"
 #include "string.h"
@@ -355,6 +356,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     PIT::init();
 
     Keyboard::init();
+    Mouse::init();
 
     CPU::set_interrupt_flag();
 

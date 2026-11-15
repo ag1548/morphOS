@@ -1,5 +1,7 @@
 #pragma once
 
+#define PS2_DATA_PORT 0x60
+
 namespace IDT {
 
 struct Descriptor {
