@@ -24,6 +24,7 @@ shopt -s globstar
     -lgcc                           \
     -Wall                           \
     -Wextra                         \
+    -Wfatal-errors                  \
 
 if grub-file --is-x86-multiboot kernel; then
   echo multiboot confirmed
