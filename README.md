@@ -1,8 +1,6 @@
 # morphOS
 
-![docs/images/qemu.png](docs/images/qemu.png)
-
-![docs/images/blue_line.png](docs/images/blue_line.png)
+![docs/images/readme_splash.png](docs/images/readme_splash.png)
 
 ## Roadmap
 
