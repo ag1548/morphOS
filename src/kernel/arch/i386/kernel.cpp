@@ -349,11 +349,11 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     PIC::remap_interrupts(PIC1, PIC2);
     PIC::initialize_PIT();
 
-    // Move to Keyboard implementation
-    PIC::clear_interrupt_mask(PIC_KEYBOARD);
-
     GDT::init();
     IDT::init();
+
+    // Move to Keyboard implementation
+    PIC::clear_interrupt_mask(PIC_KEYBOARD);
 
     asm volatile("sti" ::: "memory");
     for (;;) {
