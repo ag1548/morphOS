@@ -125,7 +125,22 @@ static void initialize_all_interrupts_to_null() {
     const unsigned int type_32bit_interrupt_gate = 0xE;
     const unsigned int f                         = reinterpret_cast<unsigned int>(&unimplemented_interrupt_handler_test);
     construct_idt_descriptor(low, high, type_32bit_interrupt_gate, f);
-    install_interrupt_descriptor(0x20, low, high);
+    install_interrupt_descriptor(0xa0, low, high);
+    // install_interrupt_descriptor(0xa1, low, high);
+    // install_interrupt_descriptor(0xa2, low, high);
+    // install_interrupt_descriptor(0xa3, low, high);
+    // install_interrupt_descriptor(0xa4, low, high);
+    // install_interrupt_descriptor(0xa5, low, high);
+    // install_interrupt_descriptor(0xa6, low, high);
+    // install_interrupt_descriptor(0xa7, low, high);
+    // install_interrupt_descriptor(0xa8, low, high);
+    // install_interrupt_descriptor(0xa9, low, high);
+    // install_interrupt_descriptor(0xaa, low, high);
+    // install_interrupt_descriptor(0xab, low, high);
+    // install_interrupt_descriptor(0xac, low, high);
+    // install_interrupt_descriptor(0xad, low, high);
+    // install_interrupt_descriptor(0xae, low, high);
+    // install_interrupt_descriptor(0xaf, low, high);
 }
 
 extern "C" void _exception0_divide_error_entry();
