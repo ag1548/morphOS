@@ -401,8 +401,13 @@ asm(
 static unsigned int value = 0;
 extern "C" void     _exception20_timer_tick() {
     value += 1;
-    printf("INT_0x20: PIT - Timer tick %x\n", value);
-    debug_out("INT_0x20: PIT - Timer tick %x\n", value);
+    if ((value % 1000) == 999) {
+        // printf("INT_0x20: PIT - Timer tick %x\n", value);
+        // debug_out("INT_0x20: PIT - Timer tick %x\n", value);
+        printf("INT_0x20: PIT - Timer tick\n");
+        debug_out("INT_0x20: PIT - Timer tick\n");
+        value = 0;
+    }
     // print_control_registers_and_hang();
     PIC::send_end_of_interrupt(PIC_TIMER_TICK);
 }
