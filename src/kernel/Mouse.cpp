@@ -9,6 +9,117 @@ void            debug_out(const char *format, ...);
 
 namespace Mouse {
 
+unsigned char mouse_current_byte_index;
+unsigned char mouse_packet[3];
+
+/*
+
+All output to ports
+    0x60 PS2_DATA_PORT
+    0x64 PS2_STATUS_PORT
+must be preceded by waiting for bit 1 (value=2) of port 0x64 to become clear.
+
+*/
+void wait_to_write() {
+    for (;;) {
+        if (!(IO::inb(PS2_STATUS_PORT) & 2)) {
+            return;
+        }
+    }
+}
+
+void write(unsigned short port, unsigned char data) {
+    wait_to_write();
+    IO::outb(port, data);
+}
+
+// Bytes cannot be read from port 0x60 PS2_DATA_PORT until bit 0 (value=1) of port 0x64 is set.
+void wait_to_read() {
+    for (;;) {
+        if (IO::inb(PS2_STATUS_PORT) & 1) {
+            return;
+        }
+    }
+}
+
+unsigned char read() {
+    wait_to_read();
+    return IO::inb(PS2_DATA_PORT);
+}
+
+void ack() {
+    unsigned char data = read();
+    if (data != PS2_ACK) {
+        printf("Mouse ACK missed!\n\n");
+        debug_out("Mouse ACK missed!\n\n");
+        CPU::hang();
+    }
+}
+
+void enable_ps2_aux_port() {
+    write(PS2_STATUS_PORT, MOUSE_ENABLE_AUX_DEVICE);
+}
+
+void assert_mouse_first_byte() {
+    const unsigned char bit_check = mouse_packet[0] & 0x08;
+    if (!bit_check) {
+        printf("[[ ERRROR ]] Unexpected First Mouse Byte! %x\n", mouse_packet[0]);
+        debug_out("[[ ERRROR ]] Unexpected First Mouse Byte! %x\n", mouse_packet[0]);
+        CPU::hang();
+    }
+}
+
+void reset_mouse_packet() {
+    mouse_current_byte_index = 0;
+    mouse_packet[0]          = 0;
+    mouse_packet[1]          = 0;
+    mouse_packet[2]          = 0;
+}
+
+void handle_mouse_packet() {
+    const unsigned char flags = mouse_packet[0];
+    const unsigned char x     = mouse_packet[1];
+    const unsigned char y     = mouse_packet[2];
+
+    printf("Mouse Packet Received! (1) - %x (2) - %x (3) - %x\n", flags, x, y);
+    debug_out("Mouse Packet Received! (1) - %x (2) - %x (3) - %x\n", flags, x, y);
+
+    reset_mouse_packet();
+}
+
+void handle_interrupt() {
+    for (;;) {
+
+        const unsigned char status        = IO::inb(PS2_STATUS_PORT);
+        const bool          can_read      = status & PS2_BYTE_READY;
+        const bool          is_mouse_data = status & MOUSE__IS_MOUSE_DATA_BIT;
+
+        if (!can_read || !is_mouse_data) {
+            return;
+        }
+
+        unsigned char data                     = IO::inb(PS2_DATA_PORT);
+        mouse_packet[mouse_current_byte_index] = data;
+        switch (mouse_current_byte_index) {
+            case 0:
+                assert_mouse_first_byte();
+                mouse_current_byte_index++;
+                break;
+            case 1:
+                mouse_current_byte_index++;
+                break;
+            case 2:
+                handle_mouse_packet();
+                break;
+            default:
+                printf("[[ ERRROR ]] Unexpected Mouse Byte Index! %x\n", mouse_current_byte_index);
+                debug_out("[[ ERRROR ]] Unexpected Mouse Byte Index! %x\n", mouse_current_byte_index);
+                CPU::hang();
+                break;
+        }
+    }
+}
+
 bool check_for_mouse() {
 
     write(PS2_STATUS_PORT, MOUSE_WRITE_DATA);
@@ -69,50 +180,16 @@ void initialize_mouse() {
     debug_out("Mouse ID: %x\n", id);
 }
 
-void ack() {
-    unsigned char data = read();
-    if (data != PS2_ACK) {
-        printf("Mouse ACK missed!\n\n");
-        debug_out("Mouse ACK missed!\n\n");
-        CPU::hang();
-    }
-}
-
-// All output to port 0x60 or 0x64 must be preceded by waiting for bit 1 (value=2) of port 0x64 to become clear.
-void wait_to_write() {
-    for (;;) {
-        if (!(IO::inb(PS2_STATUS_PORT) & 2)) {
-            return;
-        }
-    }
-}
-
-void write(unsigned short port, unsigned char data) {
-    wait_to_write();
-    IO::outb(port, data);
-}
-
-// Bytes cannot be read from port 0x60 until bit 0 (value=1) of port 0x64 is set.
-void wait_to_read() {
-    for (;;) {
-        printf("Mouse - Waiting to read!\n\n");
-        debug_out("Mouse - Waiting to read!\n\n");
-        if (IO::inb(PS2_STATUS_PORT) & 1) {
-            return;
-        }
-    }
-}
-
-unsigned char read() {
-    wait_to_read();
-    return IO::inb(PS2_DATA_PORT);
-}
-
-void enable_ps2_aux_port() {
-    write(PS2_STATUS_PORT, MOUSE_ENABLE_AUX_DEVICE);
+void init_state() {
+    mouse_current_byte_index = 0;
+    mouse_packet[0]          = 0;
+    mouse_packet[1]          = 0;
+    mouse_packet[2]          = 0;
 }
 
 void init() {
+
+    init_state();
 
     enable_ps2_aux_port();
 
@@ -120,6 +197,8 @@ void init() {
         initialize_mouse();
     }
 
+    printf("Mouse initialized!\n");
+    debug_out("Mouse initialized!\n");
     PIC::clear_interrupt_mask(PIC_MOUSE);
 }
 

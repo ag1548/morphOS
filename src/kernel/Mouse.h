@@ -24,6 +24,9 @@ Hex value  Meaning                   Description
 #define PS2_DATA_PORT                      0x60
 #define PS2_STATUS_PORT                    0x64
 #define PS2_ACK                            0xFA
+#define PS2_BYTE_READY                     1
+
+#define MOUSE__IS_MOUSE_DATA_BIT           0x20
 
 #define MOUSE_WRITE_DATA                   0xD4
 #define MOUSE_ENABLE_AUX_DEVICE            0xA8
@@ -47,16 +50,7 @@ Hex value  Meaning                   Description
 
 namespace Mouse {
 
-void          init();
-bool          check_for_mouse();
-void          update_compaq_status();
-void          initialize_mouse();
-void          ack();
-void          wait_to_write();
-void          write(unsigned short port, unsigned char data);
-void          wait_to_read();
-void          enable_ps2_aux_port();
-void          init();
-unsigned char read();
+void handle_interrupt();
+void init();
 
 } // namespace Mouse
