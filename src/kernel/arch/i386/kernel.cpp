@@ -356,8 +356,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     Keyboard::init();
 
-    asm volatile("sti" ::: "memory");
-    for (;;) {
-        asm volatile("hlt");
-    }
+    CPU::set_interrupt_flag();
+
+    CPU::idle_loop();
 }

@@ -57,13 +57,13 @@ static void set_interrupt_descriptor_table_register_values() {
 static void unimplemented_interrupt_handler() {
     printf("Unhandled IRQ.\n");
     debug_out("Unhandled IRQ.\n");
-    hang();
+    CPU::hang();
 }
 
 static void unimplemented_interrupt_handler_test() {
     printf("Unhandled IRQ TEST\n");
     debug_out("Unhandled IRQ TEST\n");
-    hang();
+    CPU::hang();
 }
 
 void assert_gate_type(const unsigned int type_) {
@@ -72,7 +72,7 @@ void assert_gate_type(const unsigned int type_) {
     if (!is_32bit_interrupt_gate && !is_32bit_trap_gate) {
         printf("Unknown gate type!\n");
         debug_out("Unknown gate type!\n");
-        hang();
+        CPU::hang();
     }
 }
 
@@ -137,7 +137,7 @@ asm(
 extern "C" void _exception0_divide_error() {
     printf("INT_0x0: Divide Error\n");
     debug_out("INT_0x0: Divide Error\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception1_debug_exception_entry();
@@ -149,7 +149,7 @@ asm(
 extern "C" void _exception1_debug_exception() {
     printf("INT_0x1: Debug Exception\n");
     debug_out("INT_0x1: Debug Exception\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception2_nmi_interrupt_entry();
@@ -161,7 +161,7 @@ asm(
 extern "C" void _exception2_nmi_interrupt() {
     printf("INT_0x2: NMI Interrupt\n");
     debug_out("INT_0x2: NMI Interrupt\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception3_breakpoint_entry();
@@ -173,7 +173,7 @@ asm(
 extern "C" void _exception3_breakpoint() {
     printf("INT_0x3: Breakpoint\n");
     debug_out("INT_0x3: Breakpoint\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception4_overflow_entry();
@@ -185,7 +185,7 @@ asm(
 extern "C" void _exception4_overflow() {
     printf("INT_0x4: Overflow\n");
     debug_out("INT_0x4: Overflow\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception5_bound_range_exceeded_entry();
@@ -197,7 +197,7 @@ asm(
 extern "C" void _exception5_bound_range_exceeded() {
     printf("INT_0x5: Bound range exceeded\n");
     debug_out("INT_0x5: Bound range exceeded\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception6_invalid_opcode_entry();
@@ -209,7 +209,7 @@ asm(
 extern "C" void _exception6_invalid_opcode() {
     printf("INT_0x6: Invalid opcode\n");
     debug_out("INT_0x6: Invalid opcode\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception7_device_not_available_entry();
@@ -221,7 +221,7 @@ asm(
 extern "C" void _exception7_device_not_available() {
     printf("INT_0x7: Device not available\n");
     debug_out("INT_0x7: Device not available\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception8_double_fault_entry();
@@ -233,7 +233,7 @@ asm(
 extern "C" void _exception8_double_fault() {
     printf("INT_0x8: Double fault\n");
     debug_out("INT_0x8: Double fault\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception9_coprocessor_segment_overrun_entry();
@@ -245,7 +245,7 @@ asm(
 extern "C" void _exception9_coprocessor_segment_overrun() {
     printf("INT_0x9: Coprocessor segment overrun\n");
     debug_out("INT_0x9: Coprocessor segment overrun\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionA_invalid_tss_entry();
@@ -257,7 +257,7 @@ asm(
 extern "C" void _exceptionA_invalid_tss() {
     printf("INT_0xA: Invalid TSS\n");
     debug_out("INT_0xA: Invalid TSS\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionB_segment_not_present_entry();
@@ -269,7 +269,7 @@ asm(
 extern "C" void _exceptionB_segment_not_present() {
     printf("INT_0xB: Segment not present\n");
     debug_out("INT_0xB: Segment not present\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionC_stack_segment_fault_entry();
@@ -281,7 +281,7 @@ asm(
 extern "C" void _exceptionC_stack_segment_fault() {
     printf("INT_0xC: Stack segment fault\n");
     debug_out("INT_0xC: Stack segment fault\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionD_general_protection_entry();
@@ -293,7 +293,7 @@ asm(
 extern "C" void _exceptionD_general_protection() {
     printf("INT_0xD: General protection (exception)\n");
     debug_out("INT_0xD: General protection (exception)\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionE_page_fault_entry();
@@ -305,7 +305,7 @@ asm(
 extern "C" void _exceptionE_page_fault() {
     printf("INT_0xE: Page fault\n");
     debug_out("INT_0xE: Page fault\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exceptionF_intel_reserved_entry();
@@ -317,7 +317,7 @@ asm(
 extern "C" void _exceptionF_intel_reserved() {
     printf("INT_0xF: Intel reserved exception\n");
     debug_out("INT_0xF: Intel reserved exception\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception10_x87_fpu_floating_point_error_entry();
@@ -329,7 +329,7 @@ asm(
 extern "C" void _exception10_x87_fpu_floating_point_error() {
     printf("INT_0x10: FPU Floating Point Error\n");
     debug_out("INT_0x10: FPU Floating Point Error\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception11_alignment_check_entry();
@@ -341,7 +341,7 @@ asm(
 extern "C" void _exception11_alignment_check() {
     printf("INT_0x11: Align check (exception)\n");
     debug_out("INT_0x11: Align check (exception)\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception12_machine_check_entry();
@@ -353,7 +353,7 @@ asm(
 extern "C" void _exception12_machine_check() {
     printf("INT_0x12: Machine check (exception)\n");
     debug_out("INT_0x12: Machine check (exception)\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception13_simd_floating_point_exception_entry();
@@ -365,7 +365,7 @@ asm(
 extern "C" void _exception13_simd_floating_point_exception() {
     printf("INT_0x13: SIMD floating-point exception\n");
     debug_out("INT_0x13: SIMD floating-point exception\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception14_virtualization_exception_entry();
@@ -377,7 +377,7 @@ asm(
 extern "C" void _exception14_virtualization_exception() {
     printf("INT_0x14: Virtualization exception\n");
     debug_out("INT_0x14: Virtualization exception\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception15_control_protection_exception_entry();
@@ -389,7 +389,7 @@ asm(
 extern "C" void _exception15_control_protection_exception() {
     printf("INT_0x14: Control protection exception\n");
     debug_out("INT_0x14: Control protection exception\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 extern "C" void _exception20_timer_tick_entry();
@@ -408,7 +408,7 @@ extern "C" void     _exception20_timer_tick() {
         debug_out("INT_0x20: PIT - Timer tick\n");
         value = 0;
     }
-    // print_control_registers_and_hang();
+    // CPU::print_control_registers_and_hang();
     PIC::send_end_of_interrupt(PIC_TIMER_TICK);
 }
 
@@ -423,7 +423,7 @@ extern "C" void _exception21_keyboard() {
     code              = IO::inb(0x60);
     printf("INT_0x21: Keyboard - %x\n", code);
     debug_out("INT_0x21: Keyboard - %x\n", code);
-    // print_control_registers_and_hang();
+    // CPU::print_control_registers_and_hang();
     PIC::send_end_of_interrupt(PIC_KEYBOARD);
 }
 
@@ -437,7 +437,7 @@ extern "C" void _exception27_spurious() {
     // FIXME: Check ISR to determine if real.
     printf("INT_0x27: SPURIOUS?\n");
     debug_out("INT_0x27: SPURIOUS?\n");
-    print_control_registers_and_hang();
+    CPU::print_control_registers_and_hang();
 }
 
 /*

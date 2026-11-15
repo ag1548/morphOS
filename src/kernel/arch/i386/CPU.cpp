@@ -39,6 +39,8 @@ XMM06=0000000000000000 0000000000000000 XMM07=0000000000000000 0000000000000000
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
+namespace CPU {
+
 [[noreturn]] void hang() {
     asm volatile("cli" ::: "memory");
     for (;;) {
@@ -110,3 +112,5 @@ static void print_cpu() {
 
     hang();
 }
+
+} // namespace CPU
