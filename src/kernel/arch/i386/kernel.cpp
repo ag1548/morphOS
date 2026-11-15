@@ -347,7 +347,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     }
 
     PIC::remap_interrupts(PIC1, PIC2);
-    PIC::initialize_PIT();
+    PIC::init_PIT();
 
     GDT::init();
     IDT::init();

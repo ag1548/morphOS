@@ -99,6 +99,6 @@ void           clear_interrupt_mask(unsigned char IRQline);
 unsigned short get_irr();
 unsigned short get_isr();
 
-void initialize_PIT();
+void init_PIT();
 
 } // namespace PIC
