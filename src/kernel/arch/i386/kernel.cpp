@@ -144,14 +144,37 @@ void debug_out(const char *format, ...) {
     }
 }
 
+static void make_buffer_newline() {
+
+    // Move lines upwards
+    for (int line = 1; line < LINES; line++) {
+        for (int column = 0; column < COLUMNS; column++) {
+            *(video + (column + (line - 1) * COLUMNS) * 2)     = *(video + (column + line * COLUMNS) * 2);
+            *(video + (column + (line - 1) * COLUMNS) * 2 + 1) = *(video + (column + line * COLUMNS) * 2 + 1);
+        }
+    }
+}
+static void clear_remaining_line_characters() {
+    const int line = LINES - 1;
+    for (int column = xpos; column < COLUMNS; column++) {
+        *(video + (column + (line - 1) * COLUMNS) * 2)     = ' ';
+        *(video + (column + (line - 1) * COLUMNS) * 2 + 1) = WHITE_FG;
+    }
+}
+
+static void start_new_line() {
+    xpos = 0;
+    ypos++;
+    if (ypos >= LINES) {
+        ypos--;
+        make_buffer_newline();
+    }
+}
+
 static void putchar(int c) {
     if (c == '\n' || c == '\r') {
-    newline:
-        xpos = 0;
-        ypos++;
-        if (ypos >= LINES) {
-            ypos = 0;
-        }
+        clear_remaining_line_characters();
+        start_new_line();
         return;
     }
 
@@ -160,7 +183,7 @@ static void putchar(int c) {
 
     xpos++;
     if (xpos >= COLUMNS) {
-        goto newline;
+        start_new_line();
     }
 }
 
