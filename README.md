@@ -1,5 +1,13 @@
 # morphOS
 
+```
+                                _    ___  ___     \/
+\ /      ._ _ _  ___  _ _  ___ | |_ | . |/ __>  (\/)
+(oo)ooo  | ' ' |/ . \| '_>| . \| . || | |\__ \   )(
+ ||||||  |_|_|_|\___/|_|  |  _/|_|_|`___'<___/  (/\)
+                          |_|
+```
+
 ![docs/images/readme_splash.png](docs/images/readme_splash.png)
 
 ## Roadmap

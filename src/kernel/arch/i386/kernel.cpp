@@ -65,6 +65,12 @@ x86:
 
 */
 
+#define WELCOME_STR "                                _    ___  ___     \\/ \n"    \
+                    "\\ /      ._ _ _  ___  _ _  ___ | |_ | . |/ __>  (\\/) \n"   \
+                    "(oo)ooo  | ' ' |/ . \\| '_>| . \\| . || | |\\__ \\   )(  \n" \
+                    " ||||||  |_|_|_|\\___/|_|  |  _/|_|_|`___'<___/  (/\\) \n"   \
+                    "                          |_|                    \n"
+
 static void itoa(char *buf, int base, int d);
 
 void debug_out_putchar(int c) {
@@ -278,7 +284,7 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     multiboot_info_t *mbi;
 
-    debug_out("Welcome to morphOS!\n");
+    debug_out(WELCOME_STR "\n");
 
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         printf("Invalid magic number: 0x%x\n", (unsigned)magic);
