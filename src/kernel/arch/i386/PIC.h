@@ -91,7 +91,7 @@ IRR - Interrupt Request Register
 #define BASE_FREQUENCY         1193182
 
 namespace PIC {
-
+void init();
 void           remap_interrupts(int offset1, int offset2);
 void           send_end_of_interrupt(unsigned char irq);
 void           set_interrupt_mask(unsigned char IRQline);

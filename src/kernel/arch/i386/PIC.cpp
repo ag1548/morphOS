@@ -4,6 +4,10 @@
 
 namespace PIC {
 
+void init() {
+    PIC::remap_interrupts(PIC1, PIC2);
+}
+
 /*
 arguments:
         offset1 - vector offset for master PIC vectors on the master become offset1..offset1+7
