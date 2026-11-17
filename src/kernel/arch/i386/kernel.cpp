@@ -390,11 +390,15 @@ static void print_multiboot_info(unsigned long addr) {
              (unsigned long)mmap < mbi->mmap_addr + mbi->mmap_length;
              mmap = (multiboot_memory_map_t *)((unsigned long)mmap + mmap->size + sizeof(mmap->size))) {
 
-            printf(" size = 0x%x,", (unsigned)mmap->size);
-            printf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
-            printf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
-            printf(" type = 0x%x\n", (unsigned)mmap->type);
-            printf("\n");
+            if ((unsigned)mmap->type != 1) {
+                printf(" ----------------------------- NOT USABLE -----------------------------\n");
+            } else {
+                printf(" size = 0x%x,", (unsigned)mmap->size);
+                printf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
+                printf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
+                printf(" type = 0x%x", (unsigned)mmap->type);
+                printf("\n");
+            }
         }
     }
 }
