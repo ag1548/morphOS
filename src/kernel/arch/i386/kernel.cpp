@@ -382,20 +382,30 @@ static void print_multiboot_info(unsigned long addr) {
     if (CHECK_FLAG(mbi->flags, 6)) {
         multiboot_memory_map_t *mmap;
 
-        printf("mmap_addr = 0x%x, mmap_length = 0x%x\n", (unsigned)mbi->mmap_addr, (unsigned)mbi->mmap_length);
+        printf("mmap_addr = 0x%x, ", (unsigned)mbi->mmap_addr);
+        printf("mmap_length = 0x%x", (unsigned)mbi->mmap_length);
+        printf("\n");
+
         for (mmap = (multiboot_memory_map_t *)mbi->mmap_addr;
              (unsigned long)mmap < mbi->mmap_addr + mbi->mmap_length;
              mmap = (multiboot_memory_map_t *)((unsigned long)mmap + mmap->size + sizeof(mmap->size))) {
-            printf(" size = 0x%x,"
-                   " base_addr = 0x%x%08x,"
-                   " length = 0x%x%08x,"
-                   " type = 0x%x\n",
-                   (unsigned)mmap->size,
-                   (unsigned)(mmap->addr >> 32),
-                   (unsigned)(mmap->addr & 0xffffffff),
-                   (unsigned)(mmap->len >> 32),
-                   (unsigned)(mmap->len & 0xffffffff),
-                   (unsigned)mmap->type);
+
+            // printf(" size = 0x%x,"
+            //        " base_addr = 0x%x%08x,"
+            //        " length = 0x%x%08x,"
+            //        " type = 0x%x\n",
+            //        (unsigned)mmap->size,
+            //        (unsigned)(mmap->addr >> 32),
+            //        (unsigned)(mmap->addr & 0xffffffff),
+            //        (unsigned)(mmap->len >> 32),
+            //        (unsigned)(mmap->len & 0xffffffff),
+            //        (unsigned)mmap->type);
+
+            printf(" size = 0x%x,", (unsigned)mmap->size);
+            printf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
+            printf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
+            printf(" type = 0x%x\n", (unsigned)mmap->type);
+            printf("\n");
         }
     }
 }
