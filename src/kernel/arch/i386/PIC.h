@@ -69,6 +69,7 @@ IRR - Interrupt Request Register
 #define PIC_READ_ISR           0x0b /* OCW3 irq service next CMD read */
 
 namespace PIC {
+
 void           init();
 void           remap_interrupts(int offset1, int offset2);
 void           send_end_of_interrupt(unsigned char irq);

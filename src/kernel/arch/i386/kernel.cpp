@@ -303,16 +303,20 @@ static void cls(void) {
     ypos = 0;
 }
 
+static void assert_multiboot_magic_number(unsigned long magic) {
+    if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
+        printf("Invalid magic number: 0x%x\n", (unsigned)magic);
+        return;
+    }
+}
+
 extern "C" void cmain(unsigned long magic, unsigned long addr) {
 
     multiboot_info_t *mbi;
 
     debug_out(WELCOME_STR "\n");
 
-    if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-        printf("Invalid magic number: 0x%x\n", (unsigned)magic);
-        return;
-    }
+    assert_multiboot_magic_number(magic);
 
     cls();
 
