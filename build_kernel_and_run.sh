@@ -64,6 +64,7 @@ run_kernel() {
         -nic none
         -no-reboot                    # Exit instead of rebooting.
         -m 4G
+        -append morphOS
     )
     qemu-system-i386 "${QEMU_OPTS[@]}"
 }
