@@ -310,19 +310,25 @@ static void assert_multiboot_magic_number(unsigned long magic) {
     }
 }
 
-extern "C" void cmain(unsigned long magic, unsigned long addr) {
+static void print_multiboot_info(unsigned long addr) {
 
-    multiboot_info_t *mbi;
+    multiboot_info_t *mbi = (multiboot_info_t *)addr;
 
-    debug_out(WELCOME_STR "\n");
-
-    assert_multiboot_magic_number(magic);
-
-    cls();
-
-    mbi = (multiboot_info_t *)addr;
+    if (CHECK_FLAG(mbi->flags, 9)) {
+        printf("boot_loader_name = \"%s\"\n", mbi->boot_loader_name);
+    }
 
     printf("flags = 0x%x\n", (unsigned)mbi->flags);
+    /*
+    flags = 0x24f
+            0b00000000_00000000_00000010_01001111
+                                                ^ (0) `mem_*` fields are valid
+                                               ^ (1) `boot_device` field is valid
+                                              ^ (2) `cmdline` field is valid
+                                             ^ (3) `mods` fields indicate what modules were loaded and where they are
+                                          ^ (6) `mmap_*` fields are valid
+                                      ^ (9) `boot_loader_name` field is valid
+    */
 
     if (CHECK_FLAG(mbi->flags, 0)) {
         printf("mem_lower = %uKB, mem_upper = %uKB\n", (unsigned)mbi->mem_lower, (unsigned)mbi->mem_upper);
@@ -381,6 +387,17 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
             printf(" size = 0x%x, base_addr = 0x%x%08x, length = 0x%x%08x, type = 0x%x\n", (unsigned)mmap->size, (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff), (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff), (unsigned)mmap->type);
         }
     }
+}
+
+extern "C" void cmain(unsigned long magic, unsigned long addr) {
+
+    assert_multiboot_magic_number(magic);
+
+    cls();
+
+    debug_out(WELCOME_STR "\n");
+
+    print_multiboot_info(addr);
 
     PIC::init();
     GDT::init();
