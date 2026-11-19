@@ -23,20 +23,9 @@
 /* The flags for the Multiboot header. */
 #define MULTIBOOT_HEADER_FLAGS          MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO
 
-        .text
+.section .multiboot
+.align 4
 
-        .comm   stack, STACK_SIZE, 16
-
-        .globl  start, _start
-start:
-_start:
-        jmp     multiboot_entry
-
-        /* Align 32 bits boundary. */
-        .align  4
-
-        /* Multiboot header. */
-multiboot_header:
         /* magic */
         .long   MULTIBOOT_HEADER_MAGIC
         /* flags */
@@ -56,7 +45,17 @@ multiboot_header:
         .long 768  /* height */
         .long 32   /* depth */
 
-multiboot_entry:
+        .text
+
+        .comm   stack, STACK_SIZE, 16
+
+        .globl  start, _start
+start:
+_start:
+
+        /* At this point: */
+        /* - EAX has magic value 0x2BADB002 */
+        /* - EBX has physical address of multiboot_info_struct */
 
         /* Initialize the stack pointer. */
         movl    $(stack + STACK_SIZE), %esp
@@ -65,8 +64,9 @@ multiboot_entry:
         pushl   $0
         popf
 
-        pushl   %ebx /* Push the pointer to the Multiboot information structure. */
-        pushl   %eax /* Push the magic value. */
+        /* Put the respective values in the symbols */
+        mov     %eax, multiboot_magic
+        mov     %ebx, multiboot_info_ptr
 
         cli /* Clear interrupt flag */
         cld /* Clear direction flag */

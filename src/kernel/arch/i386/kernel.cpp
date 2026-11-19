@@ -303,23 +303,33 @@ static void cls(void) {
     ypos = 0;
 }
 
-static bool assert_multiboot_magic_number(unsigned long magic) {
-    if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
-        printf("Invalid magic number: 0x%x\n", (unsigned)magic);
+extern "C" {
+unsigned multiboot_magic;
+}
+static bool assert_multiboot_magic_number() {
+    if (multiboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
+        printf("Invalid magic number: 0x%x\n", multiboot_magic);
         return false;
     }
+
     return true;
 }
 
-static void print_multiboot_info(unsigned long addr) {
+extern "C" {
+multiboot_info_t* multiboot_info_ptr;
+}
+static void print_multiboot_info() {
 
-    multiboot_info_t *mbi = (multiboot_info_t *)addr;
+    multiboot_info_t*& mbi = multiboot_info_ptr;
 
-    if (CHECK_FLAG(mbi->flags, 9)) {
-        printf("boot_loader_name = \"%s\"\n", mbi->boot_loader_name);
+    if (!CHECK_FLAG(mbi->flags, 9)) {
+        printf("No FLAGS!\n");
+        CPU::hang();
     }
 
+    printf("boot_loader_name = \"%s\"\n", mbi->boot_loader_name);
     printf("flags = 0x%x\n", (unsigned)mbi->flags);
+
     /*
     flags = 0x24f
             0b00000000_00000000_00000010_01001111
@@ -404,20 +414,17 @@ static void print_multiboot_info(unsigned long addr) {
     }
 }
 
-extern "C" void cmain(unsigned long magic, unsigned long addr) {
-
-    assert_multiboot_magic_number(magic);
+extern "C" void cmain() {
 
     cls();
 
-    magic = 0xF3;
-    if (!assert_multiboot_magic_number(magic)) {
+    if (!assert_multiboot_magic_number()) {
         return;
     }
 
     debug_out(WELCOME_STR "\n");
 
-    print_multiboot_info(addr);
+    print_multiboot_info();
 
     PIC::init();
     GDT::init();

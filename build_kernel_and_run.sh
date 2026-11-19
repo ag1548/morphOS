@@ -8,6 +8,7 @@ shopt -s globstar
 ./cross/bin/i686-elf-g++            \
     src/**/*.S                      \
     src/**/*.cpp                    \
+    -T src/ld/linker.ld             \
     -I src/include                  \
     -I src/kernel                   \
     -I src/kernel/arch/i386         \
