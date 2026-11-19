@@ -303,11 +303,12 @@ static void cls(void) {
     ypos = 0;
 }
 
-static void assert_multiboot_magic_number(unsigned long magic) {
+static bool assert_multiboot_magic_number(unsigned long magic) {
     if (magic != MULTIBOOT_BOOTLOADER_MAGIC) {
         printf("Invalid magic number: 0x%x\n", (unsigned)magic);
-        return;
+        return false;
     }
+    return true;
 }
 
 static void print_multiboot_info(unsigned long addr) {
@@ -408,6 +409,11 @@ extern "C" void cmain(unsigned long magic, unsigned long addr) {
     assert_multiboot_magic_number(magic);
 
     cls();
+
+    magic = 0xF3;
+    if (!assert_multiboot_magic_number(magic)) {
+        return;
+    }
 
     debug_out(WELCOME_STR "\n");
 
