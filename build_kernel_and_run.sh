@@ -14,7 +14,6 @@ shopt -s globstar
     -o kernel                       \
     -std=c++17                      \
     -ffreestanding                  \
-    -g                              \
     -O0                             \
     -nostdlib                       \
     -nodefaultlibs                  \
