@@ -36,6 +36,25 @@ else
   exit 1
 fi
 
+update_kernel_elf() {
+
+    export SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
+    echo $SCRIPT_DIR
+    pushd $SCRIPT_DIR > /dev/null
+
+        local -r path_="./docs/notes/001_current_state_of_kernel_ELF.md"
+
+        echo "# Kernel ELF" > $path_
+        echo "\`$ readelf -hlSW kernel\`" >> $path_
+        echo "" >> $path_
+        echo "\`\`\`text" >> $path_
+        readelf -hlSW kernel >> $path_
+        echo "\`\`\`" >> $path_
+
+    popd > /dev/null
+}
+update_kernel_elf
+
 make_grub_kernel_iso() {
     mkdir -p isodir/boot/grub
     cp src/config/grub.cfg isodir/boot/grub/grub.cfg

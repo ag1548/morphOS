@@ -2,7 +2,7 @@ ENTRY(_start)
 
 SECTIONS
 {
-    . = 2M;
+    . = 1M;
     kernel_mem_start = .;
 	.text   : ALIGN(4K) { *(.multiboot) *(.text*) }
 	.rodata : ALIGN(4K) { *(.rodata) }

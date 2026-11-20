@@ -13,6 +13,13 @@ namespace MemoryManager {
 
 void init() {
 
+    // Decide on a memory map :^)
+    // Set the Page Directory
+    // Set the Page Table Entries
+    // Turn paging on
+    // Get a page fault to trigger
+    // Handle page faults :^)
+
     kprintf("Memory Manager initialized!\n");
 }
 
