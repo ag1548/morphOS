@@ -310,7 +310,7 @@ static void cls(void) {
 }
 
 extern "C" {
-unsigned multiboot_magic;
+unsigned int multiboot_magic;
 }
 static bool assert_multiboot_magic_number() {
     if (multiboot_magic != MULTIBOOT_BOOTLOADER_MAGIC) {
@@ -323,7 +323,11 @@ static bool assert_multiboot_magic_number() {
 
 extern "C" {
 multiboot_info_t* multiboot_info_ptr;
+char kernel_mem_start;
+char kernel_mem_end;
 }
+unsigned int kernel_mem_start_address() { return reinterpret_cast<unsigned int>(&kernel_mem_start); }
+unsigned int kernel_mem_end_address() { return reinterpret_cast<unsigned int>(&kernel_mem_end); }
 static void print_multiboot_info() {
 
     multiboot_info_t*& mbi = multiboot_info_ptr;
@@ -346,6 +350,9 @@ static void print_multiboot_info() {
                                           ^ (6) `mmap_*` fields are valid
                                       ^ (9) `boot_loader_name` field is valid
     */
+
+    kprintf("Kernel mem start: 0x%x\n", kernel_mem_start_address());
+    kprintf("Kernel mem end  : 0x%x\n", kernel_mem_end_address());
 
     if (CHECK_FLAG(mbi->flags, 0)) {
         kprintf("mem_lower = %uKB, mem_upper = %uKB\n", (unsigned)mbi->mem_lower, (unsigned)mbi->mem_upper);
