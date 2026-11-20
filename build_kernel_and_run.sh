@@ -11,6 +11,7 @@ shopt -s globstar
     -T src/ld/linker.ld             \
     -I src/include                  \
     -I src/kernel                   \
+    -I src/kernel/virtual_memory    \
     -I src/kernel/arch/i386         \
     -o kernel                       \
     -std=c++17                      \

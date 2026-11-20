@@ -4,6 +4,7 @@
 #include "GDT.h"
 #include "IDT.h"
 #include "Keyboard.h"
+#include "MemoryManager.h"
 #include "Mouse.h"
 #include "PIC.h"
 #include "PIT.h"
@@ -446,13 +447,13 @@ extern "C" void cmain() {
     PIC::init();
     GDT::init();
     IDT::init();
-
     PIT::init();
 
     Keyboard::init();
     Mouse::init();
 
-    CPU::set_interrupt_flag();
+    MemoryManager::init();
 
+    CPU::set_interrupt_flag();
     CPU::idle_loop();
 }
