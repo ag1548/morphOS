@@ -9,6 +9,12 @@
 #include "PIT.h"
 #include "string.h"
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
 
 #define WHITE_FG               0b00001111
@@ -323,12 +329,12 @@ static void print_multiboot_info() {
     multiboot_info_t*& mbi = multiboot_info_ptr;
 
     if (!CHECK_FLAG(mbi->flags, 9)) {
-        printf("No FLAGS!\n");
+        kprintf("No FLAGS!\n");
         CPU::hang();
     }
 
-    printf("boot_loader_name = \"%s\"\n", mbi->boot_loader_name);
-    printf("flags = 0x%x\n", (unsigned)mbi->flags);
+    kprintf("boot_loader_name = \"%s\"\n", mbi->boot_loader_name);
+    kprintf("flags = 0x%x\n", (unsigned)mbi->flags);
 
     /*
     flags = 0x24f
@@ -342,17 +348,17 @@ static void print_multiboot_info() {
     */
 
     if (CHECK_FLAG(mbi->flags, 0)) {
-        printf("mem_lower = %uKB, mem_upper = %uKB\n", (unsigned)mbi->mem_lower, (unsigned)mbi->mem_upper);
+        kprintf("mem_lower = %uKB, mem_upper = %uKB\n", (unsigned)mbi->mem_lower, (unsigned)mbi->mem_upper);
     }
 
     /* Is boot_device valid? */
     if (CHECK_FLAG(mbi->flags, 1)) {
-        printf("boot_device = 0x%x\n", (unsigned)mbi->boot_device);
+        kprintf("boot_device = 0x%x\n", (unsigned)mbi->boot_device);
     }
 
     /* Is the command line passed? */
     if (CHECK_FLAG(mbi->flags, 2)) {
-        printf("cmdline = %s\n", (char *)mbi->cmdline);
+        kprintf("cmdline = %s\n", (char *)mbi->cmdline);
     }
 
     /* Are mods_* valid? */
@@ -361,15 +367,15 @@ static void print_multiboot_info() {
         multiboot_module_t *mod;
         int                 i;
 
-        printf("mods_count = %d, mods_addr = 0x%x\n", (int)mbi->mods_count, (int)mbi->mods_addr);
+        kprintf("mods_count = %d, mods_addr = 0x%x\n", (int)mbi->mods_count, (int)mbi->mods_addr);
         for (i = 0, mod = (multiboot_module_t *)mbi->mods_addr; i < (int)mbi->mods_count; i++, mod++) {
-            printf(" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n", (unsigned)mod->mod_start, (unsigned)mod->mod_end, (char *)mod->cmdline);
+            kprintf(" mod_start = 0x%x, mod_end = 0x%x, cmdline = %s\n", (unsigned)mod->mod_start, (unsigned)mod->mod_end, (char *)mod->cmdline);
         }
     }
 
     /* Bits 4 and 5 are mutually exclusive! */
     if (CHECK_FLAG(mbi->flags, 4) && CHECK_FLAG(mbi->flags, 5)) {
-        printf("Both bits 4 and 5 are set.\n");
+        kprintf("Both bits 4 and 5 are set.\n");
         return;
     }
 
@@ -377,7 +383,7 @@ static void print_multiboot_info() {
     if (CHECK_FLAG(mbi->flags, 5)) {
         multiboot_elf_section_header_table_t *multiboot_elf_sec = &(mbi->u.elf_sec);
 
-        printf("multiboot_elf_sec: "
+        kprintf("multiboot_elf_sec: "
                "num = %u, "
                "size = 0x%x, "
                "addr = 0x%x, "
@@ -393,22 +399,22 @@ static void print_multiboot_info() {
     if (CHECK_FLAG(mbi->flags, 6)) {
         multiboot_memory_map_t *mmap;
 
-        printf("mmap_addr = 0x%x, ", (unsigned)mbi->mmap_addr);
-        printf("mmap_length = 0x%x", (unsigned)mbi->mmap_length);
-        printf("\n");
+        kprintf("mmap_addr = 0x%x, ", (unsigned)mbi->mmap_addr);
+        kprintf("mmap_length = 0x%x", (unsigned)mbi->mmap_length);
+        kprintf("\n");
 
         for (mmap = (multiboot_memory_map_t *)mbi->mmap_addr;
              (unsigned long)mmap < mbi->mmap_addr + mbi->mmap_length;
              mmap = (multiboot_memory_map_t *)((unsigned long)mmap + mmap->size + sizeof(mmap->size))) {
 
             if ((unsigned)mmap->type != 1) {
-                printf(" ----------------------------- NOT USABLE -----------------------------\n");
+                kprintf(" ----------------------------- NOT USABLE -----------------------------\n");
             } else {
-                printf(" size = 0x%x,", (unsigned)mmap->size);
-                printf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
-                printf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
-                printf(" type = 0x%x", (unsigned)mmap->type);
-                printf("\n");
+                kprintf(" size = 0x%x,", (unsigned)mmap->size);
+                kprintf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
+                kprintf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
+                kprintf(" type = 0x%x", (unsigned)mmap->type);
+                kprintf("\n");
             }
         }
     }
