@@ -507,7 +507,6 @@ static void load_idt() {
 
 void init() {
 
-
     set_interrupt_descriptor_table_register_values();
 
     initialize_all_interrupts_to_null();
@@ -515,7 +514,6 @@ void init() {
     install_interrupts();
 
     load_idt();
-
 }
 
 } // namespace IDT

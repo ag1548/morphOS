@@ -7,7 +7,7 @@
     } while (0)
 
 extern "C" void printf(const char *format, ...);
-void debug_out(const char *format, ...);
+void            debug_out(const char *format, ...);
 
 void print_CR0_dump(ControlRegister0Dump dump) {
 

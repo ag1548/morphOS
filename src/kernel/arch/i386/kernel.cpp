@@ -322,15 +322,19 @@ static bool assert_multiboot_magic_number() {
 }
 
 extern "C" {
-multiboot_info_t* multiboot_info_ptr;
-char kernel_mem_start;
-char kernel_mem_end;
+multiboot_info_t *multiboot_info_ptr;
+char              kernel_mem_start;
+char              kernel_mem_end;
 }
-unsigned int kernel_mem_start_address() { return reinterpret_cast<unsigned int>(&kernel_mem_start); }
-unsigned int kernel_mem_end_address() { return reinterpret_cast<unsigned int>(&kernel_mem_end); }
+unsigned int kernel_mem_start_address() {
+    return reinterpret_cast<unsigned int>(&kernel_mem_start);
+}
+unsigned int kernel_mem_end_address() {
+    return reinterpret_cast<unsigned int>(&kernel_mem_end);
+}
 static void print_multiboot_info() {
 
-    multiboot_info_t*& mbi = multiboot_info_ptr;
+    multiboot_info_t *&mbi = multiboot_info_ptr;
 
     if (!CHECK_FLAG(mbi->flags, 9)) {
         kprintf("No FLAGS!\n");
@@ -391,15 +395,15 @@ static void print_multiboot_info() {
         multiboot_elf_section_header_table_t *multiboot_elf_sec = &(mbi->u.elf_sec);
 
         kprintf("multiboot_elf_sec: "
-               "num = %u, "
-               "size = 0x%x, "
-               "addr = 0x%x, "
-               "shndx = 0x%x"
-               "\n",
-               (unsigned)multiboot_elf_sec->num,
-               (unsigned)multiboot_elf_sec->size,
-               (unsigned)multiboot_elf_sec->addr,
-               (unsigned)multiboot_elf_sec->shndx);
+                "num = %u, "
+                "size = 0x%x, "
+                "addr = 0x%x, "
+                "shndx = 0x%x"
+                "\n",
+                (unsigned)multiboot_elf_sec->num,
+                (unsigned)multiboot_elf_sec->size,
+                (unsigned)multiboot_elf_sec->addr,
+                (unsigned)multiboot_elf_sec->shndx);
     }
 
     /* Are mmap_* valid? */
