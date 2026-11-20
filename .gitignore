@@ -11,3 +11,4 @@ other
 objs
 tmp
 qemu.log
+kernel.map
