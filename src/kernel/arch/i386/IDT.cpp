@@ -43,6 +43,12 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 #include "PIC.h"
 #include "types.h"
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
@@ -57,14 +63,12 @@ static void set_interrupt_descriptor_table_register_values() {
 }
 
 static void unimplemented_interrupt_handler() {
-    printf("Unhandled IRQ.\n");
-    debug_out("Unhandled IRQ.\n");
+    kprintf("Unhandled IRQ.\n");
     CPU::hang();
 }
 
 static void unimplemented_interrupt_handler_test() {
-    printf("Unhandled IRQ TEST\n");
-    debug_out("Unhandled IRQ TEST\n");
+    kprintf("Unhandled IRQ TEST\n");
     CPU::hang();
 }
 
@@ -72,8 +76,7 @@ void assert_gate_type(const unsigned int type_) {
     const bool is_32bit_interrupt_gate = type_ == 0xE;
     const bool is_32bit_trap_gate      = type_ == 0xF;
     if (!is_32bit_interrupt_gate && !is_32bit_trap_gate) {
-        printf("Unknown gate type!\n");
-        debug_out("Unknown gate type!\n");
+        kprintf("Unknown gate type!\n");
         CPU::hang();
     }
 }
@@ -152,8 +155,7 @@ asm(
     "call _exception0_divide_error\n\t"
     "iret\n\t");
 extern "C" void _exception0_divide_error() {
-    printf("INT_0x0: Divide Error\n");
-    debug_out("INT_0x0: Divide Error\n");
+    kprintf("INT_0x0: Divide Error\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -164,8 +166,7 @@ asm(
     "call _exception1_debug_exception\n\t"
     "iret\n\t");
 extern "C" void _exception1_debug_exception() {
-    printf("INT_0x1: Debug Exception\n");
-    debug_out("INT_0x1: Debug Exception\n");
+    kprintf("INT_0x1: Debug Exception\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -176,8 +177,7 @@ asm(
     "call _exception2_nmi_interrupt\n\t"
     "iret\n\t");
 extern "C" void _exception2_nmi_interrupt() {
-    printf("INT_0x2: NMI Interrupt\n");
-    debug_out("INT_0x2: NMI Interrupt\n");
+    kprintf("INT_0x2: NMI Interrupt\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -188,8 +188,7 @@ asm(
     "call _exception3_breakpoint\n\t"
     "iret\n\t");
 extern "C" void _exception3_breakpoint() {
-    printf("INT_0x3: Breakpoint\n");
-    debug_out("INT_0x3: Breakpoint\n");
+    kprintf("INT_0x3: Breakpoint\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -200,8 +199,7 @@ asm(
     "call _exception4_overflow\n\t"
     "iret\n\t");
 extern "C" void _exception4_overflow() {
-    printf("INT_0x4: Overflow\n");
-    debug_out("INT_0x4: Overflow\n");
+    kprintf("INT_0x4: Overflow\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -212,8 +210,7 @@ asm(
     "call _exception5_bound_range_exceeded\n\t"
     "iret\n\t");
 extern "C" void _exception5_bound_range_exceeded() {
-    printf("INT_0x5: Bound range exceeded\n");
-    debug_out("INT_0x5: Bound range exceeded\n");
+    kprintf("INT_0x5: Bound range exceeded\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -224,8 +221,7 @@ asm(
     "call _exception6_invalid_opcode\n\t"
     "iret\n\t");
 extern "C" void _exception6_invalid_opcode() {
-    printf("INT_0x6: Invalid opcode\n");
-    debug_out("INT_0x6: Invalid opcode\n");
+    kprintf("INT_0x6: Invalid opcode\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -236,8 +232,7 @@ asm(
     "call _exception7_device_not_available\n\t"
     "iret\n\t");
 extern "C" void _exception7_device_not_available() {
-    printf("INT_0x7: Device not available\n");
-    debug_out("INT_0x7: Device not available\n");
+    kprintf("INT_0x7: Device not available\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -248,8 +243,7 @@ asm(
     "call _exception8_double_fault\n\t"
     "iret\n\t");
 extern "C" void _exception8_double_fault() {
-    printf("INT_0x8: Double fault\n");
-    debug_out("INT_0x8: Double fault\n");
+    kprintf("INT_0x8: Double fault\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -260,8 +254,7 @@ asm(
     "call _exception9_coprocessor_segment_overrun\n\t"
     "iret\n\t");
 extern "C" void _exception9_coprocessor_segment_overrun() {
-    printf("INT_0x9: Coprocessor segment overrun\n");
-    debug_out("INT_0x9: Coprocessor segment overrun\n");
+    kprintf("INT_0x9: Coprocessor segment overrun\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -272,8 +265,7 @@ asm(
     "call _exceptionA_invalid_tss\n\t"
     "iret\n\t");
 extern "C" void _exceptionA_invalid_tss() {
-    printf("INT_0xA: Invalid TSS\n");
-    debug_out("INT_0xA: Invalid TSS\n");
+    kprintf("INT_0xA: Invalid TSS\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -284,8 +276,7 @@ asm(
     "call _exceptionB_segment_not_present\n\t"
     "iret\n\t");
 extern "C" void _exceptionB_segment_not_present() {
-    printf("INT_0xB: Segment not present\n");
-    debug_out("INT_0xB: Segment not present\n");
+    kprintf("INT_0xB: Segment not present\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -296,8 +287,7 @@ asm(
     "call _exceptionC_stack_segment_fault\n\t"
     "iret\n\t");
 extern "C" void _exceptionC_stack_segment_fault() {
-    printf("INT_0xC: Stack segment fault\n");
-    debug_out("INT_0xC: Stack segment fault\n");
+    kprintf("INT_0xC: Stack segment fault\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -308,8 +298,7 @@ asm(
     "call _exceptionD_general_protection\n\t"
     "iret\n\t");
 extern "C" void _exceptionD_general_protection() {
-    printf("INT_0xD: General protection (exception)\n");
-    debug_out("INT_0xD: General protection (exception)\n");
+    kprintf("INT_0xD: General protection (exception)\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -320,8 +309,7 @@ asm(
     "call _exceptionE_page_fault\n\t"
     "iret\n\t");
 extern "C" void _exceptionE_page_fault() {
-    printf("INT_0xE: Page fault\n");
-    debug_out("INT_0xE: Page fault\n");
+    kprintf("INT_0xE: Page fault\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -332,8 +320,7 @@ asm(
     "call _exceptionF_intel_reserved\n\t"
     "iret\n\t");
 extern "C" void _exceptionF_intel_reserved() {
-    printf("INT_0xF: Intel reserved exception\n");
-    debug_out("INT_0xF: Intel reserved exception\n");
+    kprintf("INT_0xF: Intel reserved exception\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -344,8 +331,7 @@ asm(
     "call _exception10_x87_fpu_floating_point_error\n\t"
     "iret\n\t");
 extern "C" void _exception10_x87_fpu_floating_point_error() {
-    printf("INT_0x10: FPU Floating Point Error\n");
-    debug_out("INT_0x10: FPU Floating Point Error\n");
+    kprintf("INT_0x10: FPU Floating Point Error\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -356,8 +342,7 @@ asm(
     "call _exception11_alignment_check\n\t"
     "iret\n\t");
 extern "C" void _exception11_alignment_check() {
-    printf("INT_0x11: Align check (exception)\n");
-    debug_out("INT_0x11: Align check (exception)\n");
+    kprintf("INT_0x11: Align check (exception)\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -368,8 +353,7 @@ asm(
     "call _exception12_machine_check\n\t"
     "iret\n\t");
 extern "C" void _exception12_machine_check() {
-    printf("INT_0x12: Machine check (exception)\n");
-    debug_out("INT_0x12: Machine check (exception)\n");
+    kprintf("INT_0x12: Machine check (exception)\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -380,8 +364,7 @@ asm(
     "call _exception13_simd_floating_point_exception\n\t"
     "iret\n\t");
 extern "C" void _exception13_simd_floating_point_exception() {
-    printf("INT_0x13: SIMD floating-point exception\n");
-    debug_out("INT_0x13: SIMD floating-point exception\n");
+    kprintf("INT_0x13: SIMD floating-point exception\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -392,8 +375,7 @@ asm(
     "call _exception14_virtualization_exception\n\t"
     "iret\n\t");
 extern "C" void _exception14_virtualization_exception() {
-    printf("INT_0x14: Virtualization exception\n");
-    debug_out("INT_0x14: Virtualization exception\n");
+    kprintf("INT_0x14: Virtualization exception\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -404,8 +386,7 @@ asm(
     "call _exception15_control_protection_exception\n\t"
     "iret\n\t");
 extern "C" void _exception15_control_protection_exception() {
-    printf("INT_0x14: Control protection exception\n");
-    debug_out("INT_0x14: Control protection exception\n");
+    kprintf("INT_0x14: Control protection exception\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -419,10 +400,8 @@ static unsigned int value = 0;
 extern "C" void     _exception20_timer_tick() {
     value += 1;
     if ((value % 1000) == 999) {
-        // printf("INT_0x20: PIT - Timer tick %x\n", value);
-        // debug_out("INT_0x20: PIT - Timer tick %x\n", value);
-        printf("INT_0x20: PIT - Timer tick\n");
-        debug_out("INT_0x20: PIT - Timer tick\n");
+        // kprintf("INT_0x20: PIT - Timer tick %x\n", value);
+        kprintf("INT_0x20: PIT - Timer tick\n");
         value = 0;
     }
     // CPU::print_control_registers_and_hang();
@@ -459,8 +438,7 @@ asm(
     "iret\n\t");
 extern "C" void _exception27_spurious() {
     // FIXME: Check ISR to determine if real.
-    printf("INT_0x27: SPURIOUS?\n");
-    debug_out("INT_0x27: SPURIOUS?\n");
+    kprintf("INT_0x27: SPURIOUS?\n");
     CPU::print_control_registers_and_hang();
 }
 
@@ -529,7 +507,6 @@ static void load_idt() {
 
 void init() {
 
-    debug_out("IDT loading...!\n");
 
     set_interrupt_descriptor_table_register_values();
 
@@ -539,7 +516,6 @@ void init() {
 
     load_idt();
 
-    debug_out("IDT loaded!\n");
 }
 
 } // namespace IDT

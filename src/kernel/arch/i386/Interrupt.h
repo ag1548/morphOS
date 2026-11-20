@@ -1,6 +1,13 @@
 #pragma once
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 extern "C" void printf(const char *format, ...);
+void            debug_out(const char *format, ...);
 
 class InterruptDisabler {
 
@@ -22,14 +29,14 @@ class InterruptDisabler {
 
 public:
     InterruptDisabler() {
-        printf("Disabling interrupts...\n");
+        kprintf("Disabling interrupts...\n");
         disable_interrupts();
-        printf("Disabled interrupts!\n");
+        kprintf("Disabled interrupts!\n");
     }
 
     ~InterruptDisabler() {
-        printf("Reenabling Interrupts...\n");
+        kprintf("Reenabling Interrupts...\n");
         enable_interrupts();
-        printf("Reenabled Interrupts!\n");
+        kprintf("Reenabled Interrupts!\n");
     }
 };

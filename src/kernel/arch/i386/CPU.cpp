@@ -36,6 +36,12 @@ XMM06=0000000000000000 0000000000000000 XMM07=0000000000000000 0000000000000000
 
 #include "ControlRegisters.h"
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
@@ -58,16 +64,16 @@ EAX, ECX, EDX, EBX, ESP (the value prior to executing the PUSHA instruction), EB
 */
 extern "C" __attribute__((regparm(1))) void do_print_cpu(RegisterDump &reg) {
 
-    printf("eax: %u\n", reg.eax);
-    printf("ebx: %u\n", reg.ebx);
-    printf("ecx: %u\n", reg.ecx);
-    printf("edx: %u\n", reg.edx);
+    kprintf("eax: %u\n", reg.eax);
+    kprintf("ebx: %u\n", reg.ebx);
+    kprintf("ecx: %u\n", reg.ecx);
+    kprintf("edx: %u\n", reg.edx);
 
-    printf("ebp: %u\n", reg.ebp);
-    printf("esp: %u\n", reg.esp);
+    kprintf("ebp: %u\n", reg.ebp);
+    kprintf("esp: %u\n", reg.esp);
 
-    printf("edi: %u\n", reg.edi);
-    printf("esi: %u\n", reg.esi);
+    kprintf("edi: %u\n", reg.edi);
+    kprintf("esi: %u\n", reg.esi);
 }
 static void print_cpu() {
     // asm volatile(
@@ -102,9 +108,9 @@ static void print_cpu() {
     asm volatile("mov %%cr3, %%eax" : "=a"(cr3));
     asm volatile("mov %%cr4, %%eax" : "=a"(cr4));
 
-    printf("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
-    debug_out("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
-    printf("\n");
+    kprintf("CR0=%x CR2=%x CR3=%x CR4=%x\n", cr0, cr2, cr3, cr4);
+    kprintf("\n");
+
     print_CR0_dump(ControlRegister0Dump(ControlRegister0(cr0)));
     print_CR2_dump(ControlRegister2(cr2));
     print_CR3_dump(ControlRegister3Dump(ControlRegister3(cr3)));

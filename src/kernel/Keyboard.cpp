@@ -4,6 +4,12 @@
 #include "Mouse.h"
 #include "PIC.h"
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
@@ -21,14 +27,12 @@ void handle_interrupt() {
         }
 
         unsigned char data = IO::inb(PS2_DATA_PORT);
-        printf("Keyboard Byte Received! %x\n", data);
-        debug_out("Keyboard Byte Received! %x\n", data);
+        kprintf("Keyboard Byte Received! %x\n", data);
     }
 }
 
 void init() {
-    printf("Keyboard initialized!\n");
-    debug_out("Keyboard initialized!\n");
+    kprintf("Keyboard initialized!\n");
     PIC::clear_interrupt_mask(PIC_KEYBOARD);
 }
 

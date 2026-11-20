@@ -4,6 +4,12 @@
 #include "IO.h"
 #include "PIC.h"
 
+#define kprintf(...)            \
+    do {                        \
+        printf(__VA_ARGS__);    \
+        debug_out(__VA_ARGS__); \
+    } while (0)
+
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
@@ -50,8 +56,7 @@ unsigned char read() {
 void ack() {
     unsigned char data = read();
     if (data != PS2_ACK) {
-        printf("Mouse ACK missed!\n\n");
-        debug_out("Mouse ACK missed!\n\n");
+        kprintf("Mouse ACK missed!\n\n");
         CPU::hang();
     }
 }
@@ -63,8 +68,7 @@ void enable_ps2_aux_port() {
 void assert_mouse_first_byte() {
     const unsigned char bit_check = mouse_packet[0] & 0x08;
     if (!bit_check) {
-        printf("[[ ERRROR ]] Unexpected First Mouse Byte! %x\n", mouse_packet[0]);
-        debug_out("[[ ERRROR ]] Unexpected First Mouse Byte! %x\n", mouse_packet[0]);
+        kprintf("[[ ERRROR ]] Unexpected First Mouse Byte! %x\n", mouse_packet[0]);
         CPU::hang();
     }
 }
@@ -81,8 +85,7 @@ void handle_mouse_packet() {
     const unsigned char x     = mouse_packet[1];
     const unsigned char y     = mouse_packet[2];
 
-    printf("Mouse Packet Received! (1) - %x (2) - %x (3) - %x\n", flags, x, y);
-    debug_out("Mouse Packet Received! (1) - %x (2) - %x (3) - %x\n", flags, x, y);
+    kprintf("Mouse Packet Received! (1) - %x (2) - %x (3) - %x\n", flags, x, y);
 
     reset_mouse_packet();
 }
@@ -112,8 +115,7 @@ void handle_interrupt() {
                 handle_mouse_packet();
                 break;
             default:
-                printf("[[ ERRROR ]] Unexpected Mouse Byte Index! %x\n", mouse_current_byte_index);
-                debug_out("[[ ERRROR ]] Unexpected Mouse Byte Index! %x\n", mouse_current_byte_index);
+                kprintf("[[ ERRROR ]] Unexpected Mouse Byte Index! %x\n", mouse_current_byte_index);
                 CPU::hang();
                 break;
         }
@@ -127,8 +129,7 @@ bool check_for_mouse() {
 
     unsigned char maybe_ack = read();
     if (maybe_ack == PS2_ACK) {
-        printf("Mouse detected!\n");
-        debug_out("Mouse detected!\n");
+        kprintf("Mouse detected!\n");
 
         // Discard mouse data packet
         read();
@@ -138,8 +139,7 @@ bool check_for_mouse() {
         return true;
 
     } else {
-        printf("No Mouse detected!\n");
-        debug_out("No Mouse detected!\n");
+        kprintf("No Mouse detected!\n");
         return false;
     }
 }
@@ -176,8 +176,7 @@ void initialize_mouse() {
     write(PS2_DATA_PORT, MOUSE_CMD_GET_MOUSEID);
     ack();
     unsigned char id = read();
-    printf("Mouse ID: %x\n", id);
-    debug_out("Mouse ID: %x\n", id);
+    kprintf("Mouse ID: %x\n", id);
 }
 
 void init_state() {
@@ -197,8 +196,7 @@ void init() {
         initialize_mouse();
     }
 
-    printf("Mouse initialized!\n");
-    debug_out("Mouse initialized!\n");
+    kprintf("Mouse initialized!\n");
     PIC::clear_interrupt_mask(PIC_MOUSE);
 }
 
