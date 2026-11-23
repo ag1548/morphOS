@@ -18,6 +18,7 @@ mmap_addr = 0x9000, mmap_length = 0xa8
 
 namespace MemoryManager {
 
+void print_memory_map();
 void init();
 
-}
+} // namespace MemoryManager
