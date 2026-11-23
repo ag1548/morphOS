@@ -419,15 +419,32 @@ static void print_multiboot_info() {
              (unsigned long)mmap < mbi->mmap_addr + mbi->mmap_length;
              mmap = (multiboot_memory_map_t *)((unsigned long)mmap + mmap->size + sizeof(mmap->size))) {
 
-            if ((unsigned)mmap->type != 1) {
-                kprintf(" ----------------------------- NOT USABLE -----------------------------\n");
-            } else {
-                kprintf(" size = 0x%x,", (unsigned)mmap->size);
-                kprintf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
-                kprintf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
-                kprintf(" type = 0x%x", (unsigned)mmap->type);
-                kprintf("\n");
+            switch((unsigned)mmap->type) {
+               case MULTIBOOT_MEMORY_RESERVED:
+                   kprintf(" ------------------------------- RESERVED -----------------------------\n");
+                   continue;
+                   break;
+               case MULTIBOOT_MEMORY_ACPI_RECLAIMABLE:
+                   kprintf(" -------------------------- ACPI RECLAIMABLE --------------------------\n");
+                   continue;
+                   break;
+               case MULTIBOOT_MEMORY_NVS:
+                   kprintf(" --------------------------------- NVS --------------------------------\n");
+                   continue;
+                   break;
+               case MULTIBOOT_MEMORY_BADRAM:
+                   kprintf(" ------------------------------ BAD RAM -------------------------------\n");
+                   continue;
+                   break;
+               default:
+                   break;
             }
+
+            kprintf(" size = 0x%x,", (unsigned)mmap->size);
+            kprintf(" base_addr = 0x%x%08x,", (unsigned)(mmap->addr >> 32), (unsigned)(mmap->addr & 0xffffffff));
+            kprintf(" length = 0x%x%08x,", (unsigned)(mmap->len >> 32), (unsigned)(mmap->len & 0xffffffff));
+            kprintf(" type = 0x%x", (unsigned)mmap->type);
+            kprintf("\n");
         }
     }
 }
