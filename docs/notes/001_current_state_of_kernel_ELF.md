@@ -2,6 +2,22 @@
 
 # Kernel ELF
 
+## stat
+
+`$ stat kernel`
+
+```text
+  File: kernel
+  Size: 33004     	Blocks: 72         IO Block: 4096   regular file
+Device: 8,0	Inode: 11840912    Links: 1
+Access: (0775/-rwxrwxr-x)  Uid: ( 1000/     dre)   Gid: ( 1000/     dre)
+Access: 2026-11-23 12:16:57.922428206 -0600
+Modify: 2026-11-23 12:16:57.921347987 -0600
+Change: 2026-11-23 12:16:57.921451846 -0600
+ Birth: 2026-11-23 12:16:57.919428266 -0600
+```
+## readelf
+
 `$ readelf -hlSW kernel`
 
 ```text
