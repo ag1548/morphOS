@@ -1,5 +1,6 @@
 #include "multiboot.h"
 
+#include "common.h"
 #include "CPU.h"
 #include "GDT.h"
 #include "IDT.h"
@@ -9,12 +10,6 @@
 #include "PIC.h"
 #include "PIT.h"
 #include "string.h"
-
-#define kprintf(...)            \
-    do {                        \
-        printf(__VA_ARGS__);    \
-        debug_out(__VA_ARGS__); \
-    } while (0)
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
 

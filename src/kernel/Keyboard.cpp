@@ -1,17 +1,9 @@
 #include "Keyboard.h"
 
+#include "common.h"
 #include "IO.h"
 #include "Mouse.h"
 #include "PIC.h"
-
-#define kprintf(...)            \
-    do {                        \
-        printf(__VA_ARGS__);    \
-        debug_out(__VA_ARGS__); \
-    } while (0)
-
-extern "C" void printf(const char *format, ...);
-void            debug_out(const char *format, ...);
 
 namespace Keyboard {
 
