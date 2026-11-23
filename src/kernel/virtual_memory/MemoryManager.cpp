@@ -51,7 +51,7 @@ void print_memory_map() {
     }
 }
 
-void align_memory_map_pages() {
+void align_memory_map_regions_to_page_boundaries() {
 
     multiboot_info_t      *&mbi = multiboot_info_ptr;
     multiboot_memory_map_t *mmap;
@@ -95,7 +95,7 @@ void align_memory_map_pages() {
 
 void init() {
 
-    align_memory_map_pages();
+    align_memory_map_regions_to_page_boundaries();
     print_memory_map();
 
     // Decide on a memory map :^)
