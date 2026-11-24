@@ -153,11 +153,28 @@ void create_virtual_memory_data_structures() {
     move_pdpt_into_cr3();
 }
 
+/*
+
+Since we have sections of RAM that are above the 0x1_00_00_00_00 boundary.
+
+*/
+void turn_on_physical_address_extension() {
+    kprintf("Turning on PAE...\n");
+    asm volatile("mov %%cr4,                   %%eax\n\t"
+                 "orl $" STRINGIFY(PAE_BIT) ", %%eax\n\t"
+                 "mov %%eax,                   %%cr4\n\t"
+                :
+                :
+                : "eax", "cc", "memory");
+}
+
 void init() {
 
-    create_virtual_memory_data_structures();
-
     align_memory_map_regions_to_page_boundaries();
+
+    turn_on_physical_address_extension();
+
+    create_virtual_memory_data_structures();
 
     // Set the Page Table Entries
     // Turn paging on
