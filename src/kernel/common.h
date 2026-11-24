@@ -9,6 +9,6 @@
 extern "C" void printf(const char *format, ...);
 void            debug_out(const char *format, ...);
 
-#define KB        1024
-#define MB        (KB * KB)
-#define GB        (KB * KB * KB)
+#define KB 1024
+#define MB (KB * KB)
+#define GB (KB * KB * KB)

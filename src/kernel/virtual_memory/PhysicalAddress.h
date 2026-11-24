@@ -8,10 +8,8 @@ static_assert(sizeof(unsigned int) == 4);
 class PhysicalAddress {
 
 public:
-
     PhysicalAddress(unsigned int address)
-        : address(address)
-        {}
+        : address(address) {}
 
     unsigned int get() const {
 
@@ -25,10 +23,8 @@ public:
     }
     void set(unsigned int new_address) { address = new_address; }
 
-    unsigned char* as_ptr() { return reinterpret_cast<unsigned char*>(address); }
+    unsigned char *as_ptr() { return reinterpret_cast<unsigned char *>(address); }
 
 private:
-
-    unsigned int address = { 0 };
-
+    unsigned int address = {0};
 };

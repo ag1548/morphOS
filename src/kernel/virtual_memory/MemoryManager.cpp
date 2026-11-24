@@ -101,14 +101,14 @@ void align_memory_map_regions_to_page_boundaries() {
 }
 
 extern "C" {
-PageDirectoryPointerTable* virtual_memory_data_structures_ptr;
+PageDirectoryPointerTable *virtual_memory_data_structures_ptr;
 }
-PageDirectoryPointerTable& pdpt() {
+PageDirectoryPointerTable &pdpt() {
     return *virtual_memory_data_structures_ptr;
 }
 
-PageDirectory& create_page_directory_at_addr(PhysicalAddress addr) {
-    return *reinterpret_cast<PageDirectory*>(addr.get());
+PageDirectory &create_page_directory_at_addr(PhysicalAddress addr) {
+    return *reinterpret_cast<PageDirectory *>(addr.get());
 }
 
 void move_pdpt_into_cr3() {
@@ -118,10 +118,9 @@ void move_pdpt_into_cr3() {
 
     kprintf("Assigning %x to cr3\n", vmds);
     asm volatile("mov %0, %%cr3"
-        :
-        : "r"(vmds)
-        : "memory"
-    );
+                 :
+                 : "r"(vmds)
+                 : "memory");
 }
 
 /*
@@ -143,7 +142,7 @@ void create_virtual_memory_data_structures() {
     pdpt().reset();
     for (unsigned int i = 0; i < 4; i++) {
 
-        PageDirectory& pd = create_page_directory_at_addr(PhysicalAddress(vmds + PAGE_SIZE * (i + 1)));
+        PageDirectory &pd = create_page_directory_at_addr(PhysicalAddress(vmds + PAGE_SIZE * (i + 1)));
 
         unsigned long long pd_addr = reinterpret_cast<unsigned int>(&pd);
         pdpt().set_pd_addr(i, pd_addr);

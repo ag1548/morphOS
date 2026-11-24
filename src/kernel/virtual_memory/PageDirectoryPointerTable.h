@@ -9,12 +9,13 @@
 class PageDirectoryPointerTable {
 
 public:
-
     void reset() {
-        for (unsigned int i = 0; i < 4; i++) pd_ptrs[i] = 0;
+        for (unsigned int i = 0; i < 4; i++) {
+            pd_ptrs[i] = 0;
+        }
     }
 
-    PageDirectory& get_pd(const unsigned int idx) const {
+    PageDirectory &get_pd(const unsigned int idx) const {
 
         // FIXME: Remove this later...
         if (!pd_ptrs[idx]) {
@@ -22,7 +23,7 @@ public:
             CPU::hang();
         }
 
-        return *reinterpret_cast<PageDirectory*>(pd_ptrs[idx]);
+        return *reinterpret_cast<PageDirectory *>(pd_ptrs[idx]);
     }
 
     void set_pd_addr(const unsigned int idx, const unsigned long long addr) {
@@ -43,9 +44,7 @@ public:
     }
 
 private:
-
-    unsigned long long pd_ptrs[4] = { 0, 0, 0, 0 };
-
+    unsigned long long pd_ptrs[4] = {0, 0, 0, 0};
 };
 
 static_assert(sizeof(PageDirectoryPointerTable) == (8 * 4));
