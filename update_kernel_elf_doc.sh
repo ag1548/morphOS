@@ -3,7 +3,7 @@
 update_kernel_elf_doc() {
 
     export SCRIPT_DIR=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)
-    echo $SCRIPT_DIR
+    # echo $SCRIPT_DIR
     pushd $SCRIPT_DIR > /dev/null
 
         local -r path_="./docs/notes/001_current_state_of_kernel_ELF.md"
@@ -32,6 +32,13 @@ update_kernel_elf_doc() {
 
         echo "\`\`\`text" >> $path_
         readelf -hlSW kernel >> $path_
+        echo "\`\`\`" >> $path_
+
+        echo "## nm -n kernel" >> $path_
+        echo "" >> $path_
+
+        echo "\`\`\`text" >> $path_
+        nm -n kernel >> $path_
         echo "\`\`\`" >> $path_
 
     popd > /dev/null
