@@ -188,7 +188,7 @@ void turn_on_paging() {
                  "1:\n\t"
                      :
                      :
-                     : "%eax", "memory");
+                     : "eax", "memory");
 }
 
 void init() {
