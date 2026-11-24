@@ -23,7 +23,7 @@ public:
             CPU::hang();
         }
 
-        return *reinterpret_cast<PageDirectory *>(pd_ptrs[idx]);
+        return *reinterpret_cast<PageDirectory *>(pd_ptrs[idx] & 0xFFFFF000);
     }
 
     void set_pd_addr(const unsigned int idx, const unsigned long long addr) {
