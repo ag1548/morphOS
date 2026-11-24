@@ -45,7 +45,13 @@
         .long 768  /* height */
         .long 32   /* depth */
 
-        .text
+.section .vm_structs
+.align 4096
+virtual_memory_data_structures:
+.skip 4096 * 9 /* 1 page directory pointer table; 4 page directories; 4 page tables (...?) */
+
+.section .text
+.align 4
 
         .comm   stack, STACK_SIZE, 16
 
@@ -67,6 +73,7 @@ _start:
         /* Put the respective values in the symbols */
         mov     %eax, multiboot_magic
         mov     %ebx, multiboot_info_ptr
+        movl    $virtual_memory_data_structures, virtual_memory_data_structures_ptr
 
         cli /* Clear interrupt flag */
         cld /* Clear direction flag */

@@ -1,7 +1,10 @@
 #include "MemoryManager.h"
 
 #include "common.h"
+#include "ControlRegisters.h"
 #include "multiboot.h"
+#include "PageDirectoryPointerTable.h"
+#include "PhysicalAddress.h"
 
 extern multiboot_info_t *multiboot_info_ptr;
 
@@ -53,6 +56,8 @@ void print_memory_map() {
 
 void align_memory_map_regions_to_page_boundaries() {
 
+    kprintf("Aligning memory map regions to page boundaries...\n");
+
     multiboot_info_t      *&mbi = multiboot_info_ptr;
     multiboot_memory_map_t *mmap;
 
@@ -73,32 +78,73 @@ void align_memory_map_regions_to_page_boundaries() {
 
         // Align memory map page start
         if ((unsigned int)mmap->addr % PAGE_SIZE != 0) {
-            kprintf("PAGE_START: mmap->addr start not aligned to page size. Realigning...\n");
-            kprintf("    - %x -> ", (unsigned int)mmap->addr);
+            kprintf("    PAGE_START: mmap->addr start not aligned to page size. Realigning...\n");
+            kprintf("        - %x -> ", (unsigned int)mmap->addr);
             unsigned int extra_bytes  = PAGE_SIZE - (unsigned int)mmap->addr % PAGE_SIZE;
             mmap->addr               += extra_bytes;
             mmap->len                -= extra_bytes;
             kprintf("%x\n", (unsigned int)mmap->addr);
-            kprintf("DONE!\n");
+            kprintf("    DONE!\n");
         }
 
         // Align memory map page end
         if (mmap->len % PAGE_SIZE != 0) {
-            kprintf("PAGE_END: mmap->len not aligned to page size. Realigning...\n");
-            kprintf("    - %x -> ", (unsigned int)mmap->len);
+            kprintf("    PAGE_END: mmap->len not aligned to page size. Realigning...\n");
+            kprintf("        - %x -> ", (unsigned int)mmap->len);
             mmap->len -= mmap->len % PAGE_SIZE;
             kprintf("%x\n", (unsigned int)mmap->len);
-            kprintf("DONE!\n");
+            kprintf("    DONE!\n");
         }
+    }
+
+    print_memory_map();
+}
+
+extern "C" {
+PageDirectoryPointerTable* virtual_memory_data_structures_ptr;
+}
+PageDirectoryPointerTable& pdpt() {
+    return *virtual_memory_data_structures_ptr;
+}
+
+PageDirectory& create_page_directory_at_addr(PhysicalAddress addr) {
+    return *reinterpret_cast<PageDirectory*>(addr.get());
+}
+
+/*
+
+The Page Directory Pointer Table lives hardcoded at address `virtual_memory_data_structures` defined in `boot.S`.
+
+Page Directory 1 lives hardcoded at address `virtual_memory_data_structures` + PAGE_SIZE * 1
+Page Directory 2 lives hardcoded at address `virtual_memory_data_structures` + PAGE_SIZE * 2
+Page Directory 3 lives hardcoded at address `virtual_memory_data_structures` + PAGE_SIZE * 3
+Page Directory 4 lives hardcoded at address `virtual_memory_data_structures` + PAGE_SIZE * 4
+
+*/
+void create_virtual_memory_data_structures() {
+
+    const unsigned int vmds = reinterpret_cast<unsigned int>(virtual_memory_data_structures_ptr);
+    kprintf("Creating VM Data Structures at addr: %x\n", vmds);
+
+    // Page Directory Pointer Table & Page Directories 1 - 4
+    pdpt().reset();
+    for (unsigned int i = 0; i < 4; i++) {
+
+        PageDirectory& pd = create_page_directory_at_addr(PhysicalAddress(vmds + PAGE_SIZE * (i + 1)));
+
+        unsigned long long pd_addr = reinterpret_cast<unsigned int>(&pd);
+        pdpt().set_pd_addr(i, pd_addr);
+
+        pdpt().set_pd_present(i);
     }
 }
 
 void init() {
 
-    align_memory_map_regions_to_page_boundaries();
-    print_memory_map();
+    create_virtual_memory_data_structures();
 
-    // Set the Page Directory
+    align_memory_map_regions_to_page_boundaries();
+
     // Set the Page Table Entries
     // Turn paging on
     // Get a page fault to trigger
