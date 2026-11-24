@@ -161,11 +161,34 @@ Since we have sections of RAM that are above the 0x1_00_00_00_00 boundary.
 void turn_on_physical_address_extension() {
     kprintf("Turning on PAE...\n");
     asm volatile("mov %%cr4,                   %%eax\n\t"
-                 "orl $" STRINGIFY(PAE_BIT) ", %%eax\n\t"
+                 "or  $" STRINGIFY(PAE_BIT) ", %%eax\n\t"
                  "mov %%eax,                   %%cr4\n\t"
                 :
                 :
                 : "eax", "cc", "memory");
+}
+
+/*
+
+_Must_ be loaded before this point... See Intel manual Vol 3, Section 11.8
+
+    - IDT
+    - GDT
+    - At least one Page Directory and one Page Table
+    - <A few others...>
+
+*/
+void turn_on_paging() {
+    // See Intel manual Vol 3, 11.9.1 - which requires a far jump immediately after the `mov into cr0`
+    asm volatile("mov %%cr0,                 %%eax\n\t"
+                 "or $" STRINGIFY(PG_BIT) ", %%eax\n\t" // Paging Enable
+                 "or $" STRINGIFY(PE_BIT) ", %%eax\n\t" // Protection Enable
+                 "mov %%eax,                 %%cr0\n\t"
+                 "ljmp $0x08, $1f\n\t" // The Code segment descriptor is 8 bytes (0x08) from the GDT pointer; and can only be changed by a `ljmp` (not a mov)
+                 "1:\n\t"
+                     :
+                     :
+                     : "%eax", "memory");
 }
 
 void init() {
@@ -176,8 +199,10 @@ void init() {
 
     create_virtual_memory_data_structures();
 
-    // Set the Page Table Entries
-    // Turn paging on
+    // Set the Page Table Entries (?)
+
+    turn_on_paging();
+
     // Get a page fault to trigger
     // Handle page faults :^)
 
