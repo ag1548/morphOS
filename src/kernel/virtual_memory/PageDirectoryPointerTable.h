@@ -38,7 +38,7 @@ public:
     }
 
     void set_pd_not_present(const unsigned int idx) {
-        kprintf("    PDPT::set_pd_present[%x] = %x -> ", idx, pd_ptrs[idx]);
+        kprintf("    PDPT::set_pd_not_present[%x] = %x -> ", idx, pd_ptrs[idx]);
         pd_ptrs[idx] &= ~PAGE_PRESENT;
         kprintf("%x\n", pd_ptrs[idx]);
     }
