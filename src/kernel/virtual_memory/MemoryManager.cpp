@@ -111,6 +111,19 @@ PageDirectory& create_page_directory_at_addr(PhysicalAddress addr) {
     return *reinterpret_cast<PageDirectory*>(addr.get());
 }
 
+void move_pdpt_into_cr3() {
+
+    // The address here is already page aligned
+    const unsigned int vmds = reinterpret_cast<unsigned int>(virtual_memory_data_structures_ptr);
+
+    kprintf("Assigning %x to cr3\n", vmds);
+    asm volatile("mov %0, %%cr3"
+        :
+        : "r"(vmds)
+        : "memory"
+    );
+}
+
 /*
 
 The Page Directory Pointer Table lives hardcoded at address `virtual_memory_data_structures` defined in `boot.S`.
@@ -137,6 +150,8 @@ void create_virtual_memory_data_structures() {
 
         pdpt().set_pd_present(i);
     }
+
+    move_pdpt_into_cr3();
 }
 
 void init() {
