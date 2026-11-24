@@ -98,7 +98,6 @@ void init() {
     align_memory_map_regions_to_page_boundaries();
     print_memory_map();
 
-    // Decide on a memory map :^)
     // Set the Page Directory
     // Set the Page Table Entries
     // Turn paging on
