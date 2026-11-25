@@ -27,20 +27,20 @@ public:
     }
 
     void set_pd_addr(const unsigned int idx, const unsigned long long addr) {
-        kprintf("    PDPT::set_pd_addr[%x] = %x\n", idx, addr);
+        kprintf("    PDPT::set_pd_addr[%x] = 0x%x%08x\n", idx, (unsigned)(addr >> 32), (unsigned)(addr && 0xFFFFFFFF));
         pd_ptrs[idx] = addr;
     }
 
     void set_pd_present(const unsigned int idx) {
-        kprintf("    PDPT::set_pd_present[%x] = %x -> ", idx, pd_ptrs[idx]);
+        kprintf("    PDPT::set_pd_present[%x] = 0x%x%08x -> ", idx, (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
         pd_ptrs[idx] |= PAGE_PRESENT;
-        kprintf("%x\n", pd_ptrs[idx]);
+        kprintf("0x%x%08x\n", (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
     }
 
     void set_pd_not_present(const unsigned int idx) {
-        kprintf("    PDPT::set_pd_not_present[%x] = %x -> ", idx, pd_ptrs[idx]);
+        kprintf("    PDPT::set_pd_not_present[%x] = 0x%x%08x -> ", idx, (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
         pd_ptrs[idx] &= ~PAGE_PRESENT;
-        kprintf("%x\n", pd_ptrs[idx]);
+        kprintf("0x%x%08x\n", (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
     }
 
 private:
