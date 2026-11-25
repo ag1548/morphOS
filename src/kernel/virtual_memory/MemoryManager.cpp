@@ -158,6 +158,7 @@ void create_virtual_memory_data_structures() {
 Since we have sections of RAM that are above the 0x1_00_00_00_00 boundary.
 
 */
+// clang-format off
 void turn_on_physical_address_extension() {
     kprintf("Turning on PAE...\n");
     asm volatile("mov %%cr4,                   %%eax\n\t"
@@ -167,6 +168,7 @@ void turn_on_physical_address_extension() {
                 :
                 : "eax", "cc", "memory");
 }
+// clang-format on
 
 /*
 
@@ -178,6 +180,7 @@ _Must_ be loaded before this point... See Intel manual Vol 3, Section 11.8
     - <A few others...>
 
 */
+// clang-format off
 void turn_on_paging() {
     // See Intel manual Vol 3, 11.9.1 - which requires a far jump immediately after the `mov into cr0`
     asm volatile("mov %%cr0,                 %%eax\n\t"
@@ -190,6 +193,7 @@ void turn_on_paging() {
                      :
                      : "eax", "memory");
 }
+// clang-format on
 
 void init() {
 
