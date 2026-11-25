@@ -48,7 +48,7 @@
 .section .vm_structs, "aw", @nobits
 .align 4096
 virtual_memory_data_structures:
-.skip 4096 * 9 /* 1 page directory pointer table; 4 page directories; 4 page tables (...?) */
+.skip 4096 * 13 /* 1 page directory pointer table; 4 page directories; 8 page tables for mapping bottom 16 MB */
 
 .section .text
 .align 4
