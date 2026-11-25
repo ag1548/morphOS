@@ -197,6 +197,9 @@ void turn_on_paging() {
 
 void init() {
 
+    // FIXME: The memory manager is combining responsibilities of the allocator with handing out pages. Make an allocator and have the memory manager talk to it.
+    // FIXME: You know where the kernel begins and ends (`kernel_mem_start`, `kernel_mem_end`).  Remove that area from consideration for the allocator.
+
     align_memory_map_regions_to_page_boundaries();
 
     turn_on_physical_address_extension();
