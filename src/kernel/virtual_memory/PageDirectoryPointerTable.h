@@ -4,7 +4,7 @@
 #include "CPU.h"
 #include "PageDirectory.h"
 
-#define PAGE_PRESENT 1u
+#define PAGE_PRESENT 1ull
 
 class PageDirectoryPointerTable {
 
@@ -27,20 +27,20 @@ public:
     }
 
     void set_pd_addr(const unsigned int idx, const unsigned long long addr) {
-        kprintf("    PDPT::set_pd_addr[%x] = 0x%x%08x\n", idx, (unsigned)(addr >> 32), (unsigned)(addr && 0xFFFFFFFF));
+        kprintf("    PDPT::set_pd_addr[%x]    = 0x%08x%08x\n", idx, (unsigned int)(addr >> 32), (unsigned int)(addr & 0xFFFFFFFF));
         pd_ptrs[idx] = addr;
     }
 
     void set_pd_present(const unsigned int idx) {
-        kprintf("    PDPT::set_pd_present[%x] = 0x%x%08x -> ", idx, (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
+        kprintf("    PDPT::set_pd_present[%x] = 0x%08x%08x -> ", idx, (unsigned int)(pd_ptrs[idx] >> 32), (unsigned int)(pd_ptrs[idx] & 0xFFFFFFFF));
         pd_ptrs[idx] |= PAGE_PRESENT;
-        kprintf("0x%x%08x\n", (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
+        kprintf("0x%08x%08x\n", (unsigned int)(pd_ptrs[idx] >> 32), (unsigned int)(pd_ptrs[idx] & 0xFFFFFFFF));
     }
 
     void set_pd_not_present(const unsigned int idx) {
-        kprintf("    PDPT::set_pd_not_present[%x] = 0x%x%08x -> ", idx, (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
-        pd_ptrs[idx] &= ~PAGE_PRESENT;
-        kprintf("0x%x%08x\n", (unsigned)(pd_ptrs[idx] >> 32), (unsigned)(pd_ptrs[idx] && 0xFFFFFFFF));
+        kprintf("    PDPT::set_pd_not_present[%x] = 0x%08x%08x -> ", idx, (unsigned int)(pd_ptrs[idx] >> 32), (unsigned int)(pd_ptrs[idx] & 0xFFFFFFFF));
+        pd_ptrs[idx] &= ~(PAGE_PRESENT);
+        kprintf("0x%08x%08x\n", (unsigned int)(pd_ptrs[idx] >> 32), (unsigned int)(pd_ptrs[idx] & 0xFFFFFFFF));
     }
 
 private:
