@@ -34,15 +34,15 @@ Selector - A Segment Selector with multiple fields which must point to a valid c
 
 */
 
-#include "IDT.h"
+#include <arch/i386/IDT.h>
 
-#include "common.h"
-#include "CPU.h"
-#include "IO.h"
-#include "Keyboard.h"
-#include "Mouse.h"
-#include "PIC.h"
-#include "types.h"
+#include <arch/i386/CPU.h>
+#include <arch/i386/PIC.h>
+#include <common.h>
+#include <IO.h>
+#include <Keyboard.h>
+#include <Mouse.h>
+#include <sys/types.h>
 
 namespace IDT {
 

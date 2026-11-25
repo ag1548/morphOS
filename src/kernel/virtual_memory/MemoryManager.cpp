@@ -1,10 +1,10 @@
-#include "MemoryManager.h"
+#include <virtual_memory/MemoryManager.h>
 
-#include "common.h"
-#include "ControlRegisters.h"
-#include "multiboot.h"
-#include "PageDirectoryPointerTable.h"
-#include "PhysicalAddress.h"
+#include <arch/i386/ControlRegisters.h>
+#include <arch/i386/multiboot.h>
+#include <common.h>
+#include <virtual_memory/PageDirectoryPointerTable.h>
+#include <virtual_memory/PhysicalAddress.h>
 
 extern multiboot_info_t *multiboot_info_ptr;
 

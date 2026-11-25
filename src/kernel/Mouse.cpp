@@ -1,9 +1,9 @@
-#include "Mouse.h"
+#include <Mouse.h>
 
-#include "common.h"
-#include "CPU.h"
-#include "IO.h"
-#include "PIC.h"
+#include <arch/i386/CPU.h>
+#include <arch/i386/PIC.h>
+#include <common.h>
+#include <IO.h>
 
 namespace Mouse {
 

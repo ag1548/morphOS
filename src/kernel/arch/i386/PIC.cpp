@@ -1,6 +1,6 @@
-#include "PIC.h"
+#include <arch/i386/PIC.h>
 
-#include "IO.h"
+#include <IO.h>
 
 namespace PIC {
 

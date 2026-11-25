@@ -1,5 +1,8 @@
-#include "stdlib.cpp"
+#include <stdlib.h>
+
+#include <sys/types.h>
 
 void *malloc(size_t size) {
-    // TODO
+    (void)size;
+    return 0;
 }

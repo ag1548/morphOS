@@ -1,8 +1,8 @@
 #pragma once
 
-#include "common.h"
-#include "CPU.h"
-#include "PageDirectory.h"
+#include <arch/i386/CPU.h>
+#include <common.h>
+#include <virtual_memory/PageDirectory.h>
 
 #define PAGE_PRESENT 1ull
 

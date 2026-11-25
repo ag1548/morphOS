@@ -1,6 +1,6 @@
-#include "ControlRegisters.h"
+#include <arch/i386/ControlRegisters.h>
 
-#include "common.h"
+#include <common.h>
 
 void print_CR0_dump(ControlRegister0Dump dump) {
 

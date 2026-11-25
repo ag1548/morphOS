@@ -1,6 +1,6 @@
-#include "string.h"
+#include <string.h>
 
-#include "types.h"
+#include <sys/types.h>
 
 /*
 
@@ -106,7 +106,7 @@ void *memmove(void *dest, const void *src, size_t n) {
             ptr_dest[i] = ptr_src[i];
         }
     } else /* if (dest > src) */ {
-        for (size_t i = n - 1; i >= 0; i--) {
+        for (int i = n - 1; i >= 0; i--) {
             ptr_dest[i] = ptr_src[i];
         }
     }

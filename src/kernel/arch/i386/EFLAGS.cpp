@@ -1,6 +1,6 @@
-#include "EFLAGS.h"
+#include <arch/i386/EFLAGS.h>
 
-#include "common.h"
+#include <common.h>
 
 void print_EFLAGSRegister_dump(EFLAGSRegisterDump dump) {
 

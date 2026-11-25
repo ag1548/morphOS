@@ -110,10 +110,10 @@ Access
 
 */
 
-#include "GDT.h"
+#include <arch/i386/GDT.h>
 
-#include "common.h"
-#include "types.h"
+#include <common.h>
+#include <sys/types.h>
 
 namespace GDT {
 

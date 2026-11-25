@@ -9,10 +9,8 @@ shopt -s globstar
     src/**/*.S                      \
     src/**/*.cpp                    \
     -T src/ld/linker.ld             \
-    -I src/include                  \
     -I src/kernel                   \
-    -I src/kernel/virtual_memory    \
-    -I src/kernel/arch/i386         \
+    -I src/Libraries/LibC           \
     -o kernel                       \
     -std=c++17                      \
     -ffreestanding                  \

@@ -1,15 +1,14 @@
-#include "multiboot.h"
+#include <arch/i386/multiboot.h>
 
-#include "common.h"
-#include "CPU.h"
-#include "GDT.h"
-#include "IDT.h"
-#include "Keyboard.h"
-#include "MemoryManager.h"
-#include "Mouse.h"
-#include "PIC.h"
-#include "PIT.h"
-#include "string.h"
+#include <arch/i386/CPU.h>
+#include <arch/i386/GDT.h>
+#include <arch/i386/IDT.h>
+#include <arch/i386/PIC.h>
+#include <arch/i386/PIT.h>
+#include <common.h>
+#include <Keyboard.h>
+#include <Mouse.h>
+#include <virtual_memory/MemoryManager.h>
 
 #define CHECK_FLAG(flags, bit) ((flags) & (1 << (bit)))
 

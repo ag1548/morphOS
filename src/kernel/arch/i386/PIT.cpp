@@ -1,7 +1,7 @@
-#include "PIT.h"
+#include <arch/i386/PIT.h>
 
-#include "IO.h"
-#include "PIC.h"
+#include <arch/i386/PIC.h>
+#include <IO.h>
 
 namespace PIT {
 

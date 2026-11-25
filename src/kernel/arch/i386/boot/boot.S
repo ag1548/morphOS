@@ -15,7 +15,7 @@
  */
 
 #define ASM_FILE        1
-#include "multiboot.h"
+#include <arch/i386/multiboot.h>
 
 /* The size of our stack (16KB). */
 #define STACK_SIZE                      0x4000

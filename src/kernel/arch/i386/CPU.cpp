@@ -32,10 +32,10 @@ XMM06=0000000000000000 0000000000000000 XMM07=0000000000000000 0000000000000000
 
 */
 
-#include "CPU.h"
+#include <arch/i386/CPU.h>
 
-#include "common.h"
-#include "ControlRegisters.h"
+#include <arch/i386/ControlRegisters.h>
+#include <common.h>
 
 namespace CPU {
 

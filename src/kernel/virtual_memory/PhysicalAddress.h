@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common.h"
-#include "CPU.h"
+#include <arch/i386/CPU.h>
+#include <common.h>
 
 static_assert(sizeof(unsigned int) == 4);
 

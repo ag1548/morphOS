@@ -1,9 +1,9 @@
-#include "Keyboard.h"
+#include <Keyboard.h>
 
-#include "common.h"
-#include "IO.h"
-#include "Mouse.h"
-#include "PIC.h"
+#include <arch/i386/PIC.h>
+#include <common.h>
+#include <IO.h>
+#include <Mouse.h>
 
 namespace Keyboard {
 

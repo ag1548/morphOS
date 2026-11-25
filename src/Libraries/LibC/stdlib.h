@@ -1,5 +1,7 @@
 #pragma once
 
+#include <sys/types.h>
+
 void *malloc(size_t size);
 // void free(void *_Nullable ptr);
 // void *calloc(size_t nmemb, size_t size);

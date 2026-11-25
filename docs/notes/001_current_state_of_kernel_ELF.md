@@ -8,13 +8,13 @@
 
 ```text
   File: kernel
-  Size: 34596     	Blocks: 72         IO Block: 4096   regular file
+  Size: 34680     	Blocks: 72         IO Block: 4096   regular file
 Device: 8,0	Inode: 11840912    Links: 1
 Access: (0775/-rwxrwxr-x)  Uid: ( 1000/     dre)   Gid: ( 1000/     dre)
-Access: 2026-11-24 17:46:37.652685325 -0600
-Modify: 2026-11-24 17:46:37.651417224 -0600
-Change: 2026-11-24 17:46:37.651457099 -0600
- Birth: 2026-11-24 17:46:37.648866036 -0600
+Access: 2026-11-25 15:09:03.131929594 -0600
+Modify: 2026-11-25 15:09:03.131169366 -0600
+Change: 2026-11-25 15:09:03.131213889 -0600
+ Birth: 2026-11-25 15:09:03.128929650 -0600
 ```
 ## readelf
 
@@ -33,7 +33,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x100030
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          34276 (bytes into file)
+  Start of section headers:          34360 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -45,13 +45,13 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00100000 001000 003d22 00  AX  0   0 4096
-  [ 2] .rodata           PROGBITS        00104000 005000 00125d 00   A  0   0 4096
-  [ 3] .bss              NOBITS          00106000 007000 00d864 00  WA  0   0 4096
-  [ 4] .comment          PROGBITS        00000000 00625d 000012 01  MS  0   0  1
-  [ 5] .symtab           SYMTAB          00000000 006270 000cd0 10      6  59  4
-  [ 6] .strtab           STRTAB          00000000 006f40 00166a 00      0   0  1
-  [ 7] .shstrtab         STRTAB          00000000 0085aa 000037 00      0   0  1
+  [ 1] .text             PROGBITS        00100000 001000 003d8c 00  AX  0   0 4096
+  [ 2] .rodata           PROGBITS        00104000 005000 00127d 00   A  0   0 4096
+  [ 3] .bss              NOBITS          00106000 007000 011864 00  WA  0   0 4096
+  [ 4] .comment          PROGBITS        00000000 00627d 000012 01  MS  0   0  1
+  [ 5] .symtab           SYMTAB          00000000 006290 000cf0 10      6  60  4
+  [ 6] .strtab           STRTAB          00000000 006f80 001680 00      0   0  1
+  [ 7] .shstrtab         STRTAB          00000000 008600 000037 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -60,8 +60,8 @@ Key to Flags:
 
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x001000 0x00100000 0x00100000 0x0525d 0x0525d R E 0x1000
-  LOAD           0x001000 0x00106000 0x00106000 0x00000 0x0d864 RW  0x1000
+  LOAD           0x001000 0x00100000 0x00100000 0x0527d 0x0527d R E 0x1000
+  LOAD           0x001000 0x00106000 0x00106000 0x00000 0x11864 RW  0x1000
 
  Section to Segment mapping:
   Segment Sections...
@@ -71,7 +71,7 @@ Program Headers:
 ## nm -n kernel
 
 ```text
-00100000 T kernel_mem_start
+00000000 T kernel_mem_start
 00100030 T _start
 00100030 T start
 0010005f t loop
@@ -102,7 +102,7 @@ Program Headers:
 00100fa6 W _ZN20ControlRegister4DumpC1E16ControlRegister4
 00100fa6 W _ZN20ControlRegister4DumpC2E16ControlRegister4
 001011bf T _Z25print_EFLAGSRegister_dump18EFLAGSRegisterDump
-001014f0 t _ZN3GDTL24create_global_descriptorEijj
+001014f0 t _ZN3GDTL24create_global_descriptorEjjj
 00101510 t _ZN3GDTL22create_null_descriptorEv
 00101524 t _ZN3GDTL22create_code_descriptorEv
 0010153e t _ZN3GDTL22create_data_descriptorEv
@@ -117,143 +117,144 @@ Program Headers:
 0010163b t _ZN3IDTL36unimplemented_interrupt_handler_testEv
 00101666 T _ZN3IDT16assert_gate_typeEj
 001016be T _ZN3IDT24construct_idt_descriptorERjS0_jj
-001017a7 t _ZN3IDTL28install_interrupt_descriptorEijj
+001017a7 t _ZN3IDTL28install_interrupt_descriptorEjjj
 001017c7 t _ZN3IDTL33initialize_all_interrupts_to_nullEv
-00101832 t _ZN3IDTL20install_test_handlerEv
-00101887 T _exception0_divide_error_entry
-0010188d T _exception0_divide_error
-001018b8 T _exception1_debug_exception_entry
-001018be T _exception1_debug_exception
-001018e9 T _exception2_nmi_interrupt_entry
-001018ef T _exception2_nmi_interrupt
-0010191a T _exception3_breakpoint_entry
-00101920 T _exception3_breakpoint
-0010194b T _exception4_overflow_entry
-00101951 T _exception4_overflow
-0010197c T _exception5_bound_range_exceeded_entry
-00101982 T _exception5_bound_range_exceeded
-001019ad T _exception6_invalid_opcode_entry
-001019b3 T _exception6_invalid_opcode
-001019de T _exception7_device_not_available_entry
-001019e4 T _exception7_device_not_available
-00101a0f T _exception8_double_fault_entry
-00101a15 T _exception8_double_fault
-00101a40 T _exception9_coprocessor_segment_overrun_entry
-00101a46 T _exception9_coprocessor_segment_overrun
-00101a71 T _exceptionA_invalid_tss_entry
-00101a77 T _exceptionA_invalid_tss
-00101aa2 T _exceptionB_segment_not_present_entry
-00101aa8 T _exceptionB_segment_not_present
-00101ad3 T _exceptionC_stack_segment_fault_entry
-00101ad9 T _exceptionC_stack_segment_fault
-00101b04 T _exceptionD_general_protection_entry
-00101b0a T _exceptionD_general_protection
-00101b35 T _exceptionE_page_fault_entry
-00101b3b T _exceptionE_page_fault
-00101b66 T _exceptionF_intel_reserved_entry
-00101b6c T _exceptionF_intel_reserved
-00101b97 T _exception10_x87_fpu_floating_point_error_entry
-00101b9d T _exception10_x87_fpu_floating_point_error
-00101bc8 T _exception11_alignment_check_entry
-00101bce T _exception11_alignment_check
-00101bf9 T _exception12_machine_check_entry
-00101bff T _exception12_machine_check
-00101c2a T _exception13_simd_floating_point_exception_entry
-00101c30 T _exception13_simd_floating_point_exception
-00101c5b T _exception14_virtualization_exception_entry
-00101c61 T _exception14_virtualization_exception
-00101c8c T _exception15_control_protection_exception_entry
-00101c92 T _exception15_control_protection_exception
-00101cbd T _exception20_timer_tick_entry
-00101cc3 T _exception20_timer_tick
-00101d35 T _exception21_keyboard_entry
-00101d3b T _exception21_keyboard
-00101d56 T _exception32_mouse_entry
-00101d5c T _exception32_mouse
-00101d77 T _exception27_spurious_entry
-00101d7d T _exception27_spurious
-00101da8 t _ZN3IDTL18install_descriptorEjj
-00101df2 t _ZN3IDTL18install_interruptsEv
-00101fe9 t _ZN3IDTL8load_idtEv
-00101ff7 T _ZN3IDT4initEv
-00102014 T _Z17debug_out_putchari
-00102029 T _Z9debug_outPKcz
-001021cc t _ZL19make_buffer_newlinev
-0010229e t _ZL31clear_remaining_line_charactersv
-001022f0 t _ZL14start_new_linev
-00102329 t _ZL7putchari
-001023b3 t _ZL4itoaPcii
-00102497 T printf
-0010262e t _ZL3clsv
-00102679 t _ZL29assert_multiboot_magic_numberv
-001026a9 T _Z24kernel_mem_start_addressv
-001026b3 T _Z22kernel_mem_end_addressv
-001026bd t _ZL20print_multiboot_infov
-00102a1a T cmain
-00102a78 W _ZN3CPU18set_interrupt_flagEv
-00102a7f W _ZN3CPU9idle_loopEv
-00102a85 T _ZN3PIC4initEv
-00102a9d T _ZN3PIC16remap_interruptsEii
-00102b90 T _ZN3PIC21send_end_of_interruptEh
-00102bc0 T _ZN3PIC18set_interrupt_maskEh
-00102c20 T _ZN3PIC20clear_interrupt_maskEh
-00102c82 t _ZN3PICL13__get_irq_regEi
-00102ce3 T _ZN3PIC7get_irrEv
-00102cf8 T _ZN3PIC7get_isrEv
-00102d0d W _ZN2IO4outbEth
-00102d1c W _ZN2IO3inbEt
-00102d32 W _ZN2IO7io_waitEv
-00102d4d T _ZN3PIT4initEv
-00102da6 T _ZN8Keyboard16handle_interruptEv
-00102e3c T _ZN8Keyboard4initEv
-00102e72 T _ZN5Mouse13wait_to_writeEv
-00102e9d T _ZN5Mouse5writeEth
-00102ec0 T _ZN5Mouse12wait_to_readEv
-00102ee6 T _ZN5Mouse4readEv
-00102f00 T _ZN5Mouse3ackEv
-00102f3c T _ZN5Mouse19enable_ps2_aux_portEv
-00102f57 T _ZN5Mouse23assert_mouse_first_byteEv
-00102fae T _ZN5Mouse18reset_mouse_packetEv
-00102fd0 T _ZN5Mouse19handle_mouse_packetEv
-00103034 T _ZN5Mouse16handle_interruptEv
-0010313a T _ZN5Mouse15check_for_mouseEv
-001031cf T _ZN5Mouse20update_compaq_statusEv
-00103214 T _ZN5Mouse16initialize_mouseEv
-001032cf T _ZN5Mouse10init_stateEv
-001032f1 T _ZN5Mouse4initEv
-0010333f T _ZN13MemoryManager16print_memory_mapEv
-001035fd T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
-00103879 T _ZN13MemoryManager4pdptEv
-00103883 T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
-0010389a T _ZN13MemoryManager18move_pdpt_into_cr3Ev
-001038d7 T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
-001039a0 T _ZN13MemoryManager34turn_on_physical_address_extensionEv
-001039d2 T _ZN13MemoryManager14turn_on_pagingEv
-001039ed T _ZN13MemoryManager4initEv
-00103a2a W _ZN25PageDirectoryPointerTable5resetEv
-00103a5c W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
-00103ab4 W _ZN25PageDirectoryPointerTable14set_pd_presentEj
-00103b60 W _ZN15PhysicalAddressC1Ej
-00103b60 W _ZN15PhysicalAddressC2Ej
-00103b6e W _ZNK15PhysicalAddress3getEv
-00103ba9 T _Z6memsetPvii
-00103be3 T _Z6memcpyPvPKvi
-00103c24 T _Z6memcmpPKvS0_i
-00103ca0 T _Z7memmovePvPKvi
+00101831 t _ZN3IDTL20install_test_handlerEv
+00101886 T _exception0_divide_error_entry
+0010188c T _exception0_divide_error
+001018b7 T _exception1_debug_exception_entry
+001018bd T _exception1_debug_exception
+001018e8 T _exception2_nmi_interrupt_entry
+001018ee T _exception2_nmi_interrupt
+00101919 T _exception3_breakpoint_entry
+0010191f T _exception3_breakpoint
+0010194a T _exception4_overflow_entry
+00101950 T _exception4_overflow
+0010197b T _exception5_bound_range_exceeded_entry
+00101981 T _exception5_bound_range_exceeded
+001019ac T _exception6_invalid_opcode_entry
+001019b2 T _exception6_invalid_opcode
+001019dd T _exception7_device_not_available_entry
+001019e3 T _exception7_device_not_available
+00101a0e T _exception8_double_fault_entry
+00101a14 T _exception8_double_fault
+00101a3f T _exception9_coprocessor_segment_overrun_entry
+00101a45 T _exception9_coprocessor_segment_overrun
+00101a70 T _exceptionA_invalid_tss_entry
+00101a76 T _exceptionA_invalid_tss
+00101aa1 T _exceptionB_segment_not_present_entry
+00101aa7 T _exceptionB_segment_not_present
+00101ad2 T _exceptionC_stack_segment_fault_entry
+00101ad8 T _exceptionC_stack_segment_fault
+00101b03 T _exceptionD_general_protection_entry
+00101b09 T _exceptionD_general_protection
+00101b34 T _exceptionE_page_fault_entry
+00101b3a T _exceptionE_page_fault
+00101b65 T _exceptionF_intel_reserved_entry
+00101b6b T _exceptionF_intel_reserved
+00101b96 T _exception10_x87_fpu_floating_point_error_entry
+00101b9c T _exception10_x87_fpu_floating_point_error
+00101bc7 T _exception11_alignment_check_entry
+00101bcd T _exception11_alignment_check
+00101bf8 T _exception12_machine_check_entry
+00101bfe T _exception12_machine_check
+00101c29 T _exception13_simd_floating_point_exception_entry
+00101c2f T _exception13_simd_floating_point_exception
+00101c5a T _exception14_virtualization_exception_entry
+00101c60 T _exception14_virtualization_exception
+00101c8b T _exception15_control_protection_exception_entry
+00101c91 T _exception15_control_protection_exception
+00101cbc T _exception20_timer_tick_entry
+00101cc2 T _exception20_timer_tick
+00101d34 T _exception21_keyboard_entry
+00101d3a T _exception21_keyboard
+00101d55 T _exception32_mouse_entry
+00101d5b T _exception32_mouse
+00101d76 T _exception27_spurious_entry
+00101d7c T _exception27_spurious
+00101da7 t _ZN3IDTL18install_descriptorEjj
+00101df0 t _ZN3IDTL18install_interruptsEv
+00101fe7 t _ZN3IDTL8load_idtEv
+00101ff5 T _ZN3IDT4initEv
+00102012 T _Z17debug_out_putchari
+00102027 T _Z9debug_outPKcz
+001021ca t _ZL19make_buffer_newlinev
+0010229c t _ZL31clear_remaining_line_charactersv
+001022ee t _ZL14start_new_linev
+00102327 t _ZL7putchari
+001023b1 t _ZL4itoaPcii
+00102495 T printf
+0010262c t _ZL3clsv
+00102677 t _ZL29assert_multiboot_magic_numberv
+001026a7 T _Z24kernel_mem_start_addressv
+001026b1 T _Z22kernel_mem_end_addressv
+001026bb t _ZL20print_multiboot_infov
+00102a18 T cmain
+00102a76 W _ZN3CPU18set_interrupt_flagEv
+00102a7d W _ZN3CPU9idle_loopEv
+00102a83 T _ZN3PIC4initEv
+00102a9b T _ZN3PIC16remap_interruptsEii
+00102b8e T _ZN3PIC21send_end_of_interruptEh
+00102bbe T _ZN3PIC18set_interrupt_maskEh
+00102c1e T _ZN3PIC20clear_interrupt_maskEh
+00102c80 t _ZN3PICL13__get_irq_regEi
+00102ce1 T _ZN3PIC7get_irrEv
+00102cf6 T _ZN3PIC7get_isrEv
+00102d0b W _ZN2IO4outbEth
+00102d1a W _ZN2IO3inbEt
+00102d30 W _ZN2IO7io_waitEv
+00102d4b T _ZN3PIT4initEv
+00102da4 T _ZN8Keyboard16handle_interruptEv
+00102e3a T _ZN8Keyboard4initEv
+00102e70 T _ZN5Mouse13wait_to_writeEv
+00102e9b T _ZN5Mouse5writeEth
+00102ebe T _ZN5Mouse12wait_to_readEv
+00102ee4 T _ZN5Mouse4readEv
+00102efe T _ZN5Mouse3ackEv
+00102f3a T _ZN5Mouse19enable_ps2_aux_portEv
+00102f55 T _ZN5Mouse23assert_mouse_first_byteEv
+00102fac T _ZN5Mouse18reset_mouse_packetEv
+00102fce T _ZN5Mouse19handle_mouse_packetEv
+00103032 T _ZN5Mouse16handle_interruptEv
+00103138 T _ZN5Mouse15check_for_mouseEv
+001031cd T _ZN5Mouse20update_compaq_statusEv
+00103212 T _ZN5Mouse16initialize_mouseEv
+001032cd T _ZN5Mouse10init_stateEv
+001032ef T _ZN5Mouse4initEv
+0010333d T _ZN13MemoryManager16print_memory_mapEv
+001035fb T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
+00103877 T _ZN13MemoryManager4pdptEv
+00103881 T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
+00103898 T _ZN13MemoryManager18move_pdpt_into_cr3Ev
+001038d5 T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
+0010399e T _ZN13MemoryManager34turn_on_physical_address_extensionEv
+001039d0 T _ZN13MemoryManager14turn_on_pagingEv
+001039eb T _ZN13MemoryManager4initEv
+00103a28 W _ZN25PageDirectoryPointerTable5resetEv
+00103a5a W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
+00103ac4 W _ZN25PageDirectoryPointerTable14set_pd_presentEj
+00103bc0 W _ZN15PhysicalAddressC1Ej
+00103bc0 W _ZN15PhysicalAddressC2Ej
+00103bce W _ZNK15PhysicalAddress3getEv
+00103c09 T _Z6mallocj
+00103c13 T _Z6memsetPvij
+00103c4d T _Z6memcpyPvPKvj
+00103c8e T _Z6memcmpPKvS0_j
+00103d0a T _Z7memmovePvPKvj
 00106000 b virtual_memory_data_structures
-0010f000 B stack
-00113000 b _ZN3GDTL6s_gdtrE
-00113008 b _ZN3GDTL17s_gdt_descriptorsE
-00113020 b _ZN3IDTL6s_idtrE
-00113040 b _ZN3IDTL17s_idt_descriptorsE
-00113840 b _ZN3IDTL5valueE
-00113844 B multiboot_magic
-00113848 B multiboot_info_ptr
-00113850 b _ZL4xpos
-00113854 b _ZL4ypos
-00113858 b _ZL5video
-0011385c B _ZN5Mouse24mouse_current_byte_indexE
-0011385d B _ZN5Mouse12mouse_packetE
-00113860 B virtual_memory_data_structures_ptr
-00113864 B kernel_mem_end
+00113000 B stack
+00117000 b _ZN3GDTL6s_gdtrE
+00117008 b _ZN3GDTL17s_gdt_descriptorsE
+00117020 b _ZN3IDTL6s_idtrE
+00117040 b _ZN3IDTL17s_idt_descriptorsE
+00117840 b _ZN3IDTL5valueE
+00117844 B multiboot_magic
+00117848 B multiboot_info_ptr
+00117850 b _ZL4xpos
+00117854 b _ZL4ypos
+00117858 b _ZL5video
+0011785c B _ZN5Mouse24mouse_current_byte_indexE
+0011785d B _ZN5Mouse12mouse_packetE
+00117860 B virtual_memory_data_structures_ptr
+00117864 B kernel_mem_end
 ```
