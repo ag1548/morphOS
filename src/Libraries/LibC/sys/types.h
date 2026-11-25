@@ -6,4 +6,5 @@ static_assert(sizeof(unsigned int) == 4);
 static_assert(sizeof(unsigned long) == 4);
 static_assert(sizeof(unsigned long long) == 8);
 
-typedef signed int size_t;
+typedef unsigned int size_t;
+typedef signed int ssize_t;
