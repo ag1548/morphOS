@@ -45,7 +45,7 @@
         .long 768  /* height */
         .long 32   /* depth */
 
-.section .vm_structs
+.section .vm_structs, "aw", @nobits
 .align 4096
 virtual_memory_data_structures:
 .skip 4096 * 9 /* 1 page directory pointer table; 4 page directories; 4 page tables (...?) */
