@@ -10,6 +10,8 @@
 
 ![docs/images/readme_splash.png](docs/images/readme_splash.png)
 
+![docs/images/console.png](docs/images/console.png)
+
 ## Roadmap
 
 ### The First Thing to Implement: GDT, IDT, and Diagnostics
