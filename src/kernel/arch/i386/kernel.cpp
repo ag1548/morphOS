@@ -432,7 +432,7 @@ extern "C" void cmain() {
     Keyboard::init();
     Mouse::init();
 
-    MemoryManager::init();
+    // MemoryManager::init();
 
     CPU::set_interrupt_flag();
     CPU::idle_loop();
