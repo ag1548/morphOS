@@ -15,10 +15,13 @@ See <virtual_memory/MemoryManger.h> for memory map.
 #define CHUNKS_PER_BIT                       1
 #define BITS_PER_UNSIGNED_CHAR               8
 
-#define CHARS_NEEDED (KERNEL_MALLOC_ALLOCATION_SPACE_SIZE / BYTES_PER_CHUNK  / CHUNKS_PER_BIT / BITS_PER_UNSIGNED_CHAR)
+#define CHARS_NEEDED                         (KERNEL_MALLOC_ALLOCATION_SPACE_SIZE / BYTES_PER_CHUNK / CHUNKS_PER_BIT / BITS_PER_UNSIGNED_CHAR)
 
 namespace KMALLOC {
 
 void init();
+
+void *kmalloc();
+void  kfree(void *);
 
 } // namespace KMALLOC

@@ -13,4 +13,14 @@ void init() {
     kprintf("kmalloc initialized!\n");
 }
 
+void *kmalloc() {
+    // TODO
+    return 0;
+}
+
+void kfree(void *ptr) {
+    // TODO
+    (void)ptr;
+}
+
 } // namespace KMALLOC
