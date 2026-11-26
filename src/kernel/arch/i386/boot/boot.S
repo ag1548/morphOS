@@ -18,7 +18,7 @@
 #include <arch/i386/multiboot.h>
 
 /* The size of our stack (16KB). */
-#define STACK_SIZE                      0x4000
+#define STACK_SIZE                      0x8000
 
 /* The flags for the Multiboot header. */
 #define MULTIBOOT_HEADER_FLAGS          MULTIBOOT_PAGE_ALIGN | MULTIBOOT_MEMORY_INFO

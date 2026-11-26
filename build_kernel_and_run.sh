@@ -10,6 +10,7 @@ shopt -s globstar
     src/**/*.cpp                    \
     -T src/ld/linker.ld             \
     -I src/kernel                   \
+    -I src/Libraries                \
     -I src/Libraries/LibC           \
     -o kernel                       \
     -std=c++17                      \

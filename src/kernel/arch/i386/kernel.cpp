@@ -6,6 +6,7 @@
 #include <arch/i386/PIC.h>
 #include <arch/i386/PIT.h>
 #include <common.h>
+#include <heap/kmalloc.h>
 #include <Keyboard.h>
 #include <Mouse.h>
 #include <virtual_memory/MemoryManager.h>
@@ -350,8 +351,10 @@ static void print_multiboot_info() {
                                       ^ (9) `boot_loader_name` field is valid
     */
 
-    kprintf("Kernel mem start: 0x%x\n", kernel_mem_start_address());
-    kprintf("Kernel mem end  : 0x%x\n", kernel_mem_end_address());
+    kprintf("Kernel mem start: 0x%08x\n", kernel_mem_start_address());
+    kprintf("Kernel mem end  : 0x%08x\n", kernel_mem_end_address());
+    kprintf("length          : 0x%08x\n", kernel_mem_end_address() - kernel_mem_start_address());
+    kprintf("length          : %d\n", kernel_mem_end_address() - kernel_mem_start_address());
 
     if (CHECK_FLAG(mbi->flags, 0)) {
         kprintf("mem_lower = %uKB, mem_upper = %uKB\n", (unsigned)mbi->mem_lower, (unsigned)mbi->mem_upper);
@@ -418,6 +421,8 @@ extern "C" void cmain() {
     debug_out(WELCOME_STR "\n");
 
     print_multiboot_info();
+
+    KMALLOC::init();
 
     PIC::init();
     GDT::init();

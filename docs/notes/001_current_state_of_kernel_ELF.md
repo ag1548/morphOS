@@ -8,13 +8,13 @@
 
 ```text
   File: kernel
-  Size: 34680     	Blocks: 72         IO Block: 4096   regular file
+  Size: 35076     	Blocks: 72         IO Block: 4096   regular file
 Device: 8,0	Inode: 11840912    Links: 1
 Access: (0775/-rwxrwxr-x)  Uid: ( 1000/     dre)   Gid: ( 1000/     dre)
-Access: 2026-11-25 15:09:03.131929594 -0600
-Modify: 2026-11-25 15:09:03.131169366 -0600
-Change: 2026-11-25 15:09:03.131213889 -0600
- Birth: 2026-11-25 15:09:03.128929650 -0600
+Access: 2026-11-25 22:11:08.806396157 -0600
+Modify: 2026-11-25 22:11:08.805432581 -0600
+Change: 2026-11-25 22:11:08.805512513 -0600
+ Birth: 2026-11-25 22:11:08.802620037 -0600
 ```
 ## readelf
 
@@ -33,7 +33,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x100030
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          34360 (bytes into file)
+  Start of section headers:          34756 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -45,13 +45,13 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00100000 001000 003d8c 00  AX  0   0 4096
-  [ 2] .rodata           PROGBITS        00104000 005000 00127d 00   A  0   0 4096
-  [ 3] .bss              NOBITS          00106000 007000 011864 00  WA  0   0 4096
-  [ 4] .comment          PROGBITS        00000000 00627d 000012 01  MS  0   0  1
-  [ 5] .symtab           SYMTAB          00000000 006290 000cf0 10      6  60  4
-  [ 6] .strtab           STRTAB          00000000 006f80 001680 00      0   0  1
-  [ 7] .shstrtab         STRTAB          00000000 008600 000037 00      0   0  1
+  [ 1] .text             PROGBITS        00100000 001000 003e8a 00  AX  0   0 4096
+  [ 2] .rodata           PROGBITS        00104000 005000 0012f1 00   A  0   0 4096
+  [ 3] .bss              NOBITS          00106000 007000 035868 00  WA  0   0 4096
+  [ 4] .comment          PROGBITS        00000000 0062f1 000012 01  MS  0   0  1
+  [ 5] .symtab           SYMTAB          00000000 006304 000d70 10      6  61  4
+  [ 6] .strtab           STRTAB          00000000 007074 001719 00      0   0  1
+  [ 7] .shstrtab         STRTAB          00000000 00878d 000037 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -60,8 +60,8 @@ Key to Flags:
 
 Program Headers:
   Type           Offset   VirtAddr   PhysAddr   FileSiz MemSiz  Flg Align
-  LOAD           0x001000 0x00100000 0x00100000 0x0527d 0x0527d R E 0x1000
-  LOAD           0x001000 0x00106000 0x00106000 0x00000 0x11864 RW  0x1000
+  LOAD           0x001000 0x00100000 0x00100000 0x052f1 0x052f1 R E 0x1000
+  LOAD           0x001000 0x00106000 0x00106000 0x00000 0x35868 RW  0x1000
 
  Section to Segment mapping:
   Segment Sections...
@@ -71,7 +71,9 @@ Program Headers:
 ## nm -n kernel
 
 ```text
-00000000 T kernel_mem_start
+00000000 T reserved_start
+00100000 T kernel_mem_start
+00100000 T reserved_end
 00100030 T _start
 00100030 T start
 0010005f t loop
@@ -189,72 +191,77 @@ Program Headers:
 001026a7 T _Z24kernel_mem_start_addressv
 001026b1 T _Z22kernel_mem_end_addressv
 001026bb t _ZL20print_multiboot_infov
-00102a18 T cmain
-00102a76 W _ZN3CPU18set_interrupt_flagEv
-00102a7d W _ZN3CPU9idle_loopEv
-00102a83 T _ZN3PIC4initEv
-00102a9b T _ZN3PIC16remap_interruptsEii
-00102b8e T _ZN3PIC21send_end_of_interruptEh
-00102bbe T _ZN3PIC18set_interrupt_maskEh
-00102c1e T _ZN3PIC20clear_interrupt_maskEh
-00102c80 t _ZN3PICL13__get_irq_regEi
-00102ce1 T _ZN3PIC7get_irrEv
-00102cf6 T _ZN3PIC7get_isrEv
-00102d0b W _ZN2IO4outbEth
-00102d1a W _ZN2IO3inbEt
-00102d30 W _ZN2IO7io_waitEv
-00102d4b T _ZN3PIT4initEv
-00102da4 T _ZN8Keyboard16handle_interruptEv
-00102e3a T _ZN8Keyboard4initEv
-00102e70 T _ZN5Mouse13wait_to_writeEv
-00102e9b T _ZN5Mouse5writeEth
-00102ebe T _ZN5Mouse12wait_to_readEv
-00102ee4 T _ZN5Mouse4readEv
-00102efe T _ZN5Mouse3ackEv
-00102f3a T _ZN5Mouse19enable_ps2_aux_portEv
-00102f55 T _ZN5Mouse23assert_mouse_first_byteEv
-00102fac T _ZN5Mouse18reset_mouse_packetEv
-00102fce T _ZN5Mouse19handle_mouse_packetEv
-00103032 T _ZN5Mouse16handle_interruptEv
-00103138 T _ZN5Mouse15check_for_mouseEv
-001031cd T _ZN5Mouse20update_compaq_statusEv
-00103212 T _ZN5Mouse16initialize_mouseEv
-001032cd T _ZN5Mouse10init_stateEv
-001032ef T _ZN5Mouse4initEv
-0010333d T _ZN13MemoryManager16print_memory_mapEv
-001035fb T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
-00103877 T _ZN13MemoryManager4pdptEv
-00103881 T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
-00103898 T _ZN13MemoryManager18move_pdpt_into_cr3Ev
-001038d5 T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
-0010399e T _ZN13MemoryManager34turn_on_physical_address_extensionEv
-001039d0 T _ZN13MemoryManager14turn_on_pagingEv
-001039eb T _ZN13MemoryManager4initEv
-00103a28 W _ZN25PageDirectoryPointerTable5resetEv
-00103a5a W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
-00103ac4 W _ZN25PageDirectoryPointerTable14set_pd_presentEj
-00103bc0 W _ZN15PhysicalAddressC1Ej
-00103bc0 W _ZN15PhysicalAddressC2Ej
-00103bce W _ZNK15PhysicalAddress3getEv
-00103c09 T _Z6mallocj
-00103c13 T _Z6memsetPvij
-00103c4d T _Z6memcpyPvPKvj
-00103c8e T _Z6memcmpPKvS0_j
-00103d0a T _Z7memmovePvPKvj
+00102a9c T cmain
+00102aff W _ZN3CPU18set_interrupt_flagEv
+00102b06 W _ZN3CPU9idle_loopEv
+00102b0c T _ZN3PIC4initEv
+00102b24 T _ZN3PIC16remap_interruptsEii
+00102c17 T _ZN3PIC21send_end_of_interruptEh
+00102c47 T _ZN3PIC18set_interrupt_maskEh
+00102ca7 T _ZN3PIC20clear_interrupt_maskEh
+00102d09 t _ZN3PICL13__get_irq_regEi
+00102d6a T _ZN3PIC7get_irrEv
+00102d7f T _ZN3PIC7get_isrEv
+00102d94 W _ZN2IO4outbEth
+00102da3 W _ZN2IO3inbEt
+00102db9 W _ZN2IO7io_waitEv
+00102dd4 T _ZN3PIT4initEv
+00102e2d T _ZN7KMALLOC4initEv
+00102e98 W _ZN6BitmapILj131072EE4sizeEv
+00102ea2 T _ZN8Keyboard16handle_interruptEv
+00102f38 T _ZN8Keyboard4initEv
+00102f6e T _ZN5Mouse13wait_to_writeEv
+00102f99 T _ZN5Mouse5writeEth
+00102fbc T _ZN5Mouse12wait_to_readEv
+00102fe2 T _ZN5Mouse4readEv
+00102ffc T _ZN5Mouse3ackEv
+00103038 T _ZN5Mouse19enable_ps2_aux_portEv
+00103053 T _ZN5Mouse23assert_mouse_first_byteEv
+001030aa T _ZN5Mouse18reset_mouse_packetEv
+001030cc T _ZN5Mouse19handle_mouse_packetEv
+00103130 T _ZN5Mouse16handle_interruptEv
+00103236 T _ZN5Mouse15check_for_mouseEv
+001032cb T _ZN5Mouse20update_compaq_statusEv
+00103310 T _ZN5Mouse16initialize_mouseEv
+001033cb T _ZN5Mouse10init_stateEv
+001033ed T _ZN5Mouse4initEv
+0010343b T _ZN13MemoryManager16print_memory_mapEv
+001036f9 T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
+00103975 T _ZN13MemoryManager4pdptEv
+0010397f T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
+00103996 T _ZN13MemoryManager18move_pdpt_into_cr3Ev
+001039d3 T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
+00103a9c T _ZN13MemoryManager34turn_on_physical_address_extensionEv
+00103ace T _ZN13MemoryManager14turn_on_pagingEv
+00103ae9 T _ZN13MemoryManager4initEv
+00103b26 W _ZN25PageDirectoryPointerTable5resetEv
+00103b58 W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
+00103bc2 W _ZN25PageDirectoryPointerTable14set_pd_presentEj
+00103cbe W _ZN15PhysicalAddressC1Ej
+00103cbe W _ZN15PhysicalAddressC2Ej
+00103ccc W _ZNK15PhysicalAddress3getEv
+00103d07 T _Z6mallocj
+00103d11 T _Z6memsetPvij
+00103d4b T _Z6memcpyPvPKvj
+00103d8c T _Z6memcmpPKvS0_j
+00103e08 T _Z7memmovePvPKvj
+00106000 R __init_array_end
+00106000 R __init_array_start
 00106000 b virtual_memory_data_structures
 00113000 B stack
-00117000 b _ZN3GDTL6s_gdtrE
-00117008 b _ZN3GDTL17s_gdt_descriptorsE
-00117020 b _ZN3IDTL6s_idtrE
-00117040 b _ZN3IDTL17s_idt_descriptorsE
-00117840 b _ZN3IDTL5valueE
-00117844 B multiboot_magic
-00117848 B multiboot_info_ptr
-00117850 b _ZL4xpos
-00117854 b _ZL4ypos
-00117858 b _ZL5video
-0011785c B _ZN5Mouse24mouse_current_byte_indexE
-0011785d B _ZN5Mouse12mouse_packetE
-00117860 B virtual_memory_data_structures_ptr
-00117864 B kernel_mem_end
+0011b000 b _ZN3GDTL6s_gdtrE
+0011b008 b _ZN3GDTL17s_gdt_descriptorsE
+0011b020 b _ZN3IDTL6s_idtrE
+0011b040 b _ZN3IDTL17s_idt_descriptorsE
+0011b840 b _ZN3IDTL5valueE
+0011b844 B multiboot_magic
+0011b848 B multiboot_info_ptr
+0011b850 b _ZL4xpos
+0011b854 b _ZL4ypos
+0011b858 b _ZL5video
+0011b860 B _ZN7KMALLOC14allocation_mapE
+0013b860 B _ZN5Mouse24mouse_current_byte_indexE
+0013b861 B _ZN5Mouse12mouse_packetE
+0013b864 B virtual_memory_data_structures_ptr
+0013c000 B kernel_mem_end
 ```
