@@ -74,6 +74,7 @@ x86:
                     "                          |_|                    \n"
 
 static void itoa(char *buf, int base, int d);
+static void cls(void);
 
 void debug_out_putchar(int c) {
     unsigned char c_ = static_cast<unsigned char>(c);
@@ -146,22 +147,24 @@ void debug_out(const char *format, ...) {
     }
 }
 
+/*
+
+Move lines upwards.
+FIXME: This always leaves the last line of the buffer blank.  Instead, make a buffer new line at the start of the _next_ printf if the previous one ended with a '\n'.
+
+*/
 static void make_buffer_newline() {
 
-    // Move lines upwards
-    for (int line = 1; line < LINES; line++) {
-        for (int column = 0; column < COLUMNS; column++) {
-            *(video + (column + (line - 1) * COLUMNS) * 2)     = *(video + (column + line * COLUMNS) * 2);
-            *(video + (column + (line - 1) * COLUMNS) * 2 + 1) = *(video + (column + line * COLUMNS) * 2 + 1);
-        }
+    for (int i = 0; i < (LINES - 1) * COLUMNS * 2; i++) {
+        video[i] = video[i + COLUMNS * 2];
     }
-}
-static void clear_remaining_line_characters() {
-    const int line = LINES - 1;
-    for (int column = xpos; column < COLUMNS; column++) {
-        *(video + (column + (line - 1) * COLUMNS) * 2)     = ' ';
-        *(video + (column + (line - 1) * COLUMNS) * 2 + 1) = WHITE_FG;
+
+    for (int i = (LINES - 1) * COLUMNS * 2; i < LINES * COLUMNS * 2; i++) {
+        video[i] = 0;
     }
+
+    xpos = 0;
+    ypos = LINES - 1;
 }
 
 static void start_new_line() {
@@ -175,7 +178,6 @@ static void start_new_line() {
 
 static void putchar(int c) {
     if (c == '\n' || c == '\r') {
-        clear_remaining_line_characters();
         start_new_line();
         return;
     }
