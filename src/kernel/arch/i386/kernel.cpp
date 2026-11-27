@@ -150,7 +150,6 @@ void debug_out(const char *format, ...) {
 /*
 
 Move lines upwards.
-FIXME: This always leaves the last line of the buffer blank.  Instead, make a buffer new line at the start of the _next_ printf if the previous one ended with a '\n'.
 
 */
 static void make_buffer_newline() {
@@ -176,10 +175,16 @@ static void start_new_line() {
     }
 }
 
+static bool start_new_line_on_next_char = false;
 static void putchar(int c) {
     if (c == '\n' || c == '\r') {
-        start_new_line();
+        start_new_line_on_next_char = true;
         return;
+    }
+
+    if (start_new_line_on_next_char) {
+        start_new_line_on_next_char = false;
+        start_new_line();
     }
 
     *(video + (xpos + ypos * COLUMNS) * 2)     = c & 0xFF;

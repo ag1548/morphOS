@@ -8,13 +8,13 @@
 
 ```text
   File: kernel
-  Size: 43056     	Blocks: 88         IO Block: 4096   regular file
+  Size: 43048     	Blocks: 88         IO Block: 4096   regular file
 Device: 8,0	Inode: 11840912    Links: 1
 Access: (0775/-rwxrwxr-x)  Uid: ( 1000/     dre)   Gid: ( 1000/     dre)
-Access: 2026-11-27 16:12:49.572253261 -0600
-Modify: 2026-11-27 16:12:49.570667843 -0600
-Change: 2026-11-27 16:12:49.570755335 -0600
- Birth: 2026-11-27 16:12:49.568253333 -0600
+Access: 2026-11-27 16:44:35.834397500 -0600
+Modify: 2026-11-27 16:44:35.833767795 -0600
+Change: 2026-11-27 16:44:35.833776688 -0600
+ Birth: 2026-11-27 16:44:35.830798789 -0600
 ```
 ## readelf
 
@@ -33,7 +33,7 @@ ELF Header:
   Version:                           0x1
   Entry point address:               0x100030
   Start of program headers:          52 (bytes into file)
-  Start of section headers:          42696 (bytes into file)
+  Start of section headers:          42688 (bytes into file)
   Flags:                             0x0
   Size of this header:               52 (bytes)
   Size of program headers:           32 (bytes)
@@ -45,14 +45,14 @@ ELF Header:
 Section Headers:
   [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
   [ 0]                   NULL            00000000 000000 000000 00      0   0  0
-  [ 1] .text             PROGBITS        00100000 001000 004276 00  AX  0   0 4096
+  [ 1] .text             PROGBITS        00100000 001000 00422c 00  AX  0   0 4096
   [ 2] .rodata           PROGBITS        00105000 006000 001445 00   A  0   0 4096
   [ 3] .init_array       INIT_ARRAY      00107000 008000 000004 04  WA  0   0 4096
   [ 4] .bss              NOBITS          00108000 008004 035868 00  WA  0   0 4096
   [ 5] .comment          PROGBITS        00000000 008004 000012 01  MS  0   0  1
   [ 6] .symtab           SYMTAB          00000000 008018 000e10 10      7  63  4
-  [ 7] .strtab           STRTAB          00000000 008e28 00185a 00      0   0  1
-  [ 8] .shstrtab         STRTAB          00000000 00a682 000043 00      0   0  1
+  [ 7] .strtab           STRTAB          00000000 008e28 001855 00      0   0  1
+  [ 8] .shstrtab         STRTAB          00000000 00a67d 000043 00      0   0  1
 Key to Flags:
   W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
   L (link order), O (extra OS processing required), G (group), T (TLS),
@@ -182,80 +182,79 @@ Program Headers:
 00102012 T _Z17debug_out_putchari
 00102027 T _Z9debug_outPKcz
 001021ca t _ZL19make_buffer_newlinev
-0010229c t _ZL31clear_remaining_line_charactersv
-001022a2 t _ZL14start_new_linev
-001022db t _ZL7putchari
-00102365 t _ZL4itoaPcii
-00102449 T printf
-001025e0 t _ZL3clsv
-0010262b t _ZL29assert_multiboot_magic_numberv
-0010265b T _Z24kernel_mem_start_addressv
-00102665 T _Z22kernel_mem_end_addressv
-0010266f t _ZL20print_multiboot_infov
-00102a50 T cmain
-00102acc W _ZN3CPU18set_interrupt_flagEv
-00102ad3 W _ZN3CPU9idle_loopEv
-00102ad9 T _ZN3PIC4initEv
-00102af1 T _ZN3PIC16remap_interruptsEii
-00102be4 T _ZN3PIC21send_end_of_interruptEh
-00102c14 T _ZN3PIC18set_interrupt_maskEh
-00102c74 T _ZN3PIC20clear_interrupt_maskEh
-00102cd6 t _ZN3PICL13__get_irq_regEi
-00102d37 T _ZN3PIC7get_irrEv
-00102d4c T _ZN3PIC7get_isrEv
-00102d61 W _ZN2IO4outbEth
-00102d70 W _ZN2IO3inbEt
-00102d86 W _ZN2IO7io_waitEv
-00102da1 T _ZN3PIT4initEv
-00102dfa T _ZN7KMALLOC4initEv
-00102e65 T _ZN7KMALLOC7kmallocEj
-0010304f T _ZN7KMALLOC5kfreeEPv
-001030ec t _Z41__static_initialization_and_destruction_0v
-00103105 t _GLOBAL__sub_I__ZN7KMALLOC11kmalloc_mapE
-00103112 W _ZN6BitmapILj131072EEC1Ev
-00103112 W _ZN6BitmapILj131072EEC2Ev
-0010313e W _ZNK6BitmapILj131072EE10size_charsEv
-00103148 W _ZNK6BitmapILj131072EE6bit_atEj
-0010318e W _ZN6BitmapILj131072EE10set_bit_atEj
-001031e4 W _ZN6BitmapILj131072EE12clear_bit_atEj
-0010323c W _ZNK6BitmapILj131072EE26assert_byte_index_in_rangeEj
-0010328d T _ZN8Keyboard16handle_interruptEv
-00103323 T _ZN8Keyboard4initEv
-00103359 T _ZN5Mouse13wait_to_writeEv
-00103384 T _ZN5Mouse5writeEth
-001033a7 T _ZN5Mouse12wait_to_readEv
-001033cd T _ZN5Mouse4readEv
-001033e7 T _ZN5Mouse3ackEv
-00103423 T _ZN5Mouse19enable_ps2_aux_portEv
-0010343e T _ZN5Mouse23assert_mouse_first_byteEv
-00103495 T _ZN5Mouse18reset_mouse_packetEv
-001034b7 T _ZN5Mouse19handle_mouse_packetEv
-0010351b T _ZN5Mouse16handle_interruptEv
-00103621 T _ZN5Mouse15check_for_mouseEv
-001036b6 T _ZN5Mouse20update_compaq_statusEv
-001036fb T _ZN5Mouse16initialize_mouseEv
-001037b6 T _ZN5Mouse10init_stateEv
-001037d8 T _ZN5Mouse4initEv
-00103826 T _ZN13MemoryManager16print_memory_mapEv
-00103ae4 T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
-00103d60 T _ZN13MemoryManager4pdptEv
-00103d6a T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
-00103d81 T _ZN13MemoryManager18move_pdpt_into_cr3Ev
-00103dbe T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
-00103e87 T _ZN13MemoryManager34turn_on_physical_address_extensionEv
-00103eb9 T _ZN13MemoryManager14turn_on_pagingEv
-00103ed4 T _ZN13MemoryManager4initEv
-00103f12 W _ZN25PageDirectoryPointerTable5resetEv
-00103f44 W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
-00103fae W _ZN25PageDirectoryPointerTable14set_pd_presentEj
-001040aa W _ZN15PhysicalAddressC1Ej
-001040aa W _ZN15PhysicalAddressC2Ej
-001040b8 W _ZNK15PhysicalAddress3getEv
-001040f3 T _Z6mallocj
-001040fd T _Z6memsetPvij
-00104137 T _Z6memcpyPvPKvj
-00104178 T _Z6memcmpPKvS0_j
-001041f4 T _Z7memmovePvPKvj
+00102241 t _ZL14start_new_linev
+0010227a t _ZL7putchari
+0010231b t _ZL4itoaPcii
+001023ff T printf
+00102596 t _ZL3clsv
+001025e1 t _ZL29assert_multiboot_magic_numberv
+00102611 T _Z24kernel_mem_start_addressv
+0010261b T _Z22kernel_mem_end_addressv
+00102625 t _ZL20print_multiboot_infov
+00102a06 T cmain
+00102a82 W _ZN3CPU18set_interrupt_flagEv
+00102a89 W _ZN3CPU9idle_loopEv
+00102a8f T _ZN3PIC4initEv
+00102aa7 T _ZN3PIC16remap_interruptsEii
+00102b9a T _ZN3PIC21send_end_of_interruptEh
+00102bca T _ZN3PIC18set_interrupt_maskEh
+00102c2a T _ZN3PIC20clear_interrupt_maskEh
+00102c8c t _ZN3PICL13__get_irq_regEi
+00102ced T _ZN3PIC7get_irrEv
+00102d02 T _ZN3PIC7get_isrEv
+00102d17 W _ZN2IO4outbEth
+00102d26 W _ZN2IO3inbEt
+00102d3c W _ZN2IO7io_waitEv
+00102d57 T _ZN3PIT4initEv
+00102db0 T _ZN7KMALLOC4initEv
+00102e1b T _ZN7KMALLOC7kmallocEj
+00103005 T _ZN7KMALLOC5kfreeEPv
+001030a2 t _Z41__static_initialization_and_destruction_0v
+001030bb t _GLOBAL__sub_I__ZN7KMALLOC11kmalloc_mapE
+001030c8 W _ZN6BitmapILj131072EEC1Ev
+001030c8 W _ZN6BitmapILj131072EEC2Ev
+001030f4 W _ZNK6BitmapILj131072EE10size_charsEv
+001030fe W _ZNK6BitmapILj131072EE6bit_atEj
+00103144 W _ZN6BitmapILj131072EE10set_bit_atEj
+0010319a W _ZN6BitmapILj131072EE12clear_bit_atEj
+001031f2 W _ZNK6BitmapILj131072EE26assert_byte_index_in_rangeEj
+00103243 T _ZN8Keyboard16handle_interruptEv
+001032d9 T _ZN8Keyboard4initEv
+0010330f T _ZN5Mouse13wait_to_writeEv
+0010333a T _ZN5Mouse5writeEth
+0010335d T _ZN5Mouse12wait_to_readEv
+00103383 T _ZN5Mouse4readEv
+0010339d T _ZN5Mouse3ackEv
+001033d9 T _ZN5Mouse19enable_ps2_aux_portEv
+001033f4 T _ZN5Mouse23assert_mouse_first_byteEv
+0010344b T _ZN5Mouse18reset_mouse_packetEv
+0010346d T _ZN5Mouse19handle_mouse_packetEv
+001034d1 T _ZN5Mouse16handle_interruptEv
+001035d7 T _ZN5Mouse15check_for_mouseEv
+0010366c T _ZN5Mouse20update_compaq_statusEv
+001036b1 T _ZN5Mouse16initialize_mouseEv
+0010376c T _ZN5Mouse10init_stateEv
+0010378e T _ZN5Mouse4initEv
+001037dc T _ZN13MemoryManager16print_memory_mapEv
+00103a9a T _ZN13MemoryManager43align_memory_map_regions_to_page_boundariesEv
+00103d16 T _ZN13MemoryManager4pdptEv
+00103d20 T _ZN13MemoryManager29create_page_directory_at_addrE15PhysicalAddress
+00103d37 T _ZN13MemoryManager18move_pdpt_into_cr3Ev
+00103d74 T _ZN13MemoryManager37create_virtual_memory_data_structuresEv
+00103e3d T _ZN13MemoryManager34turn_on_physical_address_extensionEv
+00103e6f T _ZN13MemoryManager14turn_on_pagingEv
+00103e8a T _ZN13MemoryManager4initEv
+00103ec8 W _ZN25PageDirectoryPointerTable5resetEv
+00103efa W _ZN25PageDirectoryPointerTable11set_pd_addrEjy
+00103f64 W _ZN25PageDirectoryPointerTable14set_pd_presentEj
+00104060 W _ZN15PhysicalAddressC1Ej
+00104060 W _ZN15PhysicalAddressC2Ej
+0010406e W _ZNK15PhysicalAddress3getEv
+001040a9 T _Z6mallocj
+001040b3 T _Z6memsetPvij
+001040ed T _Z6memcpyPvPKvj
+0010412e T _Z6memcmpPKvS0_j
+001041aa T _Z7memmovePvPKvj
 00107000 D __init_array_start
 00107004 D __init_array_end
 00108000 b virtual_memory_data_structures
@@ -270,6 +269,7 @@ Program Headers:
 0011d850 b _ZL4xpos
 0011d854 b _ZL4ypos
 0011d858 b _ZL5video
+0011d85c b _ZL27start_new_line_on_next_char
 0011d860 B _ZN7KMALLOC11kmalloc_mapE
 0013d860 B _ZN5Mouse24mouse_current_byte_indexE
 0013d861 B _ZN5Mouse12mouse_packetE
