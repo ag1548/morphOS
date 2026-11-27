@@ -70,7 +70,7 @@ x86:
 #define WELCOME_STR "                                _    ___  ___     \\/ \n"    \
                     "\\ /      ._ _ _  ___  _ _  ___ | |_ | . |/ __>  (\\/) \n"   \
                     "(oo)ooo  | ' ' |/ . \\| '_>| . \\| . || | |\\__ \\   )(  \n" \
-                    " ||||||  |_|_|_|\\___/|_|  |  _/|_|_|`___'<___/  (/\\) \n"   \
+                    " ||||||  |_|_|_|\\___/|_|  |  _/|_|_|\\___'<___/  (/\\) \n"  \
                     "                          |_|                    \n"
 
 static void itoa(char *buf, int base, int d);
@@ -423,6 +423,9 @@ extern "C" void cmain() {
     print_multiboot_info();
 
     KMALLOC::init();
+
+    void *test_ptr = kmalloc(5);
+    kfree(test_ptr);
 
     PIC::init();
     GDT::init();
