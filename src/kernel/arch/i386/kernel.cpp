@@ -7,6 +7,7 @@
 #include <arch/i386/PIT.h>
 #include <common.h>
 #include <heap/kmalloc.h>
+#include <IO.h>
 #include <Keyboard.h>
 #include <Mouse.h>
 #include <virtual_memory/MemoryManager.h>
@@ -417,8 +418,15 @@ static void print_multiboot_info() {
     }
 }
 
+static void hide_text_cursor() {
+    // FIXME: Don't use magic values
+    IO::outb(0x3D4, 0x0A);
+    IO::outb(0x3D5, 0x20);
+}
+
 extern "C" void cmain() {
 
+    hide_text_cursor();
     cls();
 
     if (!assert_multiboot_magic_number()) {
