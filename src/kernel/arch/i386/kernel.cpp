@@ -439,9 +439,6 @@ extern "C" void cmain() {
 
     KMALLOC::init();
 
-    void *test_ptr = kmalloc(5);
-    kfree(test_ptr);
-
     PIC::init();
     GDT::init();
     IDT::init();
